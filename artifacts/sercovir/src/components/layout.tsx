@@ -7,19 +7,63 @@ import {
   Network, 
   UserCircle, 
   RadioTower,
-  LayoutDashboard
+  LayoutDashboard,
+  Building2,
+  MapPin,
+  Scale,
+  FileSignature,
+  Video
 } from "lucide-react";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
-const NAV_ITEMS = [
-  { href: "/", label: "Command Center", icon: LayoutDashboard },
-  { href: "/countries", label: "Global Profiles", icon: Globe },
-  { href: "/conflicts", label: "Active Conflicts", icon: ShieldAlert },
-  { href: "/committees", label: "Committees", icon: Users },
-  { href: "/resolutions", label: "Resolutions", icon: FileText },
-  { href: "/alliances", label: "Alliances", icon: Network },
-  { href: "/delegates", label: "Delegates", icon: UserCircle },
-  { href: "/intelligence", label: "Intelligence Feed", icon: RadioTower },
+const NAV_SECTIONS = [
+  {
+    title: "INTELLIGENCE",
+    items: [
+      { href: "/", label: "Command Center", icon: LayoutDashboard },
+      { href: "/intelligence", label: "Intelligence Feed", icon: RadioTower },
+    ]
+  },
+  {
+    title: "GLOBAL ACTORS",
+    items: [
+      { href: "/leaders", label: "World Leaders", icon: UserCircle },
+      { href: "/country-intel", label: "Country Intel", icon: MapPin },
+    ]
+  },
+  {
+    title: "GEOPOLITICS",
+    items: [
+      { href: "/countries", label: "Global Profiles", icon: Globe },
+      { href: "/conflicts", label: "Active Conflicts", icon: ShieldAlert },
+      { href: "/alliances", label: "Alliances", icon: Network },
+    ]
+  },
+  {
+    title: "INSTITUTIONS",
+    items: [
+      { href: "/committees", label: "Committees", icon: Users },
+      { href: "/resolutions", label: "Resolutions", icon: FileText },
+      { href: "/treaties", label: "Treaties", icon: FileSignature },
+      { href: "/icj", label: "ICJ Cases", icon: Scale },
+      { href: "/interpol", label: "Interpol", icon: Target },
+      { href: "/parliamentary", label: "Parliamentary", icon: Building2 },
+    ]
+  },
+  {
+    title: "DOMESTIC",
+    items: [
+      { href: "/legislation", label: "Legislation", icon: FileText },
+      { href: "/criminal-cases", label: "Criminal Cases", icon: Scale },
+      { href: "/media-events", label: "Media Events", icon: Video },
+    ]
+  },
+  {
+    title: "OPERATIONS",
+    items: [
+      { href: "/delegates", label: "Delegates", icon: UserCircle },
+    ]
+  }
 ];
 
 export function Layout({ children }: { children: ReactNode }) {
@@ -35,33 +79,39 @@ export function Layout({ children }: { children: ReactNode }) {
           </div>
         </div>
         
-        <div className="p-4 flex-1 overflow-y-auto py-6">
-          <div className="text-xs font-mono text-muted-foreground mb-4 px-2 uppercase tracking-wider">
-            Secure Network
-          </div>
-          <nav className="flex flex-col gap-1">
-            {NAV_ITEMS.map((item) => {
-              const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
-              const Icon = item.icon;
-              
-              return (
-                <Link key={item.href} href={item.href}>
-                  <div 
-                    className={`flex items-center gap-3 px-3 py-2 rounded-md transition-all cursor-pointer font-mono text-sm ${
-                      isActive 
-                        ? "bg-primary/10 text-primary border border-primary/20" 
-                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground border border-transparent"
-                    }`}
-                  >
-                    <Icon className={`w-4 h-4 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
-                    {item.label}
-                    {isActive && (
-                      <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                    )}
-                  </div>
-                </Link>
-              );
-            })}
+        <div className="flex-1 overflow-y-auto py-4">
+          <nav className="flex flex-col gap-4">
+            {NAV_SECTIONS.map((section, idx) => (
+              <div key={idx} className="px-4">
+                <div className="text-[10px] font-mono text-muted-foreground mb-2 px-2 uppercase tracking-wider font-bold">
+                  {section.title}
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  {section.items.map((item) => {
+                    const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+                    const Icon = item.icon;
+                    
+                    return (
+                      <Link key={item.href} href={item.href}>
+                        <div 
+                          className={`flex items-center gap-3 px-3 py-1.5 rounded-md transition-all cursor-pointer font-mono text-xs ${
+                            isActive 
+                              ? "bg-primary/10 text-primary border border-primary/20" 
+                              : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground border border-transparent"
+                          }`}
+                        >
+                          <Icon className={`w-3.5 h-3.5 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
+                          {item.label}
+                          {isActive && (
+                            <div className="ml-auto w-1 h-1 rounded-full bg-primary animate-pulse" />
+                          )}
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
         </div>
         

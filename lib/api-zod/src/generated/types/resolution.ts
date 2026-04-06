@@ -3,9 +3,8 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
-import type { ResolutionStatus } from "./resolutionStatus";
 
 export interface Resolution {
   id: number;
@@ -16,7 +15,7 @@ export interface Resolution {
   signatories?: string[];
   preambularClauses?: string[];
   operativeClauses?: string[];
-  status: ResolutionStatus;
+  status: string;
   votesFor?: number;
   votesAgainst?: number;
   abstentions?: number;

@@ -3,9 +3,8 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
-import type { DelegatePosition } from "./delegatePosition";
 
 export interface Delegate {
   id: number;
@@ -14,7 +13,7 @@ export interface Delegate {
   countryCode?: string;
   committeeId: number;
   committeeName?: string;
-  position: DelegatePosition;
+  position: string;
   bloc?: string;
   notes?: string;
   createdAt?: Date;

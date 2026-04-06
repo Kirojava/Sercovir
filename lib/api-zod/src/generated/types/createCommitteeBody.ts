@@ -3,9 +3,8 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
-import type { CreateCommitteeBodyStatus } from "./createCommitteeBodyStatus";
 
 export interface CreateCommitteeBody {
   name: string;
@@ -14,5 +13,5 @@ export interface CreateCommitteeBody {
   description?: string;
   session?: string;
   chairperson?: string;
-  status: CreateCommitteeBodyStatus;
+  status: string;
 }

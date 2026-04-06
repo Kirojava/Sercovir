@@ -3,17 +3,15 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
-import type { IntelligenceBriefingCategory } from "./intelligenceBriefingCategory";
-import type { IntelligenceBriefingPriority } from "./intelligenceBriefingPriority";
 
 export interface IntelligenceBriefing {
   id: number;
   title: string;
   content: string;
-  category: IntelligenceBriefingCategory;
-  priority: IntelligenceBriefingPriority;
+  category: string;
+  priority: string;
   relatedCountries?: string[];
   relatedConflicts?: number[];
   source?: string;

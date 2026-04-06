@@ -53,19 +53,25 @@ export default function Dashboard() {
           trendColor="text-red-500"
         />
         <MetricCard 
-          title="MONITORED NATIONS" 
-          value={dashboard.totalCountries} 
-          icon={Globe} 
-        />
-        <MetricCard 
-          title="ACTIVE COMMITTEES" 
-          value={dashboard.activeCommittees || dashboard.totalCommittees} 
+          title="WORLD LEADERS" 
+          value={dashboard.totalLeaders || 0} 
           icon={Users} 
         />
         <MetricCard 
-          title="DRAFT RESOLUTIONS" 
-          value={dashboard.totalResolutions} 
+          title="ACTIVE INTERPOL NOTICES" 
+          value={dashboard.activeInterpolNotices || 0} 
+          icon={ShieldAlert} 
+          trendColor="text-red-500"
+        />
+        <MetricCard 
+          title="ACTIVE ICJ CASES" 
+          value={dashboard.activeIcjCases || 0} 
           icon={FileText} 
+        />
+        <MetricCard 
+          title="MONITORED NATIONS" 
+          value={dashboard.totalCountries} 
+          icon={Globe} 
         />
       </div>
 

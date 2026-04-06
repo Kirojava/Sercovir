@@ -1,11 +1,11 @@
 import { Router, type IRouter } from "express";
-import { db, countriesTable, conflictsTable, committeesTable, resolutionsTable, alliancesTable, delegatesTable, intelligenceTable } from "@workspace/db";
+import { db, countriesTable, conflictsTable, committeesTable, resolutionsTable, alliancesTable, delegatesTable, intelligenceTable, worldLeadersTable, interpolTable, icjTable } from "@workspace/db";
 import { desc } from "drizzle-orm";
 
 const router: IRouter = Router();
 
 router.get("/dashboard", async (_req, res): Promise<void> => {
-  const [countries, conflicts, committees, resolutions, alliances, delegates, recentBriefings] = await Promise.all([
+  const [countries, conflicts, committees, resolutions, alliances, delegates, recentBriefings, leaders, interpolNotices, icjCases] = await Promise.all([
     db.select().from(countriesTable),
     db.select().from(conflictsTable),
     db.select().from(committeesTable),
@@ -13,6 +13,9 @@ router.get("/dashboard", async (_req, res): Promise<void> => {
     db.select().from(alliancesTable),
     db.select().from(delegatesTable),
     db.select().from(intelligenceTable).orderBy(desc(intelligenceTable.timestamp)).limit(5),
+    db.select().from(worldLeadersTable),
+    db.select().from(interpolTable),
+    db.select().from(icjTable),
   ]);
 
   const activeConflicts = conflicts.filter(c => c.status === "active").length;
@@ -51,6 +54,9 @@ router.get("/dashboard", async (_req, res): Promise<void> => {
     passedResolutions: resolutions.filter(r => r.status === "passed").length,
     totalDelegates: delegates.length,
     totalAlliances: alliances.length,
+    totalLeaders: leaders.length,
+    activeInterpolNotices: interpolNotices.filter(n => n.status === "active").length,
+    activeIcjCases: icjCases.filter(c => c.status !== "concluded").length,
     globalThreatLevel,
     recentBriefings,
     conflictsByRegion,

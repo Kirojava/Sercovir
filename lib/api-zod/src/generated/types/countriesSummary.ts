@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 import type { CountriesSummaryByRegion } from "./countriesSummaryByRegion";
 import type { CountriesSummaryByThreatLevel } from "./countriesSummaryByThreatLevel";

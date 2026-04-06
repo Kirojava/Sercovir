@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 import * as zod from "zod";
 
@@ -15,7 +15,7 @@ export const HealthCheckResponse = zod.object({
 });
 
 /**
- * @summary List all countries with intelligence profiles
+ * @summary List countries
  */
 export const ListCountriesQueryParams = zod.object({
   region: zod.coerce.string().optional(),
@@ -25,15 +25,15 @@ export const ListCountriesQueryParams = zod.object({
 export const ListCountriesResponseItem = zod.object({
   id: zod.number(),
   name: zod.string(),
-  code: zod.string().describe("ISO 2-letter country code"),
+  code: zod.string(),
   region: zod.string(),
   flagEmoji: zod.string().optional(),
   politicalSystem: zod.string().optional(),
   gdp: zod.number().optional(),
   population: zod.number().optional(),
   militaryBudget: zod.number().optional(),
-  threatLevel: zod.enum(["low", "moderate", "high", "critical"]),
-  stabilityIndex: zod.number().optional().describe("0-100 stability score"),
+  threatLevel: zod.string(),
+  stabilityIndex: zod.number().optional(),
   keyAlliances: zod.array(zod.string()).optional(),
   notes: zod.string().optional(),
   createdAt: zod.coerce.date().optional(),
@@ -41,9 +41,6 @@ export const ListCountriesResponseItem = zod.object({
 });
 export const ListCountriesResponse = zod.array(ListCountriesResponseItem);
 
-/**
- * @summary Create country profile
- */
 export const CreateCountryBody = zod.object({
   name: zod.string(),
   code: zod.string(),
@@ -53,15 +50,12 @@ export const CreateCountryBody = zod.object({
   gdp: zod.number().optional(),
   population: zod.number().optional(),
   militaryBudget: zod.number().optional(),
-  threatLevel: zod.enum(["low", "moderate", "high", "critical"]),
+  threatLevel: zod.string(),
   stabilityIndex: zod.number().optional(),
   keyAlliances: zod.array(zod.string()).optional(),
   notes: zod.string().optional(),
 });
 
-/**
- * @summary Get country intelligence profile
- */
 export const GetCountryParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -69,24 +63,21 @@ export const GetCountryParams = zod.object({
 export const GetCountryResponse = zod.object({
   id: zod.number(),
   name: zod.string(),
-  code: zod.string().describe("ISO 2-letter country code"),
+  code: zod.string(),
   region: zod.string(),
   flagEmoji: zod.string().optional(),
   politicalSystem: zod.string().optional(),
   gdp: zod.number().optional(),
   population: zod.number().optional(),
   militaryBudget: zod.number().optional(),
-  threatLevel: zod.enum(["low", "moderate", "high", "critical"]),
-  stabilityIndex: zod.number().optional().describe("0-100 stability score"),
+  threatLevel: zod.string(),
+  stabilityIndex: zod.number().optional(),
   keyAlliances: zod.array(zod.string()).optional(),
   notes: zod.string().optional(),
   createdAt: zod.coerce.date().optional(),
   updatedAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Update country profile
- */
 export const UpdateCountryParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -100,7 +91,7 @@ export const UpdateCountryBody = zod.object({
   gdp: zod.number().optional(),
   population: zod.number().optional(),
   militaryBudget: zod.number().optional(),
-  threatLevel: zod.enum(["low", "moderate", "high", "critical"]),
+  threatLevel: zod.string(),
   stabilityIndex: zod.number().optional(),
   keyAlliances: zod.array(zod.string()).optional(),
   notes: zod.string().optional(),
@@ -109,31 +100,25 @@ export const UpdateCountryBody = zod.object({
 export const UpdateCountryResponse = zod.object({
   id: zod.number(),
   name: zod.string(),
-  code: zod.string().describe("ISO 2-letter country code"),
+  code: zod.string(),
   region: zod.string(),
   flagEmoji: zod.string().optional(),
   politicalSystem: zod.string().optional(),
   gdp: zod.number().optional(),
   population: zod.number().optional(),
   militaryBudget: zod.number().optional(),
-  threatLevel: zod.enum(["low", "moderate", "high", "critical"]),
-  stabilityIndex: zod.number().optional().describe("0-100 stability score"),
+  threatLevel: zod.string(),
+  stabilityIndex: zod.number().optional(),
   keyAlliances: zod.array(zod.string()).optional(),
   notes: zod.string().optional(),
   createdAt: zod.coerce.date().optional(),
   updatedAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Delete country profile
- */
 export const DeleteCountryParams = zod.object({
   id: zod.coerce.number(),
 });
 
-/**
- * @summary Get global intelligence summary
- */
 export const GetCountriesSummaryResponse = zod.object({
   total: zod.number(),
   byRegion: zod.record(zod.string(), zod.number()),
@@ -141,11 +126,8 @@ export const GetCountriesSummaryResponse = zod.object({
   avgStabilityIndex: zod.number(),
 });
 
-/**
- * @summary List active geopolitical conflicts
- */
 export const ListConflictsQueryParams = zod.object({
-  status: zod.enum(["active", "frozen", "resolved", "escalating"]).optional(),
+  status: zod.coerce.string().optional(),
   region: zod.coerce.string().optional(),
 });
 
@@ -154,10 +136,10 @@ export const ListConflictsResponseItem = zod.object({
   title: zod.string(),
   description: zod.string().optional(),
   region: zod.string(),
-  status: zod.enum(["active", "frozen", "resolved", "escalating"]),
-  severity: zod.enum(["low", "medium", "high", "critical"]),
-  startDate: zod.coerce.date().optional(),
-  endDate: zod.coerce.date().optional(),
+  status: zod.string(),
+  severity: zod.string(),
+  startDate: zod.string().optional(),
+  endDate: zod.string().optional(),
   partiesInvolved: zod.array(zod.string()).optional(),
   casualties: zod.number().optional(),
   displacedPersons: zod.number().optional(),
@@ -167,26 +149,20 @@ export const ListConflictsResponseItem = zod.object({
 });
 export const ListConflictsResponse = zod.array(ListConflictsResponseItem);
 
-/**
- * @summary Create conflict record
- */
 export const CreateConflictBody = zod.object({
   title: zod.string(),
   description: zod.string().optional(),
   region: zod.string(),
-  status: zod.enum(["active", "frozen", "resolved", "escalating"]),
-  severity: zod.enum(["low", "medium", "high", "critical"]),
-  startDate: zod.coerce.date().optional(),
-  endDate: zod.coerce.date().optional(),
+  status: zod.string(),
+  severity: zod.string(),
+  startDate: zod.string().optional(),
+  endDate: zod.string().optional(),
   partiesInvolved: zod.array(zod.string()).optional(),
   casualties: zod.number().optional(),
   displacedPersons: zod.number().optional(),
   notes: zod.string().optional(),
 });
 
-/**
- * @summary Get conflict details
- */
 export const GetConflictParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -196,10 +172,10 @@ export const GetConflictResponse = zod.object({
   title: zod.string(),
   description: zod.string().optional(),
   region: zod.string(),
-  status: zod.enum(["active", "frozen", "resolved", "escalating"]),
-  severity: zod.enum(["low", "medium", "high", "critical"]),
-  startDate: zod.coerce.date().optional(),
-  endDate: zod.coerce.date().optional(),
+  status: zod.string(),
+  severity: zod.string(),
+  startDate: zod.string().optional(),
+  endDate: zod.string().optional(),
   partiesInvolved: zod.array(zod.string()).optional(),
   casualties: zod.number().optional(),
   displacedPersons: zod.number().optional(),
@@ -208,9 +184,6 @@ export const GetConflictResponse = zod.object({
   updatedAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Update conflict
- */
 export const UpdateConflictParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -219,10 +192,10 @@ export const UpdateConflictBody = zod.object({
   title: zod.string(),
   description: zod.string().optional(),
   region: zod.string(),
-  status: zod.enum(["active", "frozen", "resolved", "escalating"]),
-  severity: zod.enum(["low", "medium", "high", "critical"]),
-  startDate: zod.coerce.date().optional(),
-  endDate: zod.coerce.date().optional(),
+  status: zod.string(),
+  severity: zod.string(),
+  startDate: zod.string().optional(),
+  endDate: zod.string().optional(),
   partiesInvolved: zod.array(zod.string()).optional(),
   casualties: zod.number().optional(),
   displacedPersons: zod.number().optional(),
@@ -234,10 +207,10 @@ export const UpdateConflictResponse = zod.object({
   title: zod.string(),
   description: zod.string().optional(),
   region: zod.string(),
-  status: zod.enum(["active", "frozen", "resolved", "escalating"]),
-  severity: zod.enum(["low", "medium", "high", "critical"]),
-  startDate: zod.coerce.date().optional(),
-  endDate: zod.coerce.date().optional(),
+  status: zod.string(),
+  severity: zod.string(),
+  startDate: zod.string().optional(),
+  endDate: zod.string().optional(),
   partiesInvolved: zod.array(zod.string()).optional(),
   casualties: zod.number().optional(),
   displacedPersons: zod.number().optional(),
@@ -246,16 +219,10 @@ export const UpdateConflictResponse = zod.object({
   updatedAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Delete conflict
- */
 export const DeleteConflictParams = zod.object({
   id: zod.coerce.number(),
 });
 
-/**
- * @summary Conflict dashboard summary
- */
 export const GetConflictsSummaryResponse = zod.object({
   total: zod.number(),
   active: zod.number(),
@@ -268,9 +235,6 @@ export const GetConflictsSummaryResponse = zod.object({
   totalDisplaced: zod.number().optional(),
 });
 
-/**
- * @summary List MUN committees
- */
 export const ListCommitteesResponseItem = zod.object({
   id: zod.number(),
   name: zod.string(),
@@ -279,15 +243,12 @@ export const ListCommitteesResponseItem = zod.object({
   description: zod.string().optional(),
   session: zod.string().optional(),
   chairperson: zod.string().optional(),
-  status: zod.enum(["upcoming", "active", "concluded"]),
+  status: zod.string(),
   delegateCount: zod.number().optional(),
   createdAt: zod.coerce.date().optional(),
 });
 export const ListCommitteesResponse = zod.array(ListCommitteesResponseItem);
 
-/**
- * @summary Create committee
- */
 export const CreateCommitteeBody = zod.object({
   name: zod.string(),
   abbreviation: zod.string(),
@@ -295,12 +256,9 @@ export const CreateCommitteeBody = zod.object({
   description: zod.string().optional(),
   session: zod.string().optional(),
   chairperson: zod.string().optional(),
-  status: zod.enum(["upcoming", "active", "concluded"]),
+  status: zod.string(),
 });
 
-/**
- * @summary Get committee details
- */
 export const GetCommitteeParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -313,14 +271,11 @@ export const GetCommitteeResponse = zod.object({
   description: zod.string().optional(),
   session: zod.string().optional(),
   chairperson: zod.string().optional(),
-  status: zod.enum(["upcoming", "active", "concluded"]),
+  status: zod.string(),
   delegateCount: zod.number().optional(),
   createdAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Update committee
- */
 export const UpdateCommitteeParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -332,7 +287,7 @@ export const UpdateCommitteeBody = zod.object({
   description: zod.string().optional(),
   session: zod.string().optional(),
   chairperson: zod.string().optional(),
-  status: zod.enum(["upcoming", "active", "concluded"]),
+  status: zod.string(),
 });
 
 export const UpdateCommitteeResponse = zod.object({
@@ -343,26 +298,18 @@ export const UpdateCommitteeResponse = zod.object({
   description: zod.string().optional(),
   session: zod.string().optional(),
   chairperson: zod.string().optional(),
-  status: zod.enum(["upcoming", "active", "concluded"]),
+  status: zod.string(),
   delegateCount: zod.number().optional(),
   createdAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Delete committee
- */
 export const DeleteCommitteeParams = zod.object({
   id: zod.coerce.number(),
 });
 
-/**
- * @summary List resolutions
- */
 export const ListResolutionsQueryParams = zod.object({
   committeeId: zod.coerce.number().optional(),
-  status: zod
-    .enum(["draft", "submitted", "passed", "failed", "tabled"])
-    .optional(),
+  status: zod.coerce.string().optional(),
 });
 
 export const ListResolutionsResponseItem = zod.object({
@@ -374,7 +321,7 @@ export const ListResolutionsResponseItem = zod.object({
   signatories: zod.array(zod.string()).optional(),
   preambularClauses: zod.array(zod.string()).optional(),
   operativeClauses: zod.array(zod.string()).optional(),
-  status: zod.enum(["draft", "submitted", "passed", "failed", "tabled"]),
+  status: zod.string(),
   votesFor: zod.number().optional(),
   votesAgainst: zod.number().optional(),
   abstentions: zod.number().optional(),
@@ -383,9 +330,6 @@ export const ListResolutionsResponseItem = zod.object({
 });
 export const ListResolutionsResponse = zod.array(ListResolutionsResponseItem);
 
-/**
- * @summary Create resolution draft
- */
 export const CreateResolutionBody = zod.object({
   title: zod.string(),
   committeeId: zod.number(),
@@ -393,15 +337,12 @@ export const CreateResolutionBody = zod.object({
   signatories: zod.array(zod.string()).optional(),
   preambularClauses: zod.array(zod.string()).optional(),
   operativeClauses: zod.array(zod.string()).optional(),
-  status: zod.enum(["draft", "submitted", "passed", "failed", "tabled"]),
+  status: zod.string(),
   votesFor: zod.number().optional(),
   votesAgainst: zod.number().optional(),
   abstentions: zod.number().optional(),
 });
 
-/**
- * @summary Get resolution
- */
 export const GetResolutionParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -415,7 +356,7 @@ export const GetResolutionResponse = zod.object({
   signatories: zod.array(zod.string()).optional(),
   preambularClauses: zod.array(zod.string()).optional(),
   operativeClauses: zod.array(zod.string()).optional(),
-  status: zod.enum(["draft", "submitted", "passed", "failed", "tabled"]),
+  status: zod.string(),
   votesFor: zod.number().optional(),
   votesAgainst: zod.number().optional(),
   abstentions: zod.number().optional(),
@@ -423,9 +364,6 @@ export const GetResolutionResponse = zod.object({
   updatedAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Update resolution
- */
 export const UpdateResolutionParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -437,7 +375,7 @@ export const UpdateResolutionBody = zod.object({
   signatories: zod.array(zod.string()).optional(),
   preambularClauses: zod.array(zod.string()).optional(),
   operativeClauses: zod.array(zod.string()).optional(),
-  status: zod.enum(["draft", "submitted", "passed", "failed", "tabled"]),
+  status: zod.string(),
   votesFor: zod.number().optional(),
   votesAgainst: zod.number().optional(),
   abstentions: zod.number().optional(),
@@ -452,7 +390,7 @@ export const UpdateResolutionResponse = zod.object({
   signatories: zod.array(zod.string()).optional(),
   preambularClauses: zod.array(zod.string()).optional(),
   operativeClauses: zod.array(zod.string()).optional(),
-  status: zod.enum(["draft", "submitted", "passed", "failed", "tabled"]),
+  status: zod.string(),
   votesFor: zod.number().optional(),
   votesAgainst: zod.number().optional(),
   abstentions: zod.number().optional(),
@@ -460,59 +398,35 @@ export const UpdateResolutionResponse = zod.object({
   updatedAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Delete resolution
- */
 export const DeleteResolutionParams = zod.object({
   id: zod.coerce.number(),
 });
 
-/**
- * @summary List geopolitical alliances and blocs
- */
 export const ListAlliancesResponseItem = zod.object({
   id: zod.number(),
   name: zod.string(),
   abbreviation: zod.string().optional(),
-  type: zod.enum([
-    "military",
-    "economic",
-    "political",
-    "humanitarian",
-    "diplomatic",
-  ]),
+  type: zod.string(),
   description: zod.string().optional(),
-  founded: zod.coerce.date().optional(),
+  founded: zod.string().optional(),
   memberCountries: zod.array(zod.string()).optional(),
   headquarters: zod.string().optional(),
-  strength: zod.enum(["weak", "moderate", "strong", "dominant"]),
+  strength: zod.string(),
   createdAt: zod.coerce.date().optional(),
 });
 export const ListAlliancesResponse = zod.array(ListAlliancesResponseItem);
 
-/**
- * @summary Create alliance
- */
 export const CreateAllianceBody = zod.object({
   name: zod.string(),
   abbreviation: zod.string().optional(),
-  type: zod.enum([
-    "military",
-    "economic",
-    "political",
-    "humanitarian",
-    "diplomatic",
-  ]),
+  type: zod.string(),
   description: zod.string().optional(),
-  founded: zod.coerce.date().optional(),
+  founded: zod.string().optional(),
   memberCountries: zod.array(zod.string()).optional(),
   headquarters: zod.string().optional(),
-  strength: zod.enum(["weak", "moderate", "strong", "dominant"]),
+  strength: zod.string(),
 });
 
-/**
- * @summary Get alliance
- */
 export const GetAllianceParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -521,24 +435,15 @@ export const GetAllianceResponse = zod.object({
   id: zod.number(),
   name: zod.string(),
   abbreviation: zod.string().optional(),
-  type: zod.enum([
-    "military",
-    "economic",
-    "political",
-    "humanitarian",
-    "diplomatic",
-  ]),
+  type: zod.string(),
   description: zod.string().optional(),
-  founded: zod.coerce.date().optional(),
+  founded: zod.string().optional(),
   memberCountries: zod.array(zod.string()).optional(),
   headquarters: zod.string().optional(),
-  strength: zod.enum(["weak", "moderate", "strong", "dominant"]),
+  strength: zod.string(),
   createdAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Update alliance
- */
 export const UpdateAllianceParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -546,49 +451,31 @@ export const UpdateAllianceParams = zod.object({
 export const UpdateAllianceBody = zod.object({
   name: zod.string(),
   abbreviation: zod.string().optional(),
-  type: zod.enum([
-    "military",
-    "economic",
-    "political",
-    "humanitarian",
-    "diplomatic",
-  ]),
+  type: zod.string(),
   description: zod.string().optional(),
-  founded: zod.coerce.date().optional(),
+  founded: zod.string().optional(),
   memberCountries: zod.array(zod.string()).optional(),
   headquarters: zod.string().optional(),
-  strength: zod.enum(["weak", "moderate", "strong", "dominant"]),
+  strength: zod.string(),
 });
 
 export const UpdateAllianceResponse = zod.object({
   id: zod.number(),
   name: zod.string(),
   abbreviation: zod.string().optional(),
-  type: zod.enum([
-    "military",
-    "economic",
-    "political",
-    "humanitarian",
-    "diplomatic",
-  ]),
+  type: zod.string(),
   description: zod.string().optional(),
-  founded: zod.coerce.date().optional(),
+  founded: zod.string().optional(),
   memberCountries: zod.array(zod.string()).optional(),
   headquarters: zod.string().optional(),
-  strength: zod.enum(["weak", "moderate", "strong", "dominant"]),
+  strength: zod.string(),
   createdAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Delete alliance
- */
 export const DeleteAllianceParams = zod.object({
   id: zod.coerce.number(),
 });
 
-/**
- * @summary Get live intelligence briefing feed
- */
 export const getIntelligenceFeedQueryLimitDefault = 20;
 
 export const GetIntelligenceFeedQueryParams = zod.object({
@@ -599,8 +486,8 @@ export const GetIntelligenceFeedResponseItem = zod.object({
   id: zod.number(),
   title: zod.string(),
   content: zod.string(),
-  category: zod.enum(["alert", "update", "assessment", "warning", "report"]),
-  priority: zod.enum(["low", "medium", "high", "critical"]),
+  category: zod.string(),
+  priority: zod.string(),
   relatedCountries: zod.array(zod.string()).optional(),
   relatedConflicts: zod.array(zod.number()).optional(),
   source: zod.string().optional(),
@@ -610,29 +497,20 @@ export const GetIntelligenceFeedResponse = zod.array(
   GetIntelligenceFeedResponseItem,
 );
 
-/**
- * @summary Create intelligence briefing
- */
 export const CreateIntelligenceBriefingBody = zod.object({
   title: zod.string(),
   content: zod.string(),
-  category: zod.enum(["alert", "update", "assessment", "warning", "report"]),
-  priority: zod.enum(["low", "medium", "high", "critical"]),
+  category: zod.string(),
+  priority: zod.string(),
   relatedCountries: zod.array(zod.string()).optional(),
   relatedConflicts: zod.array(zod.number()).optional(),
   source: zod.string().optional(),
 });
 
-/**
- * @summary Delete intelligence briefing
- */
 export const DeleteIntelligenceBriefingParams = zod.object({
   id: zod.coerce.number(),
 });
 
-/**
- * @summary List delegates
- */
 export const ListDelegatesQueryParams = zod.object({
   committeeId: zod.coerce.number().optional(),
 });
@@ -644,41 +522,23 @@ export const ListDelegatesResponseItem = zod.object({
   countryCode: zod.string().optional(),
   committeeId: zod.number(),
   committeeName: zod.string().optional(),
-  position: zod.enum([
-    "delegate",
-    "chair",
-    "vice-chair",
-    "rapporteur",
-    "observer",
-  ]),
+  position: zod.string(),
   bloc: zod.string().optional(),
   notes: zod.string().optional(),
   createdAt: zod.coerce.date().optional(),
 });
 export const ListDelegatesResponse = zod.array(ListDelegatesResponseItem);
 
-/**
- * @summary Create delegate
- */
 export const CreateDelegateBody = zod.object({
   name: zod.string(),
   country: zod.string(),
   countryCode: zod.string().optional(),
   committeeId: zod.number(),
-  position: zod.enum([
-    "delegate",
-    "chair",
-    "vice-chair",
-    "rapporteur",
-    "observer",
-  ]),
+  position: zod.string(),
   bloc: zod.string().optional(),
   notes: zod.string().optional(),
 });
 
-/**
- * @summary Get delegate
- */
 export const GetDelegateParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -690,21 +550,12 @@ export const GetDelegateResponse = zod.object({
   countryCode: zod.string().optional(),
   committeeId: zod.number(),
   committeeName: zod.string().optional(),
-  position: zod.enum([
-    "delegate",
-    "chair",
-    "vice-chair",
-    "rapporteur",
-    "observer",
-  ]),
+  position: zod.string(),
   bloc: zod.string().optional(),
   notes: zod.string().optional(),
   createdAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Update delegate
- */
 export const UpdateDelegateParams = zod.object({
   id: zod.coerce.number(),
 });
@@ -714,13 +565,7 @@ export const UpdateDelegateBody = zod.object({
   country: zod.string(),
   countryCode: zod.string().optional(),
   committeeId: zod.number(),
-  position: zod.enum([
-    "delegate",
-    "chair",
-    "vice-chair",
-    "rapporteur",
-    "observer",
-  ]),
+  position: zod.string(),
   bloc: zod.string().optional(),
   notes: zod.string().optional(),
 });
@@ -732,28 +577,16 @@ export const UpdateDelegateResponse = zod.object({
   countryCode: zod.string().optional(),
   committeeId: zod.number(),
   committeeName: zod.string().optional(),
-  position: zod.enum([
-    "delegate",
-    "chair",
-    "vice-chair",
-    "rapporteur",
-    "observer",
-  ]),
+  position: zod.string(),
   bloc: zod.string().optional(),
   notes: zod.string().optional(),
   createdAt: zod.coerce.date().optional(),
 });
 
-/**
- * @summary Delete delegate
- */
 export const DeleteDelegateParams = zod.object({
   id: zod.coerce.number(),
 });
 
-/**
- * @summary Get global dashboard overview
- */
 export const GetDashboardResponse = zod.object({
   totalCountries: zod.number(),
   activeConflicts: zod.number(),
@@ -764,21 +597,18 @@ export const GetDashboardResponse = zod.object({
   passedResolutions: zod.number().optional(),
   totalDelegates: zod.number().optional(),
   totalAlliances: zod.number().optional(),
-  globalThreatLevel: zod.enum(["low", "elevated", "high", "critical"]),
+  totalLeaders: zod.number().optional(),
+  activeInterpolNotices: zod.number().optional(),
+  activeIcjCases: zod.number().optional(),
+  globalThreatLevel: zod.string(),
   recentBriefings: zod
     .array(
       zod.object({
         id: zod.number(),
         title: zod.string(),
         content: zod.string(),
-        category: zod.enum([
-          "alert",
-          "update",
-          "assessment",
-          "warning",
-          "report",
-        ]),
-        priority: zod.enum(["low", "medium", "high", "critical"]),
+        category: zod.string(),
+        priority: zod.string(),
         relatedCountries: zod.array(zod.string()).optional(),
         relatedConflicts: zod.array(zod.number()).optional(),
         source: zod.string().optional(),
@@ -788,4 +618,1114 @@ export const GetDashboardResponse = zod.object({
     .optional(),
   conflictsByRegion: zod.record(zod.string(), zod.number()).optional(),
   threatDistribution: zod.record(zod.string(), zod.number()).optional(),
+});
+
+/**
+ * @summary List world leaders and prominent figures
+ */
+export const ListLeadersQueryParams = zod.object({
+  country: zod.coerce.string().optional(),
+  search: zod.coerce.string().optional(),
+  role: zod.coerce.string().optional(),
+});
+
+export const ListLeadersResponseItem = zod.object({
+  id: zod.number(),
+  name: zod.string(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  position: zod.string(),
+  party: zod.string().optional(),
+  ideology: zod.string().optional(),
+  bornDate: zod.string().optional(),
+  nationality: zod.string().optional(),
+  education: zod.string().optional(),
+  background: zod.string().optional(),
+  previousRoles: zod.array(zod.string()).optional(),
+  netWorth: zod.string().optional(),
+  twitterHandle: zod.string().optional(),
+  approvalRating: zod.number().optional(),
+  isCurrentlyInPower: zod.boolean().optional(),
+  notableAchievements: zod.array(zod.string()).optional(),
+  controversies: zod.array(zod.string()).optional(),
+  currentLocation: zod.string().optional(),
+  recentTravel: zod.array(zod.string()).optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+export const ListLeadersResponse = zod.array(ListLeadersResponseItem);
+
+export const CreateLeaderBody = zod.object({
+  name: zod.string(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  position: zod.string(),
+  party: zod.string().optional(),
+  ideology: zod.string().optional(),
+  bornDate: zod.string().optional(),
+  nationality: zod.string().optional(),
+  education: zod.string().optional(),
+  background: zod.string().optional(),
+  previousRoles: zod.array(zod.string()).optional(),
+  netWorth: zod.string().optional(),
+  twitterHandle: zod.string().optional(),
+  approvalRating: zod.number().optional(),
+  isCurrentlyInPower: zod.boolean().optional(),
+  notableAchievements: zod.array(zod.string()).optional(),
+  controversies: zod.array(zod.string()).optional(),
+  currentLocation: zod.string().optional(),
+  recentTravel: zod.array(zod.string()).optional(),
+});
+
+export const GetLeaderParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetLeaderResponse = zod.object({
+  id: zod.number(),
+  name: zod.string(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  position: zod.string(),
+  party: zod.string().optional(),
+  ideology: zod.string().optional(),
+  bornDate: zod.string().optional(),
+  nationality: zod.string().optional(),
+  education: zod.string().optional(),
+  background: zod.string().optional(),
+  previousRoles: zod.array(zod.string()).optional(),
+  netWorth: zod.string().optional(),
+  twitterHandle: zod.string().optional(),
+  approvalRating: zod.number().optional(),
+  isCurrentlyInPower: zod.boolean().optional(),
+  notableAchievements: zod.array(zod.string()).optional(),
+  controversies: zod.array(zod.string()).optional(),
+  currentLocation: zod.string().optional(),
+  recentTravel: zod.array(zod.string()).optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const UpdateLeaderParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateLeaderBody = zod.object({
+  name: zod.string(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  position: zod.string(),
+  party: zod.string().optional(),
+  ideology: zod.string().optional(),
+  bornDate: zod.string().optional(),
+  nationality: zod.string().optional(),
+  education: zod.string().optional(),
+  background: zod.string().optional(),
+  previousRoles: zod.array(zod.string()).optional(),
+  netWorth: zod.string().optional(),
+  twitterHandle: zod.string().optional(),
+  approvalRating: zod.number().optional(),
+  isCurrentlyInPower: zod.boolean().optional(),
+  notableAchievements: zod.array(zod.string()).optional(),
+  controversies: zod.array(zod.string()).optional(),
+  currentLocation: zod.string().optional(),
+  recentTravel: zod.array(zod.string()).optional(),
+});
+
+export const UpdateLeaderResponse = zod.object({
+  id: zod.number(),
+  name: zod.string(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  position: zod.string(),
+  party: zod.string().optional(),
+  ideology: zod.string().optional(),
+  bornDate: zod.string().optional(),
+  nationality: zod.string().optional(),
+  education: zod.string().optional(),
+  background: zod.string().optional(),
+  previousRoles: zod.array(zod.string()).optional(),
+  netWorth: zod.string().optional(),
+  twitterHandle: zod.string().optional(),
+  approvalRating: zod.number().optional(),
+  isCurrentlyInPower: zod.boolean().optional(),
+  notableAchievements: zod.array(zod.string()).optional(),
+  controversies: zod.array(zod.string()).optional(),
+  currentLocation: zod.string().optional(),
+  recentTravel: zod.array(zod.string()).optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const DeleteLeaderParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetLeaderStatementsParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetLeaderStatementsResponseItem = zod.object({
+  id: zod.number(),
+  leaderId: zod.number(),
+  leaderName: zod.string().optional(),
+  country: zod.string().optional(),
+  platform: zod.string(),
+  content: zod.string(),
+  sentiment: zod.string().optional(),
+  topic: zod.string().optional(),
+  relatedCountries: zod.array(zod.string()).optional(),
+  timestamp: zod.coerce.date(),
+  engagement: zod.number().optional(),
+  isControversial: zod.boolean().optional(),
+});
+export const GetLeaderStatementsResponse = zod.array(
+  GetLeaderStatementsResponseItem,
+);
+
+/**
+ * @summary List all public statements, tweets, posts
+ */
+export const ListStatementsQueryParams = zod.object({
+  leaderId: zod.coerce.number().optional(),
+  platform: zod.coerce.string().optional(),
+  topic: zod.coerce.string().optional(),
+});
+
+export const ListStatementsResponseItem = zod.object({
+  id: zod.number(),
+  leaderId: zod.number(),
+  leaderName: zod.string().optional(),
+  country: zod.string().optional(),
+  platform: zod.string(),
+  content: zod.string(),
+  sentiment: zod.string().optional(),
+  topic: zod.string().optional(),
+  relatedCountries: zod.array(zod.string()).optional(),
+  timestamp: zod.coerce.date(),
+  engagement: zod.number().optional(),
+  isControversial: zod.boolean().optional(),
+});
+export const ListStatementsResponse = zod.array(ListStatementsResponseItem);
+
+export const CreateStatementBody = zod.object({
+  leaderId: zod.number(),
+  platform: zod.string(),
+  content: zod.string(),
+  sentiment: zod.string().optional(),
+  topic: zod.string().optional(),
+  relatedCountries: zod.array(zod.string()).optional(),
+  engagement: zod.number().optional(),
+  isControversial: zod.boolean().optional(),
+});
+
+export const GetStatementParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetStatementResponse = zod.object({
+  id: zod.number(),
+  leaderId: zod.number(),
+  leaderName: zod.string().optional(),
+  country: zod.string().optional(),
+  platform: zod.string(),
+  content: zod.string(),
+  sentiment: zod.string().optional(),
+  topic: zod.string().optional(),
+  relatedCountries: zod.array(zod.string()).optional(),
+  timestamp: zod.coerce.date(),
+  engagement: zod.number().optional(),
+  isControversial: zod.boolean().optional(),
+});
+
+export const DeleteStatementParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List parliamentary discussions and debates
+ */
+export const ListParliamentaryQueryParams = zod.object({
+  country: zod.coerce.string().optional(),
+  status: zod.coerce.string().optional(),
+});
+
+export const ListParliamentaryResponseItem = zod.object({
+  id: zod.number(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  chamber: zod.string(),
+  topic: zod.string(),
+  description: zod.string().optional(),
+  status: zod.string(),
+  date: zod.string().optional(),
+  outcome: zod.string().optional(),
+  keyPoints: zod.array(zod.string()).optional(),
+  votesFor: zod.number().optional(),
+  votesAgainst: zod.number().optional(),
+  abstentions: zod.number().optional(),
+  significance: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+export const ListParliamentaryResponse = zod.array(
+  ListParliamentaryResponseItem,
+);
+
+export const CreateParliamentaryBody = zod.object({
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  chamber: zod.string(),
+  topic: zod.string(),
+  description: zod.string().optional(),
+  status: zod.string(),
+  date: zod.string().optional(),
+  outcome: zod.string().optional(),
+  keyPoints: zod.array(zod.string()).optional(),
+  votesFor: zod.number().optional(),
+  votesAgainst: zod.number().optional(),
+  abstentions: zod.number().optional(),
+  significance: zod.string().optional(),
+});
+
+export const GetParliamentaryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetParliamentaryResponse = zod.object({
+  id: zod.number(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  chamber: zod.string(),
+  topic: zod.string(),
+  description: zod.string().optional(),
+  status: zod.string(),
+  date: zod.string().optional(),
+  outcome: zod.string().optional(),
+  keyPoints: zod.array(zod.string()).optional(),
+  votesFor: zod.number().optional(),
+  votesAgainst: zod.number().optional(),
+  abstentions: zod.number().optional(),
+  significance: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const UpdateParliamentaryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateParliamentaryBody = zod.object({
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  chamber: zod.string(),
+  topic: zod.string(),
+  description: zod.string().optional(),
+  status: zod.string(),
+  date: zod.string().optional(),
+  outcome: zod.string().optional(),
+  keyPoints: zod.array(zod.string()).optional(),
+  votesFor: zod.number().optional(),
+  votesAgainst: zod.number().optional(),
+  abstentions: zod.number().optional(),
+  significance: zod.string().optional(),
+});
+
+export const UpdateParliamentaryResponse = zod.object({
+  id: zod.number(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  chamber: zod.string(),
+  topic: zod.string(),
+  description: zod.string().optional(),
+  status: zod.string(),
+  date: zod.string().optional(),
+  outcome: zod.string().optional(),
+  keyPoints: zod.array(zod.string()).optional(),
+  votesFor: zod.number().optional(),
+  votesAgainst: zod.number().optional(),
+  abstentions: zod.number().optional(),
+  significance: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const DeleteParliamentaryParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List laws in discussion and new legislation
+ */
+export const ListLegislationQueryParams = zod.object({
+  country: zod.coerce.string().optional(),
+  status: zod.coerce.string().optional(),
+  category: zod.coerce.string().optional(),
+});
+
+export const ListLegislationResponseItem = zod.object({
+  id: zod.number(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  title: zod.string(),
+  description: zod.string().optional(),
+  status: zod.string(),
+  category: zod.string(),
+  proposedDate: zod.string().optional(),
+  enactedDate: zod.string().optional(),
+  proposedBy: zod.string().optional(),
+  supportingParties: zod.array(zod.string()).optional(),
+  opposingParties: zod.array(zod.string()).optional(),
+  publicOpinion: zod.string().optional(),
+  impact: zod.string().optional(),
+  controversyLevel: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+export const ListLegislationResponse = zod.array(ListLegislationResponseItem);
+
+export const CreateLegislationBody = zod.object({
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  title: zod.string(),
+  description: zod.string().optional(),
+  status: zod.string(),
+  category: zod.string(),
+  proposedDate: zod.string().optional(),
+  enactedDate: zod.string().optional(),
+  proposedBy: zod.string().optional(),
+  supportingParties: zod.array(zod.string()).optional(),
+  opposingParties: zod.array(zod.string()).optional(),
+  publicOpinion: zod.string().optional(),
+  impact: zod.string().optional(),
+  controversyLevel: zod.string().optional(),
+});
+
+export const GetLegislationParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetLegislationResponse = zod.object({
+  id: zod.number(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  title: zod.string(),
+  description: zod.string().optional(),
+  status: zod.string(),
+  category: zod.string(),
+  proposedDate: zod.string().optional(),
+  enactedDate: zod.string().optional(),
+  proposedBy: zod.string().optional(),
+  supportingParties: zod.array(zod.string()).optional(),
+  opposingParties: zod.array(zod.string()).optional(),
+  publicOpinion: zod.string().optional(),
+  impact: zod.string().optional(),
+  controversyLevel: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const UpdateLegislationParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateLegislationBody = zod.object({
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  title: zod.string(),
+  description: zod.string().optional(),
+  status: zod.string(),
+  category: zod.string(),
+  proposedDate: zod.string().optional(),
+  enactedDate: zod.string().optional(),
+  proposedBy: zod.string().optional(),
+  supportingParties: zod.array(zod.string()).optional(),
+  opposingParties: zod.array(zod.string()).optional(),
+  publicOpinion: zod.string().optional(),
+  impact: zod.string().optional(),
+  controversyLevel: zod.string().optional(),
+});
+
+export const UpdateLegislationResponse = zod.object({
+  id: zod.number(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  title: zod.string(),
+  description: zod.string().optional(),
+  status: zod.string(),
+  category: zod.string(),
+  proposedDate: zod.string().optional(),
+  enactedDate: zod.string().optional(),
+  proposedBy: zod.string().optional(),
+  supportingParties: zod.array(zod.string()).optional(),
+  opposingParties: zod.array(zod.string()).optional(),
+  publicOpinion: zod.string().optional(),
+  impact: zod.string().optional(),
+  controversyLevel: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const DeleteLegislationParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List ongoing criminal and international cases
+ */
+export const ListCriminalCasesQueryParams = zod.object({
+  country: zod.coerce.string().optional(),
+  status: zod.coerce.string().optional(),
+  caseType: zod.coerce.string().optional(),
+});
+
+export const ListCriminalCasesResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  country: zod.string(),
+  court: zod.string().optional(),
+  caseType: zod.string(),
+  status: zod.string(),
+  defendants: zod.array(zod.string()).optional(),
+  charges: zod.array(zod.string()).optional(),
+  description: zod.string().optional(),
+  startDate: zod.string().optional(),
+  verdict: zod.string().optional(),
+  sentencing: zod.string().optional(),
+  internationalInvolvement: zod.boolean().optional(),
+  severity: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+export const ListCriminalCasesResponse = zod.array(
+  ListCriminalCasesResponseItem,
+);
+
+export const CreateCriminalCaseBody = zod.object({
+  title: zod.string(),
+  country: zod.string(),
+  court: zod.string().optional(),
+  caseType: zod.string(),
+  status: zod.string(),
+  defendants: zod.array(zod.string()).optional(),
+  charges: zod.array(zod.string()).optional(),
+  description: zod.string().optional(),
+  startDate: zod.string().optional(),
+  verdict: zod.string().optional(),
+  sentencing: zod.string().optional(),
+  internationalInvolvement: zod.boolean().optional(),
+  severity: zod.string().optional(),
+});
+
+export const GetCriminalCaseParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetCriminalCaseResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  country: zod.string(),
+  court: zod.string().optional(),
+  caseType: zod.string(),
+  status: zod.string(),
+  defendants: zod.array(zod.string()).optional(),
+  charges: zod.array(zod.string()).optional(),
+  description: zod.string().optional(),
+  startDate: zod.string().optional(),
+  verdict: zod.string().optional(),
+  sentencing: zod.string().optional(),
+  internationalInvolvement: zod.boolean().optional(),
+  severity: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const UpdateCriminalCaseParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateCriminalCaseBody = zod.object({
+  title: zod.string(),
+  country: zod.string(),
+  court: zod.string().optional(),
+  caseType: zod.string(),
+  status: zod.string(),
+  defendants: zod.array(zod.string()).optional(),
+  charges: zod.array(zod.string()).optional(),
+  description: zod.string().optional(),
+  startDate: zod.string().optional(),
+  verdict: zod.string().optional(),
+  sentencing: zod.string().optional(),
+  internationalInvolvement: zod.boolean().optional(),
+  severity: zod.string().optional(),
+});
+
+export const UpdateCriminalCaseResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  country: zod.string(),
+  court: zod.string().optional(),
+  caseType: zod.string(),
+  status: zod.string(),
+  defendants: zod.array(zod.string()).optional(),
+  charges: zod.array(zod.string()).optional(),
+  description: zod.string().optional(),
+  startDate: zod.string().optional(),
+  verdict: zod.string().optional(),
+  sentencing: zod.string().optional(),
+  internationalInvolvement: zod.boolean().optional(),
+  severity: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const DeleteCriminalCaseParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List Interpol notices
+ */
+export const ListInterpolNoticesQueryParams = zod.object({
+  noticeType: zod.coerce.string().optional(),
+  status: zod.coerce.string().optional(),
+});
+
+export const ListInterpolNoticesResponseItem = zod.object({
+  id: zod.number(),
+  noticeType: zod.string(),
+  subjectName: zod.string(),
+  nationality: zod.string().optional(),
+  chargedBy: zod.string().optional(),
+  charges: zod.string().optional(),
+  description: zod.string().optional(),
+  dangerLevel: zod.string().optional(),
+  lastKnownLocation: zod.string().optional(),
+  status: zod.string(),
+  issuedDate: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+export const ListInterpolNoticesResponse = zod.array(
+  ListInterpolNoticesResponseItem,
+);
+
+export const CreateInterpolNoticeBody = zod.object({
+  noticeType: zod.string(),
+  subjectName: zod.string(),
+  nationality: zod.string().optional(),
+  chargedBy: zod.string().optional(),
+  charges: zod.string().optional(),
+  description: zod.string().optional(),
+  dangerLevel: zod.string().optional(),
+  lastKnownLocation: zod.string().optional(),
+  status: zod.string(),
+  issuedDate: zod.string().optional(),
+});
+
+export const GetInterpolNoticeParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetInterpolNoticeResponse = zod.object({
+  id: zod.number(),
+  noticeType: zod.string(),
+  subjectName: zod.string(),
+  nationality: zod.string().optional(),
+  chargedBy: zod.string().optional(),
+  charges: zod.string().optional(),
+  description: zod.string().optional(),
+  dangerLevel: zod.string().optional(),
+  lastKnownLocation: zod.string().optional(),
+  status: zod.string(),
+  issuedDate: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const UpdateInterpolNoticeParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateInterpolNoticeBody = zod.object({
+  noticeType: zod.string(),
+  subjectName: zod.string(),
+  nationality: zod.string().optional(),
+  chargedBy: zod.string().optional(),
+  charges: zod.string().optional(),
+  description: zod.string().optional(),
+  dangerLevel: zod.string().optional(),
+  lastKnownLocation: zod.string().optional(),
+  status: zod.string(),
+  issuedDate: zod.string().optional(),
+});
+
+export const UpdateInterpolNoticeResponse = zod.object({
+  id: zod.number(),
+  noticeType: zod.string(),
+  subjectName: zod.string(),
+  nationality: zod.string().optional(),
+  chargedBy: zod.string().optional(),
+  charges: zod.string().optional(),
+  description: zod.string().optional(),
+  dangerLevel: zod.string().optional(),
+  lastKnownLocation: zod.string().optional(),
+  status: zod.string(),
+  issuedDate: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const DeleteInterpolNoticeParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List ICJ cases
+ */
+export const ListIcjCasesQueryParams = zod.object({
+  status: zod.coerce.string().optional(),
+});
+
+export const ListIcjCasesResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  applicantCountry: zod.string(),
+  respondentCountry: zod.string(),
+  caseType: zod.string().optional(),
+  status: zod.string(),
+  filedDate: zod.string().optional(),
+  description: zod.string().optional(),
+  currentPhase: zod.string().optional(),
+  lastUpdate: zod.string().optional(),
+  significance: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+export const ListIcjCasesResponse = zod.array(ListIcjCasesResponseItem);
+
+export const CreateIcjCaseBody = zod.object({
+  title: zod.string(),
+  applicantCountry: zod.string(),
+  respondentCountry: zod.string(),
+  caseType: zod.string().optional(),
+  status: zod.string(),
+  filedDate: zod.string().optional(),
+  description: zod.string().optional(),
+  currentPhase: zod.string().optional(),
+  lastUpdate: zod.string().optional(),
+  significance: zod.string().optional(),
+});
+
+export const GetIcjCaseParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetIcjCaseResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  applicantCountry: zod.string(),
+  respondentCountry: zod.string(),
+  caseType: zod.string().optional(),
+  status: zod.string(),
+  filedDate: zod.string().optional(),
+  description: zod.string().optional(),
+  currentPhase: zod.string().optional(),
+  lastUpdate: zod.string().optional(),
+  significance: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const UpdateIcjCaseParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateIcjCaseBody = zod.object({
+  title: zod.string(),
+  applicantCountry: zod.string(),
+  respondentCountry: zod.string(),
+  caseType: zod.string().optional(),
+  status: zod.string(),
+  filedDate: zod.string().optional(),
+  description: zod.string().optional(),
+  currentPhase: zod.string().optional(),
+  lastUpdate: zod.string().optional(),
+  significance: zod.string().optional(),
+});
+
+export const UpdateIcjCaseResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  applicantCountry: zod.string(),
+  respondentCountry: zod.string(),
+  caseType: zod.string().optional(),
+  status: zod.string(),
+  filedDate: zod.string().optional(),
+  description: zod.string().optional(),
+  currentPhase: zod.string().optional(),
+  lastUpdate: zod.string().optional(),
+  significance: zod.string().optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const DeleteIcjCaseParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List international treaties
+ */
+export const ListTreatiesQueryParams = zod.object({
+  type: zod.coerce.string().optional(),
+  status: zod.coerce.string().optional(),
+});
+
+export const ListTreatiesResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  type: zod.string(),
+  signatories: zod.array(zod.string()).optional(),
+  status: zod.string(),
+  signedDate: zod.string().optional(),
+  effectiveDate: zod.string().optional(),
+  description: zod.string().optional(),
+  significance: zod.string().optional(),
+  relatedConflicts: zod.array(zod.number()).optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+export const ListTreatiesResponse = zod.array(ListTreatiesResponseItem);
+
+export const CreateTreatyBody = zod.object({
+  title: zod.string(),
+  type: zod.string(),
+  signatories: zod.array(zod.string()).optional(),
+  status: zod.string(),
+  signedDate: zod.string().optional(),
+  effectiveDate: zod.string().optional(),
+  description: zod.string().optional(),
+  significance: zod.string().optional(),
+  relatedConflicts: zod.array(zod.number()).optional(),
+});
+
+export const GetTreatyParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetTreatyResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  type: zod.string(),
+  signatories: zod.array(zod.string()).optional(),
+  status: zod.string(),
+  signedDate: zod.string().optional(),
+  effectiveDate: zod.string().optional(),
+  description: zod.string().optional(),
+  significance: zod.string().optional(),
+  relatedConflicts: zod.array(zod.number()).optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const UpdateTreatyParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateTreatyBody = zod.object({
+  title: zod.string(),
+  type: zod.string(),
+  signatories: zod.array(zod.string()).optional(),
+  status: zod.string(),
+  signedDate: zod.string().optional(),
+  effectiveDate: zod.string().optional(),
+  description: zod.string().optional(),
+  significance: zod.string().optional(),
+  relatedConflicts: zod.array(zod.number()).optional(),
+});
+
+export const UpdateTreatyResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  type: zod.string(),
+  signatories: zod.array(zod.string()).optional(),
+  status: zod.string(),
+  signedDate: zod.string().optional(),
+  effectiveDate: zod.string().optional(),
+  description: zod.string().optional(),
+  significance: zod.string().optional(),
+  relatedConflicts: zod.array(zod.number()).optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const DeleteTreatyParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary List major global incidents and news events
+ */
+export const ListMediaEventsQueryParams = zod.object({
+  country: zod.coerce.string().optional(),
+  category: zod.coerce.string().optional(),
+  severity: zod.coerce.string().optional(),
+});
+
+export const ListMediaEventsResponseItem = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  category: zod.string(),
+  severity: zod.string(),
+  description: zod.string().optional(),
+  date: zod.string().optional(),
+  source: zod.string().optional(),
+  isVerified: zod.boolean().optional(),
+  tags: zod.array(zod.string()).optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+export const ListMediaEventsResponse = zod.array(ListMediaEventsResponseItem);
+
+export const CreateMediaEventBody = zod.object({
+  title: zod.string(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  category: zod.string(),
+  severity: zod.string(),
+  description: zod.string().optional(),
+  date: zod.string().optional(),
+  source: zod.string().optional(),
+  isVerified: zod.boolean().optional(),
+  tags: zod.array(zod.string()).optional(),
+});
+
+export const GetMediaEventParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const GetMediaEventResponse = zod.object({
+  id: zod.number(),
+  title: zod.string(),
+  country: zod.string(),
+  countryCode: zod.string().optional(),
+  category: zod.string(),
+  severity: zod.string(),
+  description: zod.string().optional(),
+  date: zod.string().optional(),
+  source: zod.string().optional(),
+  isVerified: zod.boolean().optional(),
+  tags: zod.array(zod.string()).optional(),
+  createdAt: zod.coerce.date().optional(),
+});
+
+export const DeleteMediaEventParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+/**
+ * @summary Comprehensive A-Z intelligence report for a country
+ */
+export const GetCountryIntelligenceParams = zod.object({
+  code: zod.coerce
+    .string()
+    .describe("ISO 2-letter country code or country name"),
+});
+
+export const GetCountryIntelligenceResponse = zod.object({
+  country: zod.object({
+    id: zod.number(),
+    name: zod.string(),
+    code: zod.string(),
+    region: zod.string(),
+    flagEmoji: zod.string().optional(),
+    politicalSystem: zod.string().optional(),
+    gdp: zod.number().optional(),
+    population: zod.number().optional(),
+    militaryBudget: zod.number().optional(),
+    threatLevel: zod.string(),
+    stabilityIndex: zod.number().optional(),
+    keyAlliances: zod.array(zod.string()).optional(),
+    notes: zod.string().optional(),
+    createdAt: zod.coerce.date().optional(),
+    updatedAt: zod.coerce.date().optional(),
+  }),
+  leaders: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        name: zod.string(),
+        country: zod.string(),
+        countryCode: zod.string().optional(),
+        position: zod.string(),
+        party: zod.string().optional(),
+        ideology: zod.string().optional(),
+        bornDate: zod.string().optional(),
+        nationality: zod.string().optional(),
+        education: zod.string().optional(),
+        background: zod.string().optional(),
+        previousRoles: zod.array(zod.string()).optional(),
+        netWorth: zod.string().optional(),
+        twitterHandle: zod.string().optional(),
+        approvalRating: zod.number().optional(),
+        isCurrentlyInPower: zod.boolean().optional(),
+        notableAchievements: zod.array(zod.string()).optional(),
+        controversies: zod.array(zod.string()).optional(),
+        currentLocation: zod.string().optional(),
+        recentTravel: zod.array(zod.string()).optional(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+    )
+    .optional(),
+  recentStatements: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        leaderId: zod.number(),
+        leaderName: zod.string().optional(),
+        country: zod.string().optional(),
+        platform: zod.string(),
+        content: zod.string(),
+        sentiment: zod.string().optional(),
+        topic: zod.string().optional(),
+        relatedCountries: zod.array(zod.string()).optional(),
+        timestamp: zod.coerce.date(),
+        engagement: zod.number().optional(),
+        isControversial: zod.boolean().optional(),
+      }),
+    )
+    .optional(),
+  parliamentaryDiscussions: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        country: zod.string(),
+        countryCode: zod.string().optional(),
+        chamber: zod.string(),
+        topic: zod.string(),
+        description: zod.string().optional(),
+        status: zod.string(),
+        date: zod.string().optional(),
+        outcome: zod.string().optional(),
+        keyPoints: zod.array(zod.string()).optional(),
+        votesFor: zod.number().optional(),
+        votesAgainst: zod.number().optional(),
+        abstentions: zod.number().optional(),
+        significance: zod.string().optional(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+    )
+    .optional(),
+  legislation: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        country: zod.string(),
+        countryCode: zod.string().optional(),
+        title: zod.string(),
+        description: zod.string().optional(),
+        status: zod.string(),
+        category: zod.string(),
+        proposedDate: zod.string().optional(),
+        enactedDate: zod.string().optional(),
+        proposedBy: zod.string().optional(),
+        supportingParties: zod.array(zod.string()).optional(),
+        opposingParties: zod.array(zod.string()).optional(),
+        publicOpinion: zod.string().optional(),
+        impact: zod.string().optional(),
+        controversyLevel: zod.string().optional(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+    )
+    .optional(),
+  criminalCases: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        title: zod.string(),
+        country: zod.string(),
+        court: zod.string().optional(),
+        caseType: zod.string(),
+        status: zod.string(),
+        defendants: zod.array(zod.string()).optional(),
+        charges: zod.array(zod.string()).optional(),
+        description: zod.string().optional(),
+        startDate: zod.string().optional(),
+        verdict: zod.string().optional(),
+        sentencing: zod.string().optional(),
+        internationalInvolvement: zod.boolean().optional(),
+        severity: zod.string().optional(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+    )
+    .optional(),
+  treaties: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        title: zod.string(),
+        type: zod.string(),
+        signatories: zod.array(zod.string()).optional(),
+        status: zod.string(),
+        signedDate: zod.string().optional(),
+        effectiveDate: zod.string().optional(),
+        description: zod.string().optional(),
+        significance: zod.string().optional(),
+        relatedConflicts: zod.array(zod.number()).optional(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+    )
+    .optional(),
+  mediaEvents: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        title: zod.string(),
+        country: zod.string(),
+        countryCode: zod.string().optional(),
+        category: zod.string(),
+        severity: zod.string(),
+        description: zod.string().optional(),
+        date: zod.string().optional(),
+        source: zod.string().optional(),
+        isVerified: zod.boolean().optional(),
+        tags: zod.array(zod.string()).optional(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+    )
+    .optional(),
+  interpolNotices: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        noticeType: zod.string(),
+        subjectName: zod.string(),
+        nationality: zod.string().optional(),
+        chargedBy: zod.string().optional(),
+        charges: zod.string().optional(),
+        description: zod.string().optional(),
+        dangerLevel: zod.string().optional(),
+        lastKnownLocation: zod.string().optional(),
+        status: zod.string(),
+        issuedDate: zod.string().optional(),
+        createdAt: zod.coerce.date().optional(),
+      }),
+    )
+    .optional(),
+  activeConflicts: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        title: zod.string(),
+        description: zod.string().optional(),
+        region: zod.string(),
+        status: zod.string(),
+        severity: zod.string(),
+        startDate: zod.string().optional(),
+        endDate: zod.string().optional(),
+        partiesInvolved: zod.array(zod.string()).optional(),
+        casualties: zod.number().optional(),
+        displacedPersons: zod.number().optional(),
+        notes: zod.string().optional(),
+        createdAt: zod.coerce.date().optional(),
+        updatedAt: zod.coerce.date().optional(),
+      }),
+    )
+    .optional(),
+  intelligenceBriefings: zod
+    .array(
+      zod.object({
+        id: zod.number(),
+        title: zod.string(),
+        content: zod.string(),
+        category: zod.string(),
+        priority: zod.string(),
+        relatedCountries: zod.array(zod.string()).optional(),
+        relatedConflicts: zod.array(zod.number()).optional(),
+        source: zod.string().optional(),
+        timestamp: zod.coerce.date(),
+      }),
+    )
+    .optional(),
 });

@@ -8,6 +8,16 @@ import alliancesRouter from "./alliances";
 import intelligenceRouter from "./intelligence";
 import delegatesRouter from "./delegates";
 import dashboardRouter from "./dashboard";
+import leadersRouter from "./leaders";
+import statementsRouter from "./statements";
+import parliamentaryRouter from "./parliamentary";
+import legislationRouter from "./legislation";
+import criminalCasesRouter from "./criminal_cases";
+import interpolRouter from "./interpol";
+import icjRouter from "./icj";
+import treatiesRouter from "./treaties";
+import mediaEventsRouter from "./media_events";
+import countryIntelRouter from "./country_intel";
 
 const router: IRouter = Router();
 
@@ -20,5 +30,15 @@ router.use(alliancesRouter);
 router.use(intelligenceRouter);
 router.use(delegatesRouter);
 router.use(dashboardRouter);
+router.use(leadersRouter);
+router.use(statementsRouter);
+router.use(parliamentaryRouter);
+router.use(legislationRouter);
+router.use(criminalCasesRouter);
+router.use(interpolRouter);
+router.use(icjRouter);
+router.use(treatiesRouter);
+router.use(mediaEventsRouter);
+router.use(countryIntelRouter);
 
 export default router;

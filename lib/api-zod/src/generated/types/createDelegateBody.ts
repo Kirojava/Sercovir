@@ -3,16 +3,15 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
-import type { CreateDelegateBodyPosition } from "./createDelegateBodyPosition";
 
 export interface CreateDelegateBody {
   name: string;
   country: string;
   countryCode?: string;
   committeeId: number;
-  position: CreateDelegateBodyPosition;
+  position: string;
   bloc?: string;
   notes?: string;
 }

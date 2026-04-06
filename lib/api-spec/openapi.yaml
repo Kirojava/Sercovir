@@ -1,28 +1,30 @@
 openapi: 3.1.0
 info:
   title: Api
-  version: 0.1.0
+  version: 0.2.0
   description: Sercovir Geopolitical Intelligence Platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
-    description: Health operations
   - name: countries
-    description: Country intelligence operations
   - name: conflicts
-    description: Conflict tracking operations
   - name: committees
-    description: MUN committee operations
   - name: resolutions
-    description: Resolution drafting operations
   - name: alliances
-    description: Alliance and bloc operations
   - name: intelligence
-    description: Intelligence briefings and feeds
   - name: delegates
-    description: Delegate management
+  - name: leaders
+  - name: statements
+  - name: parliamentary
+  - name: legislation
+  - name: criminal-cases
+  - name: interpol
+  - name: icj
+  - name: treaties
+  - name: media-events
+  - name: country-intel
 
 paths:
   /healthz:
@@ -42,7 +44,7 @@ paths:
     get:
       operationId: listCountries
       tags: [countries]
-      summary: List all countries with intelligence profiles
+      summary: List countries
       parameters:
         - name: region
           in: query
@@ -64,7 +66,6 @@ paths:
     post:
       operationId: createCountry
       tags: [countries]
-      summary: Create country profile
       requestBody:
         required: true
         content:
@@ -83,7 +84,6 @@ paths:
     get:
       operationId: getCountry
       tags: [countries]
-      summary: Get country intelligence profile
       parameters:
         - name: id
           in: path
@@ -92,7 +92,7 @@ paths:
             type: integer
       responses:
         "200":
-          description: Country profile
+          description: Country
           content:
             application/json:
               schema:
@@ -100,7 +100,6 @@ paths:
     put:
       operationId: updateCountry
       tags: [countries]
-      summary: Update country profile
       parameters:
         - name: id
           in: path
@@ -123,7 +122,6 @@ paths:
     delete:
       operationId: deleteCountry
       tags: [countries]
-      summary: Delete country profile
       parameters:
         - name: id
           in: path
@@ -138,10 +136,9 @@ paths:
     get:
       operationId: getCountriesSummary
       tags: [countries]
-      summary: Get global intelligence summary
       responses:
         "200":
-          description: Summary stats
+          description: Summary
           content:
             application/json:
               schema:
@@ -151,13 +148,11 @@ paths:
     get:
       operationId: listConflicts
       tags: [conflicts]
-      summary: List active geopolitical conflicts
       parameters:
         - name: status
           in: query
           schema:
             type: string
-            enum: [active, frozen, resolved, escalating]
         - name: region
           in: query
           schema:
@@ -174,7 +169,6 @@ paths:
     post:
       operationId: createConflict
       tags: [conflicts]
-      summary: Create conflict record
       requestBody:
         required: true
         content:
@@ -183,7 +177,7 @@ paths:
               $ref: "#/components/schemas/CreateConflictBody"
       responses:
         "201":
-          description: Conflict created
+          description: Created
           content:
             application/json:
               schema:
@@ -193,7 +187,6 @@ paths:
     get:
       operationId: getConflict
       tags: [conflicts]
-      summary: Get conflict details
       parameters:
         - name: id
           in: path
@@ -202,7 +195,7 @@ paths:
             type: integer
       responses:
         "200":
-          description: Conflict details
+          description: Conflict
           content:
             application/json:
               schema:
@@ -210,7 +203,6 @@ paths:
     put:
       operationId: updateConflict
       tags: [conflicts]
-      summary: Update conflict
       parameters:
         - name: id
           in: path
@@ -225,7 +217,7 @@ paths:
               $ref: "#/components/schemas/CreateConflictBody"
       responses:
         "200":
-          description: Conflict updated
+          description: Updated
           content:
             application/json:
               schema:
@@ -233,7 +225,6 @@ paths:
     delete:
       operationId: deleteConflict
       tags: [conflicts]
-      summary: Delete conflict
       parameters:
         - name: id
           in: path
@@ -248,7 +239,6 @@ paths:
     get:
       operationId: getConflictsSummary
       tags: [conflicts]
-      summary: Conflict dashboard summary
       responses:
         "200":
           description: Summary
@@ -261,10 +251,9 @@ paths:
     get:
       operationId: listCommittees
       tags: [committees]
-      summary: List MUN committees
       responses:
         "200":
-          description: List of committees
+          description: Committees
           content:
             application/json:
               schema:
@@ -274,7 +263,6 @@ paths:
     post:
       operationId: createCommittee
       tags: [committees]
-      summary: Create committee
       requestBody:
         required: true
         content:
@@ -283,7 +271,7 @@ paths:
               $ref: "#/components/schemas/CreateCommitteeBody"
       responses:
         "201":
-          description: Committee created
+          description: Created
           content:
             application/json:
               schema:
@@ -293,7 +281,6 @@ paths:
     get:
       operationId: getCommittee
       tags: [committees]
-      summary: Get committee details
       parameters:
         - name: id
           in: path
@@ -310,7 +297,6 @@ paths:
     put:
       operationId: updateCommittee
       tags: [committees]
-      summary: Update committee
       parameters:
         - name: id
           in: path
@@ -325,7 +311,7 @@ paths:
               $ref: "#/components/schemas/CreateCommitteeBody"
       responses:
         "200":
-          description: Committee updated
+          description: Updated
           content:
             application/json:
               schema:
@@ -333,7 +319,6 @@ paths:
     delete:
       operationId: deleteCommittee
       tags: [committees]
-      summary: Delete committee
       parameters:
         - name: id
           in: path
@@ -348,7 +333,6 @@ paths:
     get:
       operationId: listResolutions
       tags: [resolutions]
-      summary: List resolutions
       parameters:
         - name: committeeId
           in: query
@@ -358,10 +342,9 @@ paths:
           in: query
           schema:
             type: string
-            enum: [draft, submitted, passed, failed, tabled]
       responses:
         "200":
-          description: List of resolutions
+          description: Resolutions
           content:
             application/json:
               schema:
@@ -371,7 +354,6 @@ paths:
     post:
       operationId: createResolution
       tags: [resolutions]
-      summary: Create resolution draft
       requestBody:
         required: true
         content:
@@ -380,7 +362,7 @@ paths:
               $ref: "#/components/schemas/CreateResolutionBody"
       responses:
         "201":
-          description: Resolution created
+          description: Created
           content:
             application/json:
               schema:
@@ -390,7 +372,6 @@ paths:
     get:
       operationId: getResolution
       tags: [resolutions]
-      summary: Get resolution
       parameters:
         - name: id
           in: path
@@ -407,7 +388,6 @@ paths:
     put:
       operationId: updateResolution
       tags: [resolutions]
-      summary: Update resolution
       parameters:
         - name: id
           in: path
@@ -422,7 +402,7 @@ paths:
               $ref: "#/components/schemas/CreateResolutionBody"
       responses:
         "200":
-          description: Resolution updated
+          description: Updated
           content:
             application/json:
               schema:
@@ -430,7 +410,6 @@ paths:
     delete:
       operationId: deleteResolution
       tags: [resolutions]
-      summary: Delete resolution
       parameters:
         - name: id
           in: path
@@ -445,7 +424,6 @@ paths:
     get:
       operationId: listAlliances
       tags: [alliances]
-      summary: List geopolitical alliances and blocs
       responses:
         "200":
           description: Alliances
@@ -458,7 +436,6 @@ paths:
     post:
       operationId: createAlliance
       tags: [alliances]
-      summary: Create alliance
       requestBody:
         required: true
         content:
@@ -467,7 +444,7 @@ paths:
               $ref: "#/components/schemas/CreateAllianceBody"
       responses:
         "201":
-          description: Alliance created
+          description: Created
           content:
             application/json:
               schema:
@@ -477,7 +454,6 @@ paths:
     get:
       operationId: getAlliance
       tags: [alliances]
-      summary: Get alliance
       parameters:
         - name: id
           in: path
@@ -494,7 +470,6 @@ paths:
     put:
       operationId: updateAlliance
       tags: [alliances]
-      summary: Update alliance
       parameters:
         - name: id
           in: path
@@ -509,7 +484,7 @@ paths:
               $ref: "#/components/schemas/CreateAllianceBody"
       responses:
         "200":
-          description: Alliance updated
+          description: Updated
           content:
             application/json:
               schema:
@@ -517,7 +492,6 @@ paths:
     delete:
       operationId: deleteAlliance
       tags: [alliances]
-      summary: Delete alliance
       parameters:
         - name: id
           in: path
@@ -532,7 +506,6 @@ paths:
     get:
       operationId: getIntelligenceFeed
       tags: [intelligence]
-      summary: Get live intelligence briefing feed
       parameters:
         - name: limit
           in: query
@@ -551,7 +524,6 @@ paths:
     post:
       operationId: createIntelligenceBriefing
       tags: [intelligence]
-      summary: Create intelligence briefing
       requestBody:
         required: true
         content:
@@ -560,7 +532,7 @@ paths:
               $ref: "#/components/schemas/CreateIntelligenceBriefingBody"
       responses:
         "201":
-          description: Briefing created
+          description: Created
           content:
             application/json:
               schema:
@@ -570,7 +542,6 @@ paths:
     delete:
       operationId: deleteIntelligenceBriefing
       tags: [intelligence]
-      summary: Delete intelligence briefing
       parameters:
         - name: id
           in: path
@@ -585,7 +556,6 @@ paths:
     get:
       operationId: listDelegates
       tags: [delegates]
-      summary: List delegates
       parameters:
         - name: committeeId
           in: query
@@ -603,7 +573,6 @@ paths:
     post:
       operationId: createDelegate
       tags: [delegates]
-      summary: Create delegate
       requestBody:
         required: true
         content:
@@ -612,7 +581,7 @@ paths:
               $ref: "#/components/schemas/CreateDelegateBody"
       responses:
         "201":
-          description: Delegate created
+          description: Created
           content:
             application/json:
               schema:
@@ -622,7 +591,6 @@ paths:
     get:
       operationId: getDelegate
       tags: [delegates]
-      summary: Get delegate
       parameters:
         - name: id
           in: path
@@ -639,7 +607,6 @@ paths:
     put:
       operationId: updateDelegate
       tags: [delegates]
-      summary: Update delegate
       parameters:
         - name: id
           in: path
@@ -654,7 +621,7 @@ paths:
               $ref: "#/components/schemas/CreateDelegateBody"
       responses:
         "200":
-          description: Delegate updated
+          description: Updated
           content:
             application/json:
               schema:
@@ -662,7 +629,6 @@ paths:
     delete:
       operationId: deleteDelegate
       tags: [delegates]
-      summary: Delete delegate
       parameters:
         - name: id
           in: path
@@ -677,14 +643,863 @@ paths:
     get:
       operationId: getDashboard
       tags: [intelligence]
-      summary: Get global dashboard overview
       responses:
         "200":
-          description: Dashboard data
+          description: Dashboard
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/DashboardOverview"
+
+  # ── WORLD LEADERS ─────────────────────────────────────────────────────────
+  /leaders:
+    get:
+      operationId: listLeaders
+      tags: [leaders]
+      summary: List world leaders and prominent figures
+      parameters:
+        - name: country
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: role
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Leaders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WorldLeader"
+    post:
+      operationId: createLeader
+      tags: [leaders]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLeaderBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldLeader"
+
+  /leaders/{id}:
+    get:
+      operationId: getLeader
+      tags: [leaders]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Leader
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldLeader"
+    put:
+      operationId: updateLeader
+      tags: [leaders]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLeaderBody"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldLeader"
+    delete:
+      operationId: deleteLeader
+      tags: [leaders]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /leaders/{id}/statements:
+    get:
+      operationId: getLeaderStatements
+      tags: [leaders]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Leader statements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LeaderStatement"
+
+  # ── LEADER STATEMENTS ─────────────────────────────────────────────────────
+  /statements:
+    get:
+      operationId: listStatements
+      tags: [statements]
+      summary: List all public statements, tweets, posts
+      parameters:
+        - name: leaderId
+          in: query
+          schema:
+            type: integer
+        - name: platform
+          in: query
+          schema:
+            type: string
+        - name: topic
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Statements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LeaderStatement"
+    post:
+      operationId: createStatement
+      tags: [statements]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateStatementBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderStatement"
+
+  /statements/{id}:
+    get:
+      operationId: getStatement
+      tags: [statements]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Statement
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderStatement"
+    delete:
+      operationId: deleteStatement
+      tags: [statements]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── PARLIAMENTARY DISCUSSIONS ─────────────────────────────────────────────
+  /parliamentary:
+    get:
+      operationId: listParliamentary
+      tags: [parliamentary]
+      summary: List parliamentary discussions and debates
+      parameters:
+        - name: country
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Discussions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ParliamentaryDiscussion"
+    post:
+      operationId: createParliamentary
+      tags: [parliamentary]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateParliamentaryBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParliamentaryDiscussion"
+
+  /parliamentary/{id}:
+    get:
+      operationId: getParliamentary
+      tags: [parliamentary]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Discussion
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParliamentaryDiscussion"
+    put:
+      operationId: updateParliamentary
+      tags: [parliamentary]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateParliamentaryBody"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParliamentaryDiscussion"
+    delete:
+      operationId: deleteParliamentary
+      tags: [parliamentary]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── LEGISLATION ───────────────────────────────────────────────────────────
+  /legislation:
+    get:
+      operationId: listLegislation
+      tags: [legislation]
+      summary: List laws in discussion and new legislation
+      parameters:
+        - name: country
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Legislation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Legislation"
+    post:
+      operationId: createLegislation
+      tags: [legislation]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLegislationBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Legislation"
+
+  /legislation/{id}:
+    get:
+      operationId: getLegislation
+      tags: [legislation]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Legislation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Legislation"
+    put:
+      operationId: updateLegislation
+      tags: [legislation]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLegislationBody"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Legislation"
+    delete:
+      operationId: deleteLegislation
+      tags: [legislation]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── CRIMINAL CASES ────────────────────────────────────────────────────────
+  /criminal-cases:
+    get:
+      operationId: listCriminalCases
+      tags: [criminal-cases]
+      summary: List ongoing criminal and international cases
+      parameters:
+        - name: country
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+        - name: caseType
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CriminalCase"
+    post:
+      operationId: createCriminalCase
+      tags: [criminal-cases]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCriminalCaseBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CriminalCase"
+
+  /criminal-cases/{id}:
+    get:
+      operationId: getCriminalCase
+      tags: [criminal-cases]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Case
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CriminalCase"
+    put:
+      operationId: updateCriminalCase
+      tags: [criminal-cases]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCriminalCaseBody"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CriminalCase"
+    delete:
+      operationId: deleteCriminalCase
+      tags: [criminal-cases]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── INTERPOL ──────────────────────────────────────────────────────────────
+  /interpol:
+    get:
+      operationId: listInterpolNotices
+      tags: [interpol]
+      summary: List Interpol notices
+      parameters:
+        - name: noticeType
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Notices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/InterpolNotice"
+    post:
+      operationId: createInterpolNotice
+      tags: [interpol]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInterpolNoticeBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterpolNotice"
+
+  /interpol/{id}:
+    get:
+      operationId: getInterpolNotice
+      tags: [interpol]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Notice
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterpolNotice"
+    put:
+      operationId: updateInterpolNotice
+      tags: [interpol]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInterpolNoticeBody"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterpolNotice"
+    delete:
+      operationId: deleteInterpolNotice
+      tags: [interpol]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── ICJ CASES ─────────────────────────────────────────────────────────────
+  /icj:
+    get:
+      operationId: listIcjCases
+      tags: [icj]
+      summary: List ICJ cases
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ICJ cases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IcjCase"
+    post:
+      operationId: createIcjCase
+      tags: [icj]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateIcjCaseBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IcjCase"
+
+  /icj/{id}:
+    get:
+      operationId: getIcjCase
+      tags: [icj]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ICJ case
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IcjCase"
+    put:
+      operationId: updateIcjCase
+      tags: [icj]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateIcjCaseBody"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IcjCase"
+    delete:
+      operationId: deleteIcjCase
+      tags: [icj]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── TREATIES ──────────────────────────────────────────────────────────────
+  /treaties:
+    get:
+      operationId: listTreaties
+      tags: [treaties]
+      summary: List international treaties
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Treaties
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Treaty"
+    post:
+      operationId: createTreaty
+      tags: [treaties]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTreatyBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Treaty"
+
+  /treaties/{id}:
+    get:
+      operationId: getTreaty
+      tags: [treaties]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Treaty
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Treaty"
+    put:
+      operationId: updateTreaty
+      tags: [treaties]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTreatyBody"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Treaty"
+    delete:
+      operationId: deleteTreaty
+      tags: [treaties]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── MEDIA EVENTS ──────────────────────────────────────────────────────────
+  /media-events:
+    get:
+      operationId: listMediaEvents
+      tags: [media-events]
+      summary: List major global incidents and news events
+      parameters:
+        - name: country
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: severity
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Media events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MediaEvent"
+    post:
+      operationId: createMediaEvent
+      tags: [media-events]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMediaEventBody"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MediaEvent"
+
+  /media-events/{id}:
+    get:
+      operationId: getMediaEvent
+      tags: [media-events]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Media event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MediaEvent"
+    delete:
+      operationId: deleteMediaEvent
+      tags: [media-events]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── COUNTRY INTELLIGENCE ──────────────────────────────────────────────────
+  /country-intel/{code}:
+    get:
+      operationId: getCountryIntelligence
+      tags: [country-intel]
+      summary: Comprehensive A-Z intelligence report for a country
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ISO 2-letter country code or country name
+      responses:
+        "200":
+          description: Comprehensive country intelligence
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountryIntelligenceReport"
 
 components:
   schemas:
@@ -704,7 +1519,6 @@ components:
           type: string
         code:
           type: string
-          description: ISO 2-letter country code
         region:
           type: string
         flagEmoji:
@@ -719,10 +1533,8 @@ components:
           type: number
         threatLevel:
           type: string
-          enum: [low, moderate, high, critical]
         stabilityIndex:
           type: number
-          description: 0-100 stability score
         keyAlliances:
           type: array
           items:
@@ -758,7 +1570,6 @@ components:
           type: number
         threatLevel:
           type: string
-          enum: [low, moderate, high, critical]
         stabilityIndex:
           type: number
         keyAlliances:
@@ -799,16 +1610,12 @@ components:
           type: string
         status:
           type: string
-          enum: [active, frozen, resolved, escalating]
         severity:
           type: string
-          enum: [low, medium, high, critical]
         startDate:
           type: string
-          format: date
         endDate:
           type: string
-          format: date
         partiesInvolved:
           type: array
           items:
@@ -838,16 +1645,12 @@ components:
           type: string
         status:
           type: string
-          enum: [active, frozen, resolved, escalating]
         severity:
           type: string
-          enum: [low, medium, high, critical]
         startDate:
           type: string
-          format: date
         endDate:
           type: string
-          format: date
         partiesInvolved:
           type: array
           items:
@@ -906,7 +1709,6 @@ components:
           type: string
         status:
           type: string
-          enum: [upcoming, active, concluded]
         delegateCount:
           type: integer
         createdAt:
@@ -931,7 +1733,6 @@ components:
           type: string
         status:
           type: string
-          enum: [upcoming, active, concluded]
       required: [name, abbreviation, topic, status]
 
     Resolution:
@@ -963,7 +1764,6 @@ components:
             type: string
         status:
           type: string
-          enum: [draft, submitted, passed, failed, tabled]
         votesFor:
           type: integer
         votesAgainst:
@@ -1003,7 +1803,6 @@ components:
             type: string
         status:
           type: string
-          enum: [draft, submitted, passed, failed, tabled]
         votesFor:
           type: integer
         votesAgainst:
@@ -1023,12 +1822,10 @@ components:
           type: string
         type:
           type: string
-          enum: [military, economic, political, humanitarian, diplomatic]
         description:
           type: string
         founded:
           type: string
-          format: date
         memberCountries:
           type: array
           items:
@@ -1037,7 +1834,6 @@ components:
           type: string
         strength:
           type: string
-          enum: [weak, moderate, strong, dominant]
         createdAt:
           type: string
           format: date-time
@@ -1052,12 +1848,10 @@ components:
           type: string
         type:
           type: string
-          enum: [military, economic, political, humanitarian, diplomatic]
         description:
           type: string
         founded:
           type: string
-          format: date
         memberCountries:
           type: array
           items:
@@ -1066,7 +1860,6 @@ components:
           type: string
         strength:
           type: string
-          enum: [weak, moderate, strong, dominant]
       required: [name, type, strength]
 
     IntelligenceBriefing:
@@ -1080,10 +1873,8 @@ components:
           type: string
         category:
           type: string
-          enum: [alert, update, assessment, warning, report]
         priority:
           type: string
-          enum: [low, medium, high, critical]
         relatedCountries:
           type: array
           items:
@@ -1108,10 +1899,8 @@ components:
           type: string
         category:
           type: string
-          enum: [alert, update, assessment, warning, report]
         priority:
           type: string
-          enum: [low, medium, high, critical]
         relatedCountries:
           type: array
           items:
@@ -1141,7 +1930,6 @@ components:
           type: string
         position:
           type: string
-          enum: [delegate, chair, vice-chair, rapporteur, observer]
         bloc:
           type: string
         notes:
@@ -1164,7 +1952,6 @@ components:
           type: integer
         position:
           type: string
-          enum: [delegate, chair, vice-chair, rapporteur, observer]
         bloc:
           type: string
         notes:
@@ -1192,9 +1979,14 @@ components:
           type: integer
         totalAlliances:
           type: integer
+        totalLeaders:
+          type: integer
+        activeInterpolNotices:
+          type: integer
+        activeIcjCases:
+          type: integer
         globalThreatLevel:
           type: string
-          enum: [low, elevated, high, critical]
         recentBriefings:
           type: array
           items:
@@ -1208,3 +2000,667 @@ components:
           additionalProperties:
             type: integer
       required: [totalCountries, activeConflicts, totalCommittees, totalResolutions, globalThreatLevel]
+
+    # ── NEW SCHEMAS ────────────────────────────────────────────────────────
+
+    WorldLeader:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        country:
+          type: string
+        countryCode:
+          type: string
+        position:
+          type: string
+        party:
+          type: string
+        ideology:
+          type: string
+        bornDate:
+          type: string
+        nationality:
+          type: string
+        education:
+          type: string
+        background:
+          type: string
+        previousRoles:
+          type: array
+          items:
+            type: string
+        netWorth:
+          type: string
+        twitterHandle:
+          type: string
+        approvalRating:
+          type: number
+        isCurrentlyInPower:
+          type: boolean
+        notableAchievements:
+          type: array
+          items:
+            type: string
+        controversies:
+          type: array
+          items:
+            type: string
+        currentLocation:
+          type: string
+        recentTravel:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, country, position]
+
+    CreateLeaderBody:
+      type: object
+      properties:
+        name:
+          type: string
+        country:
+          type: string
+        countryCode:
+          type: string
+        position:
+          type: string
+        party:
+          type: string
+        ideology:
+          type: string
+        bornDate:
+          type: string
+        nationality:
+          type: string
+        education:
+          type: string
+        background:
+          type: string
+        previousRoles:
+          type: array
+          items:
+            type: string
+        netWorth:
+          type: string
+        twitterHandle:
+          type: string
+        approvalRating:
+          type: number
+        isCurrentlyInPower:
+          type: boolean
+        notableAchievements:
+          type: array
+          items:
+            type: string
+        controversies:
+          type: array
+          items:
+            type: string
+        currentLocation:
+          type: string
+        recentTravel:
+          type: array
+          items:
+            type: string
+      required: [name, country, position]
+
+    LeaderStatement:
+      type: object
+      properties:
+        id:
+          type: integer
+        leaderId:
+          type: integer
+        leaderName:
+          type: string
+        country:
+          type: string
+        platform:
+          type: string
+        content:
+          type: string
+        sentiment:
+          type: string
+        topic:
+          type: string
+        relatedCountries:
+          type: array
+          items:
+            type: string
+        timestamp:
+          type: string
+          format: date-time
+        engagement:
+          type: integer
+        isControversial:
+          type: boolean
+      required: [id, leaderId, content, platform, timestamp]
+
+    CreateStatementBody:
+      type: object
+      properties:
+        leaderId:
+          type: integer
+        platform:
+          type: string
+        content:
+          type: string
+        sentiment:
+          type: string
+        topic:
+          type: string
+        relatedCountries:
+          type: array
+          items:
+            type: string
+        engagement:
+          type: integer
+        isControversial:
+          type: boolean
+      required: [leaderId, content, platform]
+
+    ParliamentaryDiscussion:
+      type: object
+      properties:
+        id:
+          type: integer
+        country:
+          type: string
+        countryCode:
+          type: string
+        chamber:
+          type: string
+        topic:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        date:
+          type: string
+        outcome:
+          type: string
+        keyPoints:
+          type: array
+          items:
+            type: string
+        votesFor:
+          type: integer
+        votesAgainst:
+          type: integer
+        abstentions:
+          type: integer
+        significance:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, country, chamber, topic, status]
+
+    CreateParliamentaryBody:
+      type: object
+      properties:
+        country:
+          type: string
+        countryCode:
+          type: string
+        chamber:
+          type: string
+        topic:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        date:
+          type: string
+        outcome:
+          type: string
+        keyPoints:
+          type: array
+          items:
+            type: string
+        votesFor:
+          type: integer
+        votesAgainst:
+          type: integer
+        abstentions:
+          type: integer
+        significance:
+          type: string
+      required: [country, chamber, topic, status]
+
+    Legislation:
+      type: object
+      properties:
+        id:
+          type: integer
+        country:
+          type: string
+        countryCode:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        category:
+          type: string
+        proposedDate:
+          type: string
+        enactedDate:
+          type: string
+        proposedBy:
+          type: string
+        supportingParties:
+          type: array
+          items:
+            type: string
+        opposingParties:
+          type: array
+          items:
+            type: string
+        publicOpinion:
+          type: string
+        impact:
+          type: string
+        controversyLevel:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, country, title, status, category]
+
+    CreateLegislationBody:
+      type: object
+      properties:
+        country:
+          type: string
+        countryCode:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+        category:
+          type: string
+        proposedDate:
+          type: string
+        enactedDate:
+          type: string
+        proposedBy:
+          type: string
+        supportingParties:
+          type: array
+          items:
+            type: string
+        opposingParties:
+          type: array
+          items:
+            type: string
+        publicOpinion:
+          type: string
+        impact:
+          type: string
+        controversyLevel:
+          type: string
+      required: [country, title, status, category]
+
+    CriminalCase:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        country:
+          type: string
+        court:
+          type: string
+        caseType:
+          type: string
+        status:
+          type: string
+        defendants:
+          type: array
+          items:
+            type: string
+        charges:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        startDate:
+          type: string
+        verdict:
+          type: string
+        sentencing:
+          type: string
+        internationalInvolvement:
+          type: boolean
+        severity:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, title, country, caseType, status]
+
+    CreateCriminalCaseBody:
+      type: object
+      properties:
+        title:
+          type: string
+        country:
+          type: string
+        court:
+          type: string
+        caseType:
+          type: string
+        status:
+          type: string
+        defendants:
+          type: array
+          items:
+            type: string
+        charges:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        startDate:
+          type: string
+        verdict:
+          type: string
+        sentencing:
+          type: string
+        internationalInvolvement:
+          type: boolean
+        severity:
+          type: string
+      required: [title, country, caseType, status]
+
+    InterpolNotice:
+      type: object
+      properties:
+        id:
+          type: integer
+        noticeType:
+          type: string
+        subjectName:
+          type: string
+        nationality:
+          type: string
+        chargedBy:
+          type: string
+        charges:
+          type: string
+        description:
+          type: string
+        dangerLevel:
+          type: string
+        lastKnownLocation:
+          type: string
+        status:
+          type: string
+        issuedDate:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, noticeType, subjectName, status]
+
+    CreateInterpolNoticeBody:
+      type: object
+      properties:
+        noticeType:
+          type: string
+        subjectName:
+          type: string
+        nationality:
+          type: string
+        chargedBy:
+          type: string
+        charges:
+          type: string
+        description:
+          type: string
+        dangerLevel:
+          type: string
+        lastKnownLocation:
+          type: string
+        status:
+          type: string
+        issuedDate:
+          type: string
+      required: [noticeType, subjectName, status]
+
+    IcjCase:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        applicantCountry:
+          type: string
+        respondentCountry:
+          type: string
+        caseType:
+          type: string
+        status:
+          type: string
+        filedDate:
+          type: string
+        description:
+          type: string
+        currentPhase:
+          type: string
+        lastUpdate:
+          type: string
+        significance:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, title, applicantCountry, respondentCountry, status]
+
+    CreateIcjCaseBody:
+      type: object
+      properties:
+        title:
+          type: string
+        applicantCountry:
+          type: string
+        respondentCountry:
+          type: string
+        caseType:
+          type: string
+        status:
+          type: string
+        filedDate:
+          type: string
+        description:
+          type: string
+        currentPhase:
+          type: string
+        lastUpdate:
+          type: string
+        significance:
+          type: string
+      required: [title, applicantCountry, respondentCountry, status]
+
+    Treaty:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        type:
+          type: string
+        signatories:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        signedDate:
+          type: string
+        effectiveDate:
+          type: string
+        description:
+          type: string
+        significance:
+          type: string
+        relatedConflicts:
+          type: array
+          items:
+            type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, title, type, status]
+
+    CreateTreatyBody:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+        signatories:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+        signedDate:
+          type: string
+        effectiveDate:
+          type: string
+        description:
+          type: string
+        significance:
+          type: string
+        relatedConflicts:
+          type: array
+          items:
+            type: integer
+      required: [title, type, status]
+
+    MediaEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        country:
+          type: string
+        countryCode:
+          type: string
+        category:
+          type: string
+        severity:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+        source:
+          type: string
+        isVerified:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, title, country, category, severity]
+
+    CreateMediaEventBody:
+      type: object
+      properties:
+        title:
+          type: string
+        country:
+          type: string
+        countryCode:
+          type: string
+        category:
+          type: string
+        severity:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+        source:
+          type: string
+        isVerified:
+          type: boolean
+        tags:
+          type: array
+          items:
+            type: string
+      required: [title, country, category, severity]
+
+    CountryIntelligenceReport:
+      type: object
+      properties:
+        country:
+          $ref: "#/components/schemas/Country"
+        leaders:
+          type: array
+          items:
+            $ref: "#/components/schemas/WorldLeader"
+        recentStatements:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeaderStatement"
+        parliamentaryDiscussions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ParliamentaryDiscussion"
+        legislation:
+          type: array
+          items:
+            $ref: "#/components/schemas/Legislation"
+        criminalCases:
+          type: array
+          items:
+            $ref: "#/components/schemas/CriminalCase"
+        treaties:
+          type: array
+          items:
+            $ref: "#/components/schemas/Treaty"
+        mediaEvents:
+          type: array
+          items:
+            $ref: "#/components/schemas/MediaEvent"
+        interpolNotices:
+          type: array
+          items:
+            $ref: "#/components/schemas/InterpolNotice"
+        activeConflicts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Conflict"
+        intelligenceBriefings:
+          type: array
+          items:
+            $ref: "#/components/schemas/IntelligenceBriefing"
+      required: [country]

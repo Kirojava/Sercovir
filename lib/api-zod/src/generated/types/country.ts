@@ -3,14 +3,12 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
-import type { CountryThreatLevel } from "./countryThreatLevel";
 
 export interface Country {
   id: number;
   name: string;
-  /** ISO 2-letter country code */
   code: string;
   region: string;
   flagEmoji?: string;
@@ -18,8 +16,7 @@ export interface Country {
   gdp?: number;
   population?: number;
   militaryBudget?: number;
-  threatLevel: CountryThreatLevel;
-  /** 0-100 stability score */
+  threatLevel: string;
   stabilityIndex?: number;
   keyAlliances?: string[];
   notes?: string;

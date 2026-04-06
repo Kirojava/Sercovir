@@ -3,26 +3,15 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 export interface HealthStatus {
   status: string;
 }
 
-export type CountryThreatLevel =
-  (typeof CountryThreatLevel)[keyof typeof CountryThreatLevel];
-
-export const CountryThreatLevel = {
-  low: "low",
-  moderate: "moderate",
-  high: "high",
-  critical: "critical",
-} as const;
-
 export interface Country {
   id: number;
   name: string;
-  /** ISO 2-letter country code */
   code: string;
   region: string;
   flagEmoji?: string;
@@ -30,24 +19,13 @@ export interface Country {
   gdp?: number;
   population?: number;
   militaryBudget?: number;
-  threatLevel: CountryThreatLevel;
-  /** 0-100 stability score */
+  threatLevel: string;
   stabilityIndex?: number;
   keyAlliances?: string[];
   notes?: string;
   createdAt?: string;
   updatedAt?: string;
 }
-
-export type CreateCountryBodyThreatLevel =
-  (typeof CreateCountryBodyThreatLevel)[keyof typeof CreateCountryBodyThreatLevel];
-
-export const CreateCountryBodyThreatLevel = {
-  low: "low",
-  moderate: "moderate",
-  high: "high",
-  critical: "critical",
-} as const;
 
 export interface CreateCountryBody {
   name: string;
@@ -58,7 +36,7 @@ export interface CreateCountryBody {
   gdp?: number;
   population?: number;
   militaryBudget?: number;
-  threatLevel: CreateCountryBodyThreatLevel;
+  threatLevel: string;
   stabilityIndex?: number;
   keyAlliances?: string[];
   notes?: string;
@@ -75,33 +53,13 @@ export interface CountriesSummary {
   avgStabilityIndex: number;
 }
 
-export type ConflictStatus =
-  (typeof ConflictStatus)[keyof typeof ConflictStatus];
-
-export const ConflictStatus = {
-  active: "active",
-  frozen: "frozen",
-  resolved: "resolved",
-  escalating: "escalating",
-} as const;
-
-export type ConflictSeverity =
-  (typeof ConflictSeverity)[keyof typeof ConflictSeverity];
-
-export const ConflictSeverity = {
-  low: "low",
-  medium: "medium",
-  high: "high",
-  critical: "critical",
-} as const;
-
 export interface Conflict {
   id: number;
   title: string;
   description?: string;
   region: string;
-  status: ConflictStatus;
-  severity: ConflictSeverity;
+  status: string;
+  severity: string;
   startDate?: string;
   endDate?: string;
   partiesInvolved?: string[];
@@ -112,32 +70,12 @@ export interface Conflict {
   updatedAt?: string;
 }
 
-export type CreateConflictBodyStatus =
-  (typeof CreateConflictBodyStatus)[keyof typeof CreateConflictBodyStatus];
-
-export const CreateConflictBodyStatus = {
-  active: "active",
-  frozen: "frozen",
-  resolved: "resolved",
-  escalating: "escalating",
-} as const;
-
-export type CreateConflictBodySeverity =
-  (typeof CreateConflictBodySeverity)[keyof typeof CreateConflictBodySeverity];
-
-export const CreateConflictBodySeverity = {
-  low: "low",
-  medium: "medium",
-  high: "high",
-  critical: "critical",
-} as const;
-
 export interface CreateConflictBody {
   title: string;
   description?: string;
   region: string;
-  status: CreateConflictBodyStatus;
-  severity: CreateConflictBodySeverity;
+  status: string;
+  severity: string;
   startDate?: string;
   endDate?: string;
   partiesInvolved?: string[];
@@ -162,15 +100,6 @@ export interface ConflictsSummary {
   totalDisplaced?: number;
 }
 
-export type CommitteeStatus =
-  (typeof CommitteeStatus)[keyof typeof CommitteeStatus];
-
-export const CommitteeStatus = {
-  upcoming: "upcoming",
-  active: "active",
-  concluded: "concluded",
-} as const;
-
 export interface Committee {
   id: number;
   name: string;
@@ -179,19 +108,10 @@ export interface Committee {
   description?: string;
   session?: string;
   chairperson?: string;
-  status: CommitteeStatus;
+  status: string;
   delegateCount?: number;
   createdAt?: string;
 }
-
-export type CreateCommitteeBodyStatus =
-  (typeof CreateCommitteeBodyStatus)[keyof typeof CreateCommitteeBodyStatus];
-
-export const CreateCommitteeBodyStatus = {
-  upcoming: "upcoming",
-  active: "active",
-  concluded: "concluded",
-} as const;
 
 export interface CreateCommitteeBody {
   name: string;
@@ -200,19 +120,8 @@ export interface CreateCommitteeBody {
   description?: string;
   session?: string;
   chairperson?: string;
-  status: CreateCommitteeBodyStatus;
+  status: string;
 }
-
-export type ResolutionStatus =
-  (typeof ResolutionStatus)[keyof typeof ResolutionStatus];
-
-export const ResolutionStatus = {
-  draft: "draft",
-  submitted: "submitted",
-  passed: "passed",
-  failed: "failed",
-  tabled: "tabled",
-} as const;
 
 export interface Resolution {
   id: number;
@@ -223,24 +132,13 @@ export interface Resolution {
   signatories?: string[];
   preambularClauses?: string[];
   operativeClauses?: string[];
-  status: ResolutionStatus;
+  status: string;
   votesFor?: number;
   votesAgainst?: number;
   abstentions?: number;
   createdAt?: string;
   updatedAt?: string;
 }
-
-export type CreateResolutionBodyStatus =
-  (typeof CreateResolutionBodyStatus)[keyof typeof CreateResolutionBodyStatus];
-
-export const CreateResolutionBodyStatus = {
-  draft: "draft",
-  submitted: "submitted",
-  passed: "passed",
-  failed: "failed",
-  tabled: "tabled",
-} as const;
 
 export interface CreateResolutionBody {
   title: string;
@@ -249,151 +147,57 @@ export interface CreateResolutionBody {
   signatories?: string[];
   preambularClauses?: string[];
   operativeClauses?: string[];
-  status: CreateResolutionBodyStatus;
+  status: string;
   votesFor?: number;
   votesAgainst?: number;
   abstentions?: number;
 }
 
-export type AllianceType = (typeof AllianceType)[keyof typeof AllianceType];
-
-export const AllianceType = {
-  military: "military",
-  economic: "economic",
-  political: "political",
-  humanitarian: "humanitarian",
-  diplomatic: "diplomatic",
-} as const;
-
-export type AllianceStrength =
-  (typeof AllianceStrength)[keyof typeof AllianceStrength];
-
-export const AllianceStrength = {
-  weak: "weak",
-  moderate: "moderate",
-  strong: "strong",
-  dominant: "dominant",
-} as const;
-
 export interface Alliance {
   id: number;
   name: string;
   abbreviation?: string;
-  type: AllianceType;
+  type: string;
   description?: string;
   founded?: string;
   memberCountries?: string[];
   headquarters?: string;
-  strength: AllianceStrength;
+  strength: string;
   createdAt?: string;
 }
-
-export type CreateAllianceBodyType =
-  (typeof CreateAllianceBodyType)[keyof typeof CreateAllianceBodyType];
-
-export const CreateAllianceBodyType = {
-  military: "military",
-  economic: "economic",
-  political: "political",
-  humanitarian: "humanitarian",
-  diplomatic: "diplomatic",
-} as const;
-
-export type CreateAllianceBodyStrength =
-  (typeof CreateAllianceBodyStrength)[keyof typeof CreateAllianceBodyStrength];
-
-export const CreateAllianceBodyStrength = {
-  weak: "weak",
-  moderate: "moderate",
-  strong: "strong",
-  dominant: "dominant",
-} as const;
 
 export interface CreateAllianceBody {
   name: string;
   abbreviation?: string;
-  type: CreateAllianceBodyType;
+  type: string;
   description?: string;
   founded?: string;
   memberCountries?: string[];
   headquarters?: string;
-  strength: CreateAllianceBodyStrength;
+  strength: string;
 }
-
-export type IntelligenceBriefingCategory =
-  (typeof IntelligenceBriefingCategory)[keyof typeof IntelligenceBriefingCategory];
-
-export const IntelligenceBriefingCategory = {
-  alert: "alert",
-  update: "update",
-  assessment: "assessment",
-  warning: "warning",
-  report: "report",
-} as const;
-
-export type IntelligenceBriefingPriority =
-  (typeof IntelligenceBriefingPriority)[keyof typeof IntelligenceBriefingPriority];
-
-export const IntelligenceBriefingPriority = {
-  low: "low",
-  medium: "medium",
-  high: "high",
-  critical: "critical",
-} as const;
 
 export interface IntelligenceBriefing {
   id: number;
   title: string;
   content: string;
-  category: IntelligenceBriefingCategory;
-  priority: IntelligenceBriefingPriority;
+  category: string;
+  priority: string;
   relatedCountries?: string[];
   relatedConflicts?: number[];
   source?: string;
   timestamp: string;
 }
 
-export type CreateIntelligenceBriefingBodyCategory =
-  (typeof CreateIntelligenceBriefingBodyCategory)[keyof typeof CreateIntelligenceBriefingBodyCategory];
-
-export const CreateIntelligenceBriefingBodyCategory = {
-  alert: "alert",
-  update: "update",
-  assessment: "assessment",
-  warning: "warning",
-  report: "report",
-} as const;
-
-export type CreateIntelligenceBriefingBodyPriority =
-  (typeof CreateIntelligenceBriefingBodyPriority)[keyof typeof CreateIntelligenceBriefingBodyPriority];
-
-export const CreateIntelligenceBriefingBodyPriority = {
-  low: "low",
-  medium: "medium",
-  high: "high",
-  critical: "critical",
-} as const;
-
 export interface CreateIntelligenceBriefingBody {
   title: string;
   content: string;
-  category: CreateIntelligenceBriefingBodyCategory;
-  priority: CreateIntelligenceBriefingBodyPriority;
+  category: string;
+  priority: string;
   relatedCountries?: string[];
   relatedConflicts?: number[];
   source?: string;
 }
-
-export type DelegatePosition =
-  (typeof DelegatePosition)[keyof typeof DelegatePosition];
-
-export const DelegatePosition = {
-  delegate: "delegate",
-  chair: "chair",
-  "vice-chair": "vice-chair",
-  rapporteur: "rapporteur",
-  observer: "observer",
-} as const;
 
 export interface Delegate {
   id: number;
@@ -402,42 +206,21 @@ export interface Delegate {
   countryCode?: string;
   committeeId: number;
   committeeName?: string;
-  position: DelegatePosition;
+  position: string;
   bloc?: string;
   notes?: string;
   createdAt?: string;
 }
-
-export type CreateDelegateBodyPosition =
-  (typeof CreateDelegateBodyPosition)[keyof typeof CreateDelegateBodyPosition];
-
-export const CreateDelegateBodyPosition = {
-  delegate: "delegate",
-  chair: "chair",
-  "vice-chair": "vice-chair",
-  rapporteur: "rapporteur",
-  observer: "observer",
-} as const;
 
 export interface CreateDelegateBody {
   name: string;
   country: string;
   countryCode?: string;
   committeeId: number;
-  position: CreateDelegateBodyPosition;
+  position: string;
   bloc?: string;
   notes?: string;
 }
-
-export type DashboardOverviewGlobalThreatLevel =
-  (typeof DashboardOverviewGlobalThreatLevel)[keyof typeof DashboardOverviewGlobalThreatLevel];
-
-export const DashboardOverviewGlobalThreatLevel = {
-  low: "low",
-  elevated: "elevated",
-  high: "high",
-  critical: "critical",
-} as const;
 
 export type DashboardOverviewConflictsByRegion = { [key: string]: number };
 
@@ -453,10 +236,313 @@ export interface DashboardOverview {
   passedResolutions?: number;
   totalDelegates?: number;
   totalAlliances?: number;
-  globalThreatLevel: DashboardOverviewGlobalThreatLevel;
+  totalLeaders?: number;
+  activeInterpolNotices?: number;
+  activeIcjCases?: number;
+  globalThreatLevel: string;
   recentBriefings?: IntelligenceBriefing[];
   conflictsByRegion?: DashboardOverviewConflictsByRegion;
   threatDistribution?: DashboardOverviewThreatDistribution;
+}
+
+export interface WorldLeader {
+  id: number;
+  name: string;
+  country: string;
+  countryCode?: string;
+  position: string;
+  party?: string;
+  ideology?: string;
+  bornDate?: string;
+  nationality?: string;
+  education?: string;
+  background?: string;
+  previousRoles?: string[];
+  netWorth?: string;
+  twitterHandle?: string;
+  approvalRating?: number;
+  isCurrentlyInPower?: boolean;
+  notableAchievements?: string[];
+  controversies?: string[];
+  currentLocation?: string;
+  recentTravel?: string[];
+  createdAt?: string;
+}
+
+export interface CreateLeaderBody {
+  name: string;
+  country: string;
+  countryCode?: string;
+  position: string;
+  party?: string;
+  ideology?: string;
+  bornDate?: string;
+  nationality?: string;
+  education?: string;
+  background?: string;
+  previousRoles?: string[];
+  netWorth?: string;
+  twitterHandle?: string;
+  approvalRating?: number;
+  isCurrentlyInPower?: boolean;
+  notableAchievements?: string[];
+  controversies?: string[];
+  currentLocation?: string;
+  recentTravel?: string[];
+}
+
+export interface LeaderStatement {
+  id: number;
+  leaderId: number;
+  leaderName?: string;
+  country?: string;
+  platform: string;
+  content: string;
+  sentiment?: string;
+  topic?: string;
+  relatedCountries?: string[];
+  timestamp: string;
+  engagement?: number;
+  isControversial?: boolean;
+}
+
+export interface CreateStatementBody {
+  leaderId: number;
+  platform: string;
+  content: string;
+  sentiment?: string;
+  topic?: string;
+  relatedCountries?: string[];
+  engagement?: number;
+  isControversial?: boolean;
+}
+
+export interface ParliamentaryDiscussion {
+  id: number;
+  country: string;
+  countryCode?: string;
+  chamber: string;
+  topic: string;
+  description?: string;
+  status: string;
+  date?: string;
+  outcome?: string;
+  keyPoints?: string[];
+  votesFor?: number;
+  votesAgainst?: number;
+  abstentions?: number;
+  significance?: string;
+  createdAt?: string;
+}
+
+export interface CreateParliamentaryBody {
+  country: string;
+  countryCode?: string;
+  chamber: string;
+  topic: string;
+  description?: string;
+  status: string;
+  date?: string;
+  outcome?: string;
+  keyPoints?: string[];
+  votesFor?: number;
+  votesAgainst?: number;
+  abstentions?: number;
+  significance?: string;
+}
+
+export interface Legislation {
+  id: number;
+  country: string;
+  countryCode?: string;
+  title: string;
+  description?: string;
+  status: string;
+  category: string;
+  proposedDate?: string;
+  enactedDate?: string;
+  proposedBy?: string;
+  supportingParties?: string[];
+  opposingParties?: string[];
+  publicOpinion?: string;
+  impact?: string;
+  controversyLevel?: string;
+  createdAt?: string;
+}
+
+export interface CreateLegislationBody {
+  country: string;
+  countryCode?: string;
+  title: string;
+  description?: string;
+  status: string;
+  category: string;
+  proposedDate?: string;
+  enactedDate?: string;
+  proposedBy?: string;
+  supportingParties?: string[];
+  opposingParties?: string[];
+  publicOpinion?: string;
+  impact?: string;
+  controversyLevel?: string;
+}
+
+export interface CriminalCase {
+  id: number;
+  title: string;
+  country: string;
+  court?: string;
+  caseType: string;
+  status: string;
+  defendants?: string[];
+  charges?: string[];
+  description?: string;
+  startDate?: string;
+  verdict?: string;
+  sentencing?: string;
+  internationalInvolvement?: boolean;
+  severity?: string;
+  createdAt?: string;
+}
+
+export interface CreateCriminalCaseBody {
+  title: string;
+  country: string;
+  court?: string;
+  caseType: string;
+  status: string;
+  defendants?: string[];
+  charges?: string[];
+  description?: string;
+  startDate?: string;
+  verdict?: string;
+  sentencing?: string;
+  internationalInvolvement?: boolean;
+  severity?: string;
+}
+
+export interface InterpolNotice {
+  id: number;
+  noticeType: string;
+  subjectName: string;
+  nationality?: string;
+  chargedBy?: string;
+  charges?: string;
+  description?: string;
+  dangerLevel?: string;
+  lastKnownLocation?: string;
+  status: string;
+  issuedDate?: string;
+  createdAt?: string;
+}
+
+export interface CreateInterpolNoticeBody {
+  noticeType: string;
+  subjectName: string;
+  nationality?: string;
+  chargedBy?: string;
+  charges?: string;
+  description?: string;
+  dangerLevel?: string;
+  lastKnownLocation?: string;
+  status: string;
+  issuedDate?: string;
+}
+
+export interface IcjCase {
+  id: number;
+  title: string;
+  applicantCountry: string;
+  respondentCountry: string;
+  caseType?: string;
+  status: string;
+  filedDate?: string;
+  description?: string;
+  currentPhase?: string;
+  lastUpdate?: string;
+  significance?: string;
+  createdAt?: string;
+}
+
+export interface CreateIcjCaseBody {
+  title: string;
+  applicantCountry: string;
+  respondentCountry: string;
+  caseType?: string;
+  status: string;
+  filedDate?: string;
+  description?: string;
+  currentPhase?: string;
+  lastUpdate?: string;
+  significance?: string;
+}
+
+export interface Treaty {
+  id: number;
+  title: string;
+  type: string;
+  signatories?: string[];
+  status: string;
+  signedDate?: string;
+  effectiveDate?: string;
+  description?: string;
+  significance?: string;
+  relatedConflicts?: number[];
+  createdAt?: string;
+}
+
+export interface CreateTreatyBody {
+  title: string;
+  type: string;
+  signatories?: string[];
+  status: string;
+  signedDate?: string;
+  effectiveDate?: string;
+  description?: string;
+  significance?: string;
+  relatedConflicts?: number[];
+}
+
+export interface MediaEvent {
+  id: number;
+  title: string;
+  country: string;
+  countryCode?: string;
+  category: string;
+  severity: string;
+  description?: string;
+  date?: string;
+  source?: string;
+  isVerified?: boolean;
+  tags?: string[];
+  createdAt?: string;
+}
+
+export interface CreateMediaEventBody {
+  title: string;
+  country: string;
+  countryCode?: string;
+  category: string;
+  severity: string;
+  description?: string;
+  date?: string;
+  source?: string;
+  isVerified?: boolean;
+  tags?: string[];
+}
+
+export interface CountryIntelligenceReport {
+  country: Country;
+  leaders?: WorldLeader[];
+  recentStatements?: LeaderStatement[];
+  parliamentaryDiscussions?: ParliamentaryDiscussion[];
+  legislation?: Legislation[];
+  criminalCases?: CriminalCase[];
+  treaties?: Treaty[];
+  mediaEvents?: MediaEvent[];
+  interpolNotices?: InterpolNotice[];
+  activeConflicts?: Conflict[];
+  intelligenceBriefings?: IntelligenceBriefing[];
 }
 
 export type ListCountriesParams = {
@@ -465,35 +551,14 @@ export type ListCountriesParams = {
 };
 
 export type ListConflictsParams = {
-  status?: ListConflictsStatus;
+  status?: string;
   region?: string;
 };
 
-export type ListConflictsStatus =
-  (typeof ListConflictsStatus)[keyof typeof ListConflictsStatus];
-
-export const ListConflictsStatus = {
-  active: "active",
-  frozen: "frozen",
-  resolved: "resolved",
-  escalating: "escalating",
-} as const;
-
 export type ListResolutionsParams = {
   committeeId?: number;
-  status?: ListResolutionsStatus;
+  status?: string;
 };
-
-export type ListResolutionsStatus =
-  (typeof ListResolutionsStatus)[keyof typeof ListResolutionsStatus];
-
-export const ListResolutionsStatus = {
-  draft: "draft",
-  submitted: "submitted",
-  passed: "passed",
-  failed: "failed",
-  tabled: "tabled",
-} as const;
 
 export type GetIntelligenceFeedParams = {
   limit?: number;
@@ -501,4 +566,53 @@ export type GetIntelligenceFeedParams = {
 
 export type ListDelegatesParams = {
   committeeId?: number;
+};
+
+export type ListLeadersParams = {
+  country?: string;
+  search?: string;
+  role?: string;
+};
+
+export type ListStatementsParams = {
+  leaderId?: number;
+  platform?: string;
+  topic?: string;
+};
+
+export type ListParliamentaryParams = {
+  country?: string;
+  status?: string;
+};
+
+export type ListLegislationParams = {
+  country?: string;
+  status?: string;
+  category?: string;
+};
+
+export type ListCriminalCasesParams = {
+  country?: string;
+  status?: string;
+  caseType?: string;
+};
+
+export type ListInterpolNoticesParams = {
+  noticeType?: string;
+  status?: string;
+};
+
+export type ListIcjCasesParams = {
+  status?: string;
+};
+
+export type ListTreatiesParams = {
+  type?: string;
+  status?: string;
+};
+
+export type ListMediaEventsParams = {
+  country?: string;
+  category?: string;
+  severity?: string;
 };

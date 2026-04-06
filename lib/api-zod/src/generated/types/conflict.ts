@@ -3,20 +3,18 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
-import type { ConflictSeverity } from "./conflictSeverity";
-import type { ConflictStatus } from "./conflictStatus";
 
 export interface Conflict {
   id: number;
   title: string;
   description?: string;
   region: string;
-  status: ConflictStatus;
-  severity: ConflictSeverity;
-  startDate?: Date;
-  endDate?: Date;
+  status: string;
+  severity: string;
+  startDate?: string;
+  endDate?: string;
   partiesInvolved?: string[];
   casualties?: number;
   displacedPersons?: number;

@@ -3,11 +3,10 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
-import type { ListResolutionsStatus } from "./listResolutionsStatus";
 
 export type ListResolutionsParams = {
   committeeId?: number;
-  status?: ListResolutionsStatus;
+  status?: string;
 };

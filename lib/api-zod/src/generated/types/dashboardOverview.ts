@@ -3,10 +3,9 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 import type { DashboardOverviewConflictsByRegion } from "./dashboardOverviewConflictsByRegion";
-import type { DashboardOverviewGlobalThreatLevel } from "./dashboardOverviewGlobalThreatLevel";
 import type { DashboardOverviewThreatDistribution } from "./dashboardOverviewThreatDistribution";
 import type { IntelligenceBriefing } from "./intelligenceBriefing";
 
@@ -20,7 +19,10 @@ export interface DashboardOverview {
   passedResolutions?: number;
   totalDelegates?: number;
   totalAlliances?: number;
-  globalThreatLevel: DashboardOverviewGlobalThreatLevel;
+  totalLeaders?: number;
+  activeInterpolNotices?: number;
+  activeIcjCases?: number;
+  globalThreatLevel: string;
   recentBriefings?: IntelligenceBriefing[];
   conflictsByRegion?: DashboardOverviewConflictsByRegion;
   threatDistribution?: DashboardOverviewThreatDistribution;

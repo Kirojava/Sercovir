@@ -3,20 +3,18 @@
  * Do not edit manually.
  * Api
  * Sercovir Geopolitical Intelligence Platform API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
-import type { AllianceStrength } from "./allianceStrength";
-import type { AllianceType } from "./allianceType";
 
 export interface Alliance {
   id: number;
   name: string;
   abbreviation?: string;
-  type: AllianceType;
+  type: string;
   description?: string;
-  founded?: Date;
+  founded?: string;
   memberCountries?: string[];
   headquarters?: string;
-  strength: AllianceStrength;
+  strength: string;
   createdAt?: Date;
 }

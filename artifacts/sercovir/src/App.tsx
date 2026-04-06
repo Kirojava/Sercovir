@@ -18,6 +18,17 @@ import Alliances from "@/pages/alliances";
 import Delegates from "@/pages/delegates";
 import Intelligence from "@/pages/intelligence";
 
+import Leaders from "@/pages/leaders";
+import Leader from "@/pages/leader";
+import CountryIntel from "@/pages/country-intel";
+import Parliamentary from "@/pages/parliamentary";
+import Legislation from "@/pages/legislation";
+import CriminalCases from "@/pages/criminal-cases";
+import Interpol from "@/pages/interpol";
+import IcjCases from "@/pages/icj";
+import Treaties from "@/pages/treaties";
+import MediaEvents from "@/pages/media-events";
+
 const queryClient = new QueryClient();
 
 function Router() {
@@ -36,6 +47,18 @@ function Router() {
         <Route path="/alliances" component={Alliances} />
         <Route path="/delegates" component={Delegates} />
         <Route path="/intelligence" component={Intelligence} />
+        
+        <Route path="/leaders" component={Leaders} />
+        <Route path="/leaders/:id" component={Leader} />
+        <Route path="/country-intel" component={CountryIntel} />
+        <Route path="/parliamentary" component={Parliamentary} />
+        <Route path="/legislation" component={Legislation} />
+        <Route path="/criminal-cases" component={CriminalCases} />
+        <Route path="/interpol" component={Interpol} />
+        <Route path="/icj" component={IcjCases} />
+        <Route path="/treaties" component={Treaties} />
+        <Route path="/media-events" component={MediaEvents} />
+
         <Route component={NotFound} />
       </Switch>
     </Layout>
