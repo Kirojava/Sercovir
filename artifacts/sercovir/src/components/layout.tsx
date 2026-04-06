@@ -1,0 +1,100 @@
+import { Link, useLocation } from "wouter";
+import { 
+  Globe, 
+  ShieldAlert, 
+  Users, 
+  FileText, 
+  Network, 
+  UserCircle, 
+  RadioTower,
+  LayoutDashboard
+} from "lucide-react";
+import { ReactNode } from "react";
+
+const NAV_ITEMS = [
+  { href: "/", label: "Command Center", icon: LayoutDashboard },
+  { href: "/countries", label: "Global Profiles", icon: Globe },
+  { href: "/conflicts", label: "Active Conflicts", icon: ShieldAlert },
+  { href: "/committees", label: "Committees", icon: Users },
+  { href: "/resolutions", label: "Resolutions", icon: FileText },
+  { href: "/alliances", label: "Alliances", icon: Network },
+  { href: "/delegates", label: "Delegates", icon: UserCircle },
+  { href: "/intelligence", label: "Intelligence Feed", icon: RadioTower },
+];
+
+export function Layout({ children }: { children: ReactNode }) {
+  const [location] = useLocation();
+
+  return (
+    <div className="flex h-screen w-full bg-background text-foreground font-sans overflow-hidden selection:bg-primary/30">
+      <aside className="w-64 border-r border-border bg-sidebar flex flex-col relative z-10">
+        <div className="h-16 flex items-center px-6 border-b border-border">
+          <div className="flex items-center gap-3 text-primary">
+            <Globe className="w-6 h-6" />
+            <span className="font-mono font-bold tracking-widest text-lg">SERCOVIR</span>
+          </div>
+        </div>
+        
+        <div className="p-4 flex-1 overflow-y-auto py-6">
+          <div className="text-xs font-mono text-muted-foreground mb-4 px-2 uppercase tracking-wider">
+            Secure Network
+          </div>
+          <nav className="flex flex-col gap-1">
+            {NAV_ITEMS.map((item) => {
+              const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+              const Icon = item.icon;
+              
+              return (
+                <Link key={item.href} href={item.href}>
+                  <div 
+                    className={`flex items-center gap-3 px-3 py-2 rounded-md transition-all cursor-pointer font-mono text-sm ${
+                      isActive 
+                        ? "bg-primary/10 text-primary border border-primary/20" 
+                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground border border-transparent"
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
+                    {item.label}
+                    {isActive && (
+                      <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+        
+        <div className="p-4 border-t border-border bg-sidebar">
+          <div className="flex items-center justify-between text-xs font-mono">
+            <span className="text-muted-foreground">STATUS</span>
+            <span className="text-emerald-500 flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              ONLINE
+            </span>
+          </div>
+        </div>
+      </aside>
+      
+      <main className="flex-1 flex flex-col relative overflow-hidden bg-background">
+        {/* Subtle scanline overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.015] mix-blend-overlay z-50" 
+             style={{ backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))', backgroundSize: '100% 4px, 6px 100%' }} />
+        
+        <header className="h-16 flex items-center justify-between px-8 border-b border-border bg-card/50 backdrop-blur-sm relative z-10">
+          <h2 className="font-mono text-sm text-muted-foreground">
+            {location.toUpperCase() || "COMMAND CENTER"}
+          </h2>
+          <div className="font-mono text-xs text-muted-foreground flex items-center gap-4">
+            <span>SYS.OP: ADMIN</span>
+            <span>{new Date().toISOString().split('T')[0]}</span>
+          </div>
+        </header>
+        
+        <div className="flex-1 overflow-y-auto p-8 relative z-0">
+          {children}
+        </div>
+      </main>
+    </div>
+  );
+}

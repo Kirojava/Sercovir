@@ -1,22 +1,35 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Sercovir Geopolitical Intelligence Platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: countries
+    description: Country intelligence operations
+  - name: conflicts
+    description: Conflict tracking operations
+  - name: committees
+    description: MUN committee operations
+  - name: resolutions
+    description: Resolution drafting operations
+  - name: alliances
+    description: Alliance and bloc operations
+  - name: intelligence
+    description: Intelligence briefings and feeds
+  - name: delegates
+    description: Delegate management
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +37,655 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /countries:
+    get:
+      operationId: listCountries
+      tags: [countries]
+      summary: List all countries with intelligence profiles
+      parameters:
+        - name: region
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of countries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Country"
+    post:
+      operationId: createCountry
+      tags: [countries]
+      summary: Create country profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCountryBody"
+      responses:
+        "201":
+          description: Country created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Country"
+
+  /countries/{id}:
+    get:
+      operationId: getCountry
+      tags: [countries]
+      summary: Get country intelligence profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Country profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Country"
+    put:
+      operationId: updateCountry
+      tags: [countries]
+      summary: Update country profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCountryBody"
+      responses:
+        "200":
+          description: Country updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Country"
+    delete:
+      operationId: deleteCountry
+      tags: [countries]
+      summary: Delete country profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /countries/summary:
+    get:
+      operationId: getCountriesSummary
+      tags: [countries]
+      summary: Get global intelligence summary
+      responses:
+        "200":
+          description: Summary stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountriesSummary"
+
+  /conflicts:
+    get:
+      operationId: listConflicts
+      tags: [conflicts]
+      summary: List active geopolitical conflicts
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, frozen, resolved, escalating]
+        - name: region
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of conflicts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conflict"
+    post:
+      operationId: createConflict
+      tags: [conflicts]
+      summary: Create conflict record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConflictBody"
+      responses:
+        "201":
+          description: Conflict created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conflict"
+
+  /conflicts/{id}:
+    get:
+      operationId: getConflict
+      tags: [conflicts]
+      summary: Get conflict details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Conflict details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conflict"
+    put:
+      operationId: updateConflict
+      tags: [conflicts]
+      summary: Update conflict
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConflictBody"
+      responses:
+        "200":
+          description: Conflict updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conflict"
+    delete:
+      operationId: deleteConflict
+      tags: [conflicts]
+      summary: Delete conflict
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /conflicts/summary:
+    get:
+      operationId: getConflictsSummary
+      tags: [conflicts]
+      summary: Conflict dashboard summary
+      responses:
+        "200":
+          description: Summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConflictsSummary"
+
+  /committees:
+    get:
+      operationId: listCommittees
+      tags: [committees]
+      summary: List MUN committees
+      responses:
+        "200":
+          description: List of committees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Committee"
+    post:
+      operationId: createCommittee
+      tags: [committees]
+      summary: Create committee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCommitteeBody"
+      responses:
+        "201":
+          description: Committee created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Committee"
+
+  /committees/{id}:
+    get:
+      operationId: getCommittee
+      tags: [committees]
+      summary: Get committee details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Committee
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Committee"
+    put:
+      operationId: updateCommittee
+      tags: [committees]
+      summary: Update committee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCommitteeBody"
+      responses:
+        "200":
+          description: Committee updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Committee"
+    delete:
+      operationId: deleteCommittee
+      tags: [committees]
+      summary: Delete committee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /resolutions:
+    get:
+      operationId: listResolutions
+      tags: [resolutions]
+      summary: List resolutions
+      parameters:
+        - name: committeeId
+          in: query
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [draft, submitted, passed, failed, tabled]
+      responses:
+        "200":
+          description: List of resolutions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Resolution"
+    post:
+      operationId: createResolution
+      tags: [resolutions]
+      summary: Create resolution draft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateResolutionBody"
+      responses:
+        "201":
+          description: Resolution created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Resolution"
+
+  /resolutions/{id}:
+    get:
+      operationId: getResolution
+      tags: [resolutions]
+      summary: Get resolution
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Resolution
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Resolution"
+    put:
+      operationId: updateResolution
+      tags: [resolutions]
+      summary: Update resolution
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateResolutionBody"
+      responses:
+        "200":
+          description: Resolution updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Resolution"
+    delete:
+      operationId: deleteResolution
+      tags: [resolutions]
+      summary: Delete resolution
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /alliances:
+    get:
+      operationId: listAlliances
+      tags: [alliances]
+      summary: List geopolitical alliances and blocs
+      responses:
+        "200":
+          description: Alliances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Alliance"
+    post:
+      operationId: createAlliance
+      tags: [alliances]
+      summary: Create alliance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAllianceBody"
+      responses:
+        "201":
+          description: Alliance created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Alliance"
+
+  /alliances/{id}:
+    get:
+      operationId: getAlliance
+      tags: [alliances]
+      summary: Get alliance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Alliance
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Alliance"
+    put:
+      operationId: updateAlliance
+      tags: [alliances]
+      summary: Update alliance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAllianceBody"
+      responses:
+        "200":
+          description: Alliance updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Alliance"
+    delete:
+      operationId: deleteAlliance
+      tags: [alliances]
+      summary: Delete alliance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /intelligence/feed:
+    get:
+      operationId: getIntelligenceFeed
+      tags: [intelligence]
+      summary: Get live intelligence briefing feed
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: Intelligence feed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IntelligenceBriefing"
+    post:
+      operationId: createIntelligenceBriefing
+      tags: [intelligence]
+      summary: Create intelligence briefing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateIntelligenceBriefingBody"
+      responses:
+        "201":
+          description: Briefing created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IntelligenceBriefing"
+
+  /intelligence/briefings/{id}:
+    delete:
+      operationId: deleteIntelligenceBriefing
+      tags: [intelligence]
+      summary: Delete intelligence briefing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /delegates:
+    get:
+      operationId: listDelegates
+      tags: [delegates]
+      summary: List delegates
+      parameters:
+        - name: committeeId
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Delegates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Delegate"
+    post:
+      operationId: createDelegate
+      tags: [delegates]
+      summary: Create delegate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDelegateBody"
+      responses:
+        "201":
+          description: Delegate created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Delegate"
+
+  /delegates/{id}:
+    get:
+      operationId: getDelegate
+      tags: [delegates]
+      summary: Get delegate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Delegate
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Delegate"
+    put:
+      operationId: updateDelegate
+      tags: [delegates]
+      summary: Update delegate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDelegateBody"
+      responses:
+        "200":
+          description: Delegate updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Delegate"
+    delete:
+      operationId: deleteDelegate
+      tags: [delegates]
+      summary: Delete delegate
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /dashboard:
+    get:
+      operationId: getDashboard
+      tags: [intelligence]
+      summary: Get global dashboard overview
+      responses:
+        "200":
+          description: Dashboard data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardOverview"
+
 components:
   schemas:
     HealthStatus:
@@ -31,6 +693,518 @@ components:
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    Country:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        code:
+          type: string
+          description: ISO 2-letter country code
+        region:
+          type: string
+        flagEmoji:
+          type: string
+        politicalSystem:
+          type: string
+        gdp:
+          type: number
+        population:
+          type: integer
+        militaryBudget:
+          type: number
+        threatLevel:
+          type: string
+          enum: [low, moderate, high, critical]
+        stabilityIndex:
+          type: number
+          description: 0-100 stability score
+        keyAlliances:
+          type: array
+          items:
+            type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, name, code, region, threatLevel]
+
+    CreateCountryBody:
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        region:
+          type: string
+        flagEmoji:
+          type: string
+        politicalSystem:
+          type: string
+        gdp:
+          type: number
+        population:
+          type: integer
+        militaryBudget:
+          type: number
+        threatLevel:
+          type: string
+          enum: [low, moderate, high, critical]
+        stabilityIndex:
+          type: number
+        keyAlliances:
+          type: array
+          items:
+            type: string
+        notes:
+          type: string
+      required: [name, code, region, threatLevel]
+
+    CountriesSummary:
+      type: object
+      properties:
+        total:
+          type: integer
+        byRegion:
+          type: object
+          additionalProperties:
+            type: integer
+        byThreatLevel:
+          type: object
+          additionalProperties:
+            type: integer
+        avgStabilityIndex:
+          type: number
+      required: [total, byRegion, byThreatLevel, avgStabilityIndex]
+
+    Conflict:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        region:
+          type: string
+        status:
+          type: string
+          enum: [active, frozen, resolved, escalating]
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        partiesInvolved:
+          type: array
+          items:
+            type: string
+        casualties:
+          type: integer
+        displacedPersons:
+          type: integer
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, title, region, status, severity]
+
+    CreateConflictBody:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        region:
+          type: string
+        status:
+          type: string
+          enum: [active, frozen, resolved, escalating]
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        partiesInvolved:
+          type: array
+          items:
+            type: string
+        casualties:
+          type: integer
+        displacedPersons:
+          type: integer
+        notes:
+          type: string
+      required: [title, region, status, severity]
+
+    ConflictsSummary:
+      type: object
+      properties:
+        total:
+          type: integer
+        active:
+          type: integer
+        escalating:
+          type: integer
+        resolved:
+          type: integer
+        frozen:
+          type: integer
+        bySeverity:
+          type: object
+          additionalProperties:
+            type: integer
+        byRegion:
+          type: object
+          additionalProperties:
+            type: integer
+        totalCasualties:
+          type: integer
+        totalDisplaced:
+          type: integer
+      required: [total, active, escalating, resolved, frozen, bySeverity, byRegion]
+
+    Committee:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        abbreviation:
+          type: string
+        topic:
+          type: string
+        description:
+          type: string
+        session:
+          type: string
+        chairperson:
+          type: string
+        status:
+          type: string
+          enum: [upcoming, active, concluded]
+        delegateCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, abbreviation, topic, status]
+
+    CreateCommitteeBody:
+      type: object
+      properties:
+        name:
+          type: string
+        abbreviation:
+          type: string
+        topic:
+          type: string
+        description:
+          type: string
+        session:
+          type: string
+        chairperson:
+          type: string
+        status:
+          type: string
+          enum: [upcoming, active, concluded]
+      required: [name, abbreviation, topic, status]
+
+    Resolution:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        committeeId:
+          type: integer
+        committeeName:
+          type: string
+        sponsors:
+          type: array
+          items:
+            type: string
+        signatories:
+          type: array
+          items:
+            type: string
+        preambularClauses:
+          type: array
+          items:
+            type: string
+        operativeClauses:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [draft, submitted, passed, failed, tabled]
+        votesFor:
+          type: integer
+        votesAgainst:
+          type: integer
+        abstentions:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, title, committeeId, status]
+
+    CreateResolutionBody:
+      type: object
+      properties:
+        title:
+          type: string
+        committeeId:
+          type: integer
+        sponsors:
+          type: array
+          items:
+            type: string
+        signatories:
+          type: array
+          items:
+            type: string
+        preambularClauses:
+          type: array
+          items:
+            type: string
+        operativeClauses:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [draft, submitted, passed, failed, tabled]
+        votesFor:
+          type: integer
+        votesAgainst:
+          type: integer
+        abstentions:
+          type: integer
+      required: [title, committeeId, status]
+
+    Alliance:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        abbreviation:
+          type: string
+        type:
+          type: string
+          enum: [military, economic, political, humanitarian, diplomatic]
+        description:
+          type: string
+        founded:
+          type: string
+          format: date
+        memberCountries:
+          type: array
+          items:
+            type: string
+        headquarters:
+          type: string
+        strength:
+          type: string
+          enum: [weak, moderate, strong, dominant]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, type, strength]
+
+    CreateAllianceBody:
+      type: object
+      properties:
+        name:
+          type: string
+        abbreviation:
+          type: string
+        type:
+          type: string
+          enum: [military, economic, political, humanitarian, diplomatic]
+        description:
+          type: string
+        founded:
+          type: string
+          format: date
+        memberCountries:
+          type: array
+          items:
+            type: string
+        headquarters:
+          type: string
+        strength:
+          type: string
+          enum: [weak, moderate, strong, dominant]
+      required: [name, type, strength]
+
+    IntelligenceBriefing:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+          enum: [alert, update, assessment, warning, report]
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        relatedCountries:
+          type: array
+          items:
+            type: string
+        relatedConflicts:
+          type: array
+          items:
+            type: integer
+        source:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      required: [id, title, content, category, priority, timestamp]
+
+    CreateIntelligenceBriefingBody:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+          enum: [alert, update, assessment, warning, report]
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        relatedCountries:
+          type: array
+          items:
+            type: string
+        relatedConflicts:
+          type: array
+          items:
+            type: integer
+        source:
+          type: string
+      required: [title, content, category, priority]
+
+    Delegate:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        country:
+          type: string
+        countryCode:
+          type: string
+        committeeId:
+          type: integer
+        committeeName:
+          type: string
+        position:
+          type: string
+          enum: [delegate, chair, vice-chair, rapporteur, observer]
+        bloc:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, country, committeeId, position]
+
+    CreateDelegateBody:
+      type: object
+      properties:
+        name:
+          type: string
+        country:
+          type: string
+        countryCode:
+          type: string
+        committeeId:
+          type: integer
+        position:
+          type: string
+          enum: [delegate, chair, vice-chair, rapporteur, observer]
+        bloc:
+          type: string
+        notes:
+          type: string
+      required: [name, country, committeeId, position]
+
+    DashboardOverview:
+      type: object
+      properties:
+        totalCountries:
+          type: integer
+        activeConflicts:
+          type: integer
+        escalatingConflicts:
+          type: integer
+        totalCommittees:
+          type: integer
+        activeCommittees:
+          type: integer
+        totalResolutions:
+          type: integer
+        passedResolutions:
+          type: integer
+        totalDelegates:
+          type: integer
+        totalAlliances:
+          type: integer
+        globalThreatLevel:
+          type: string
+          enum: [low, elevated, high, critical]
+        recentBriefings:
+          type: array
+          items:
+            $ref: "#/components/schemas/IntelligenceBriefing"
+        conflictsByRegion:
+          type: object
+          additionalProperties:
+            type: integer
+        threatDistribution:
+          type: object
+          additionalProperties:
+            type: integer
+      required: [totalCountries, activeConflicts, totalCommittees, totalResolutions, globalThreatLevel]
