@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Globe, Target, MapPin, Calendar } from "lucide-react";
+import { Search, Globe, Crosshair, MapPin, Calendar } from "lucide-react";
 import { format } from "date-fns";
 
 export default function Interpol() {
@@ -95,7 +95,7 @@ export default function Interpol() {
                   <div className="grid grid-cols-2 gap-2 text-xs font-mono border-t border-border/50 pt-3">
                     <div className="space-y-1">
                       <div className="text-[10px] text-muted-foreground flex items-center gap-1">
-                        <Target className="w-3 h-3" /> CHARGED BY
+                        <Crosshair className="w-3 h-3" /> CHARGED BY
                       </div>
                       <div>{notice.chargedBy || "N/A"}</div>
                     </div>

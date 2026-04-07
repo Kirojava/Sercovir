@@ -12,9 +12,10 @@ import {
   MapPin,
   Scale,
   FileSignature,
-  Video
+  Newspaper,
+  Crosshair
 } from "lucide-react";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 
 const NAV_SECTIONS = [
   {
@@ -46,7 +47,7 @@ const NAV_SECTIONS = [
       { href: "/resolutions", label: "Resolutions", icon: FileText },
       { href: "/treaties", label: "Treaties", icon: FileSignature },
       { href: "/icj", label: "ICJ Cases", icon: Scale },
-      { href: "/interpol", label: "Interpol", icon: Target },
+      { href: "/interpol", label: "Interpol", icon: Crosshair },
       { href: "/parliamentary", label: "Parliamentary", icon: Building2 },
     ]
   },
@@ -55,7 +56,7 @@ const NAV_SECTIONS = [
     items: [
       { href: "/legislation", label: "Legislation", icon: FileText },
       { href: "/criminal-cases", label: "Criminal Cases", icon: Scale },
-      { href: "/media-events", label: "Media Events", icon: Video },
+      { href: "/media-events", label: "Media Events", icon: Newspaper },
     ]
   },
   {
