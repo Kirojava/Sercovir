@@ -13,15 +13,19 @@ import {
   Scale,
   FileSignature,
   Newspaper,
-  Crosshair
+  Crosshair,
+  Wifi,
+  Megaphone
 } from "lucide-react";
 import { ReactNode } from "react";
 
 const NAV_SECTIONS = [
   {
-    title: "INTELLIGENCE",
+    title: "LIVE FEEDS",
     items: [
       { href: "/", label: "Command Center", icon: LayoutDashboard },
+      { href: "/live-news", label: "Live World News", icon: Wifi },
+      { href: "/press-releases", label: "Press Releases", icon: Megaphone },
       { href: "/intelligence", label: "Intelligence Feed", icon: RadioTower },
     ]
   },

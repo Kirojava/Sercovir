@@ -1,14 +1,124 @@
+import { useState, useEffect } from "react";
 import { useGetDashboard } from "@workspace/api-client-react";
-import { ShieldAlert, Globe, Crosshair, Users, Activity, FileText } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { ShieldAlert, Globe, Crosshair, Users, Activity, FileText, Wifi, ExternalLink, Clock, RefreshCw, Newspaper, Building2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { formatDistanceToNow } from "date-fns";
+import { Link } from "wouter";
+
+const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
+
+interface NewsItem {
+  id: string;
+  title: string;
+  summary: string;
+  link: string;
+  source: string;
+  sourceLabel: string;
+  category: string;
+  publishedAt: string;
+}
+
+interface PressItem {
+  id: string;
+  title: string;
+  link: string;
+  source: string;
+  sourceLabel: string;
+  organization: string;
+  publishedAt: string;
+}
+
+const SOURCE_COLORS: Record<string, string> = {
+  reuters: "text-orange-400 border-orange-400/30 bg-orange-400/10",
+  bbc: "text-red-400 border-red-400/30 bg-red-400/10",
+  cnn: "text-red-500 border-red-500/30 bg-red-500/10",
+  aljazeera: "text-yellow-400 border-yellow-400/30 bg-yellow-400/10",
+  guardian: "text-blue-400 border-blue-400/30 bg-blue-400/10",
+  abc: "text-purple-400 border-purple-400/30 bg-purple-400/10",
+  skynews: "text-cyan-400 border-cyan-400/30 bg-cyan-400/10",
+  ft: "text-pink-400 border-pink-400/30 bg-pink-400/10",
+  wsj: "text-blue-300 border-blue-300/30 bg-blue-300/10",
+  un: "text-blue-400 border-blue-400/30 bg-blue-400/10",
+  nato: "text-blue-500 border-blue-500/30 bg-blue-500/10",
+  whitehouse: "text-red-400 border-red-400/30 bg-red-400/10",
+  usdos: "text-indigo-400 border-indigo-400/30 bg-indigo-400/10",
+  eu: "text-yellow-400 border-yellow-400/30 bg-yellow-400/10",
+  icc: "text-purple-400 border-purple-400/30 bg-purple-400/10",
+  icj: "text-cyan-400 border-cyan-400/30 bg-cyan-400/10",
+  interpol: "text-orange-400 border-orange-400/30 bg-orange-400/10",
+};
+
+function LiveNewsTicker({ items }: { items: NewsItem[] }) {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    if (!items.length) return;
+    const iv = setInterval(() => setIdx(i => (i + 1) % items.length), 4500);
+    return () => clearInterval(iv);
+  }, [items.length]);
+
+  if (!items.length) return null;
+  const item = items[idx];
+
+  return (
+    <div className="flex items-center gap-4 bg-primary/10 border border-primary/20 rounded-md px-4 py-2.5 overflow-hidden">
+      <span className="shrink-0 font-mono text-[10px] font-bold text-primary uppercase animate-pulse flex items-center gap-1.5">
+        <Wifi className="w-3 h-3" /> LIVE
+      </span>
+      <div className="flex-1 overflow-hidden">
+        <p className="font-mono text-xs text-foreground truncate">
+          <span className={`mr-2 text-[10px] px-1.5 py-0.5 rounded border ${SOURCE_COLORS[item.source] || "text-primary border-primary/30 bg-primary/10"}`}>
+            {item.sourceLabel}
+          </span>
+          {item.title}
+        </p>
+      </div>
+      <a
+        href={item.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="shrink-0 text-[10px] font-mono text-primary/60 hover:text-primary transition-colors flex items-center gap-1"
+      >
+        READ <ExternalLink className="w-3 h-3" />
+      </a>
+    </div>
+  );
+}
 
 export default function Dashboard() {
-  const { data: dashboard, isLoading } = useGetDashboard();
+  const { data: dashboard, isLoading } = useGetDashboard({ query: { refetchInterval: 120_000 } });
+
+  const { data: liveNews = [] } = useQuery<NewsItem[]>({
+    queryKey: ["dashboard-live-news"],
+    queryFn: async () => {
+      const res = await fetch(`${BASE}/api/live-feed?limit=40`);
+      if (!res.ok) throw new Error("Failed");
+      return res.json();
+    },
+    refetchInterval: 90_000,
+    staleTime: 60_000,
+    retry: 1,
+  });
+
+  const { data: pressReleases = [] } = useQuery<PressItem[]>({
+    queryKey: ["dashboard-press"],
+    queryFn: async () => {
+      const res = await fetch(`${BASE}/api/press-releases?limit=8`);
+      if (!res.ok) throw new Error("Failed");
+      return res.json();
+    },
+    refetchInterval: 120_000,
+    staleTime: 90_000,
+    retry: 1,
+  });
 
   if (isLoading) {
     return (
       <div className="space-y-6">
+        <Skeleton className="h-10 w-full rounded-md" />
         <Skeleton className="h-[200px] w-full" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Skeleton className="h-32" />
@@ -22,8 +132,13 @@ export default function Dashboard() {
 
   if (!dashboard) return null;
 
+  const topNews = liveNews.slice(0, 6);
+  const topPress = pressReleases.slice(0, 5);
+
   return (
     <div className="space-y-6">
+      {liveNews.length > 0 && <LiveNewsTicker items={liveNews.slice(0, 20)} />}
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-mono font-bold tracking-tight">GLOBAL INTELLIGENCE OVERVIEW</h1>
@@ -141,6 +256,113 @@ export default function Dashboard() {
                 </div>
               ))}
             </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="bg-card/50 border-border backdrop-blur-sm">
+          <CardHeader className="border-b border-border/50 pb-4">
+            <CardTitle className="font-mono text-sm flex items-center justify-between text-primary">
+              <span className="flex items-center gap-2">
+                <Newspaper className="w-4 h-4" />
+                LIVE WORLD NEWS
+              </span>
+              <Link href="/live-news">
+                <span className="text-[10px] text-muted-foreground hover:text-primary transition-colors cursor-pointer flex items-center gap-1">
+                  VIEW ALL <ExternalLink className="w-3 h-3" />
+                </span>
+              </Link>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            {topNews.length === 0 ? (
+              <div className="p-6 text-center text-muted-foreground font-mono text-sm flex flex-col items-center gap-2">
+                <RefreshCw className="w-5 h-5 animate-spin opacity-40" />
+                Loading live feeds...
+              </div>
+            ) : (
+              <div className="divide-y divide-border/50">
+                {topNews.map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 flex gap-3 hover:bg-muted/50 transition-colors group block"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Badge variant="outline" className={`font-mono text-[10px] shrink-0 ${SOURCE_COLORS[item.source] || "text-primary border-primary/30"}`}>
+                          {item.sourceLabel}
+                        </Badge>
+                        <span className="text-[10px] font-mono text-muted-foreground flex items-center gap-1 shrink-0">
+                          <Clock className="w-3 h-3" />
+                          {formatDistanceToNow(new Date(item.publishedAt), { addSuffix: true })}
+                        </span>
+                      </div>
+                      <p className="font-mono text-xs font-medium line-clamp-2 group-hover:text-primary transition-colors">
+                        {item.title}
+                      </p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card/50 border-border backdrop-blur-sm">
+          <CardHeader className="border-b border-border/50 pb-4">
+            <CardTitle className="font-mono text-sm flex items-center justify-between text-primary">
+              <span className="flex items-center gap-2">
+                <Building2 className="w-4 h-4" />
+                OFFICIAL PRESS RELEASES
+              </span>
+              <Link href="/press-releases">
+                <span className="text-[10px] text-muted-foreground hover:text-primary transition-colors cursor-pointer flex items-center gap-1">
+                  VIEW ALL <ExternalLink className="w-3 h-3" />
+                </span>
+              </Link>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            {topPress.length === 0 ? (
+              <div className="p-6 text-center text-muted-foreground font-mono text-sm flex flex-col items-center gap-2">
+                <RefreshCw className="w-5 h-5 animate-spin opacity-40" />
+                Loading official releases...
+              </div>
+            ) : (
+              <div className="divide-y divide-border/50">
+                {topPress.map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 flex gap-3 hover:bg-muted/50 transition-colors group block"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Badge variant="outline" className={`font-mono text-[10px] shrink-0 ${SOURCE_COLORS[item.source] || "text-primary border-primary/30"}`}>
+                          {item.sourceLabel}
+                        </Badge>
+                        <span className="text-[10px] font-mono text-muted-foreground shrink-0 flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {formatDistanceToNow(new Date(item.publishedAt), { addSuffix: true })}
+                        </span>
+                      </div>
+                      <p className="font-mono text-xs font-medium line-clamp-2 group-hover:text-primary transition-colors">
+                        {item.title}
+                      </p>
+                      <p className="text-[10px] font-mono text-muted-foreground mt-0.5">
+                        {item.organization}
+                      </p>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

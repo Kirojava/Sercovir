@@ -28,6 +28,8 @@ import Interpol from "@/pages/interpol";
 import IcjCases from "@/pages/icj";
 import Treaties from "@/pages/treaties";
 import MediaEvents from "@/pages/media-events";
+import LiveNews from "@/pages/live-news";
+import PressReleases from "@/pages/press-releases";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +60,8 @@ function Router() {
         <Route path="/icj" component={IcjCases} />
         <Route path="/treaties" component={Treaties} />
         <Route path="/media-events" component={MediaEvents} />
+        <Route path="/live-news" component={LiveNews} />
+        <Route path="/press-releases" component={PressReleases} />
 
         <Route component={NotFound} />
       </Switch>

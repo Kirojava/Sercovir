@@ -18,6 +18,7 @@ import icjRouter from "./icj";
 import treatiesRouter from "./treaties";
 import mediaEventsRouter from "./media_events";
 import countryIntelRouter from "./country_intel";
+import liveFeedRouter from "./live_feed";
 
 const router: IRouter = Router();
 
@@ -40,5 +41,6 @@ router.use(icjRouter);
 router.use(treatiesRouter);
 router.use(mediaEventsRouter);
 router.use(countryIntelRouter);
+router.use(liveFeedRouter);
 
 export default router;

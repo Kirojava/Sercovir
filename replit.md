@@ -35,7 +35,9 @@ Sercovir is a Palantir-inspired geopolitical intelligence platform for MUN (Mode
 - `artifacts/api-server` — Express 5 API server (previewPath: `/api`)
 
 ### Features
-- **Command Center Dashboard** — global threat level, active conflicts, metrics, intelligence briefings feed
+- **Command Center Dashboard** — global threat level, active conflicts, metrics, intelligence briefings, live news ticker & live press feed panels
+- **Live World News** — real-time RSS aggregation from Reuters, BBC, CNN, Al Jazeera, The Guardian, Sky News, FT, WSJ, ABC, NBC, NPR, DW, France24 — auto-refreshes every 90s with source filtering, search, and live ticker
+- **Political Press & Analysis** — live feeds from Foreign Affairs, POLITICO, Reuters Politics, BBC Politics, Sky News Politics, The Guardian, DW, France24 — auto-refreshes every 120s
 - **Country Intelligence Profiles** — full country data with threat levels, stability index, alliances
 - **Conflict Tracker** — active/escalating/frozen/resolved conflicts with severity indicators
 - **Committee Management** — MUN committees with delegates and linked resolutions
@@ -43,6 +45,10 @@ Sercovir is a Palantir-inspired geopolitical intelligence platform for MUN (Mode
 - **Alliance & Bloc Map** — geopolitical alliances with member countries and strength
 - **Delegate Roster** — delegates by committee, country, bloc
 - **Intelligence Feed** — live briefings with priority/category coding
+- **World Leaders** — profiles with statements
+- **Interpol Notices** — active red/blue/green notice tracking
+- **ICJ Cases** — International Court of Justice case tracking
+- **Treaties** — international treaty database
 
 ### DB Schema (lib/db/src/schema/)
 - `countries` — country intelligence profiles
@@ -55,6 +61,9 @@ Sercovir is a Palantir-inspired geopolitical intelligence platform for MUN (Mode
 
 ### API Routes (artifacts/api-server/src/routes/)
 - `/api/dashboard` — global dashboard overview
+- `/api/live-feed` — real-time RSS news aggregation (Reuters, BBC, CNN, AJ, Guardian, Sky, FT, WSJ, ABC, NBC, NPR, DW, France24), 5-min cache
+- `/api/live-feed/sources` — list of available news sources
+- `/api/press-releases` — live political press & analysis feeds (Foreign Affairs, POLITICO, Reuters Politics, BBC Politics, etc.), 5-min cache
 - `/api/countries` + `/api/countries/summary`
 - `/api/conflicts` + `/api/conflicts/summary`
 - `/api/committees`
@@ -62,3 +71,7 @@ Sercovir is a Palantir-inspired geopolitical intelligence platform for MUN (Mode
 - `/api/alliances`
 - `/api/intelligence/feed` + `/api/intelligence/briefings/:id`
 - `/api/delegates`
+- `/api/leaders`, `/api/statements`
+- `/api/interpol`, `/api/icj`, `/api/treaties`
+- `/api/parliamentary`, `/api/legislation`, `/api/criminal-cases`
+- `/api/media-events`, `/api/country-intel`
