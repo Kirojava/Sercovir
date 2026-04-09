@@ -15,7 +15,10 @@ import {
   Newspaper,
   Crosshair,
   Wifi,
-  Megaphone
+  Megaphone,
+  TrendingUp,
+  BarChart2,
+  Brain
 } from "lucide-react";
 import { ReactNode } from "react";
 
@@ -61,6 +64,14 @@ const NAV_SECTIONS = [
       { href: "/legislation", label: "Legislation", icon: FileText },
       { href: "/criminal-cases", label: "Criminal Cases", icon: Scale },
       { href: "/media-events", label: "Media Events", icon: Newspaper },
+    ]
+  },
+  {
+    title: "ECONOMIC INTELLIGENCE",
+    items: [
+      { href: "/economics", label: "Economic Analysis", icon: BarChart2 },
+      { href: "/trade", label: "Trade & Sanctions", icon: TrendingUp },
+      { href: "/forecasting", label: "Forecasting / AI", icon: Brain },
     ]
   },
   {

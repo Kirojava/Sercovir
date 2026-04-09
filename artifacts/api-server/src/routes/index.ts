@@ -19,6 +19,7 @@ import treatiesRouter from "./treaties";
 import mediaEventsRouter from "./media_events";
 import countryIntelRouter from "./country_intel";
 import liveFeedRouter from "./live_feed";
+import economicsRouter from "./economics";
 
 const router: IRouter = Router();
 
@@ -42,5 +43,6 @@ router.use(treatiesRouter);
 router.use(mediaEventsRouter);
 router.use(countryIntelRouter);
 router.use(liveFeedRouter);
+router.use(economicsRouter);
 
 export default router;

@@ -34,6 +34,9 @@ import TreatyDetail from "@/pages/treaty";
 import MediaEvents from "@/pages/media-events";
 import LiveNews from "@/pages/live-news";
 import PressReleases from "@/pages/press-releases";
+import Economics from "@/pages/economics";
+import Trade from "@/pages/trade";
+import Forecasting from "@/pages/forecasting";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +73,9 @@ function Router() {
         <Route path="/media-events" component={MediaEvents} />
         <Route path="/live-news" component={LiveNews} />
         <Route path="/press-releases" component={PressReleases} />
+        <Route path="/economics" component={Economics} />
+        <Route path="/trade" component={Trade} />
+        <Route path="/forecasting" component={Forecasting} />
 
         <Route component={NotFound} />
       </Switch>

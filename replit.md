@@ -75,3 +75,9 @@ Sercovir is a Palantir-inspired geopolitical intelligence platform for MUN (Mode
 - `/api/interpol`, `/api/icj`, `/api/treaties`
 - `/api/parliamentary`, `/api/legislation`, `/api/criminal-cases`
 - `/api/media-events`, `/api/country-intel`
+- `/api/economics/data` — Economic intelligence: GDP history (2013–2023), growth rates, inflation, unemployment, military spend, trade balance, debt/GDP for 15 major economies; OLS regression forecasts + Monte Carlo risk scores
+
+### Economic Intelligence Module (added 2026-04)
+- **Economic Analysis** (`/economics`) — GDP trajectory area chart (top 8 economies, 2013–2023), GDP ranking bar chart, GDP growth rate line chart, full indicators matrix table (15 economies: GDP, growth, inflation, unemployment, military spending, debt, trade balance, growth trend)
+- **Trade & Sanctions** (`/trade`) — Current account balance diverging bar chart, bilateral trade flows, commodity markets table, active sanctions regimes tracker with intensity scoring
+- **Geopolitical Forecasting** (`/forecasting`) — Regional risk gauges (4 highest-risk regions), multi-dimensional radar chart (conflict/economic/military), US GDP growth OLS regression with 95% CI bands, GDP trajectory forecast 2018–2027 for top 4 economies, Monte Carlo risk scores (N=2,000), Predictive Event Probability Matrix (10 events with mathematical basis and probability %)
