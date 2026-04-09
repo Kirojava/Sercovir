@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { useListTreaties } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -46,7 +47,8 @@ export default function Treaties() {
       ) : (
         <div className="space-y-4">
           {filteredTreaties?.map((treaty) => (
-            <Card key={treaty.id} className="bg-card/50 border-border backdrop-blur-sm group">
+            <Link key={treaty.id} href={`/treaties/${treaty.id}`}>
+            <Card className="bg-card/50 border-border backdrop-blur-sm group cursor-pointer hover:border-primary/40 transition-colors">
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                   <div className="space-y-3 flex-1">
@@ -102,6 +104,7 @@ export default function Treaties() {
                 </div>
               </CardContent>
             </Card>
+            </Link>
           ))}
           {filteredTreaties?.length === 0 && (
             <div className="py-12 text-center font-mono text-muted-foreground bg-card/30 rounded-lg border border-dashed border-border/50">

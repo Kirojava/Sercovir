@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { useListAlliances } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -38,7 +39,8 @@ export default function Alliances() {
           {alliances?.map((alliance) => {
             const Icon = getTypeIcon(alliance.type);
             return (
-              <Card key={alliance.id} className="bg-card/50 backdrop-blur-sm border-border flex flex-col group">
+              <Link key={alliance.id} href={`/alliances/${alliance.id}`}>
+              <Card className="bg-card/50 backdrop-blur-sm border-border flex flex-col group cursor-pointer hover:border-primary/40 transition-colors">
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between mb-2">
                     <Badge variant="outline" className={`font-mono text-xs uppercase flex items-center gap-1
@@ -100,6 +102,7 @@ export default function Alliances() {
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             );
           })}
           {(!alliances || alliances.length === 0) && (

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { useListIcjCases } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -47,7 +48,8 @@ export default function IcjCases() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredCases?.map((c) => (
-            <Card key={c.id} className="bg-card/50 border-border backdrop-blur-sm group">
+            <Link key={c.id} href={`/icj/${c.id}`}>
+            <Card className="bg-card/50 border-border backdrop-blur-sm group cursor-pointer hover:border-primary/40 transition-colors">
               <CardHeader className="pb-3 border-b border-border/50">
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex-1">
@@ -107,6 +109,7 @@ export default function IcjCases() {
                 </div>
               </CardContent>
             </Card>
+            </Link>
           ))}
           {filteredCases?.length === 0 && (
             <div className="col-span-full py-12 text-center font-mono text-muted-foreground bg-card/30 rounded-lg border border-dashed border-border/50">

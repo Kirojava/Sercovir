@@ -15,6 +15,7 @@ import CommitteeDetail from "@/pages/committee";
 import Resolutions from "@/pages/resolutions";
 import ResolutionDetail from "@/pages/resolution";
 import Alliances from "@/pages/alliances";
+import AllianceDetail from "@/pages/alliance";
 import Delegates from "@/pages/delegates";
 import Intelligence from "@/pages/intelligence";
 
@@ -25,8 +26,11 @@ import Parliamentary from "@/pages/parliamentary";
 import Legislation from "@/pages/legislation";
 import CriminalCases from "@/pages/criminal-cases";
 import Interpol from "@/pages/interpol";
+import InterpolNoticeDetail from "@/pages/interpol-notice";
 import IcjCases from "@/pages/icj";
+import IcjCaseDetail from "@/pages/icj-case";
 import Treaties from "@/pages/treaties";
+import TreatyDetail from "@/pages/treaty";
 import MediaEvents from "@/pages/media-events";
 import LiveNews from "@/pages/live-news";
 import PressReleases from "@/pages/press-releases";
@@ -47,6 +51,7 @@ function Router() {
         <Route path="/resolutions" component={Resolutions} />
         <Route path="/resolutions/:id" component={ResolutionDetail} />
         <Route path="/alliances" component={Alliances} />
+        <Route path="/alliances/:id" component={AllianceDetail} />
         <Route path="/delegates" component={Delegates} />
         <Route path="/intelligence" component={Intelligence} />
         
@@ -57,8 +62,11 @@ function Router() {
         <Route path="/legislation" component={Legislation} />
         <Route path="/criminal-cases" component={CriminalCases} />
         <Route path="/interpol" component={Interpol} />
+        <Route path="/interpol/:id" component={InterpolNoticeDetail} />
         <Route path="/icj" component={IcjCases} />
+        <Route path="/icj/:id" component={IcjCaseDetail} />
         <Route path="/treaties" component={Treaties} />
+        <Route path="/treaties/:id" component={TreatyDetail} />
         <Route path="/media-events" component={MediaEvents} />
         <Route path="/live-news" component={LiveNews} />
         <Route path="/press-releases" component={PressReleases} />

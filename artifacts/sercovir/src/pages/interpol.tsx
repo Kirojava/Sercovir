@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { useListInterpolNotices } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -66,7 +67,8 @@ export default function Interpol() {
               'text-primary';
 
             return (
-              <Card key={notice.id} className="bg-card/50 border-border backdrop-blur-sm relative overflow-hidden group">
+              <Link key={notice.id} href={`/interpol/${notice.id}`}>
+              <Card className="bg-card/50 border-border backdrop-blur-sm relative overflow-hidden group cursor-pointer hover:border-primary/40 transition-colors">
                 <div className={`absolute top-0 left-0 w-full h-1 ${noticeColor}`} />
                 <CardHeader className="pb-3 border-b border-border/50">
                   <div className="flex justify-between items-start">
@@ -118,6 +120,7 @@ export default function Interpol() {
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             );
           })}
           {filteredNotices?.length === 0 && (
