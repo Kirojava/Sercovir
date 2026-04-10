@@ -26,7 +26,8 @@ import {
   Radiation,
   Clock,
   Monitor,
-  Zap
+  Zap,
+  Swords
 } from "lucide-react";
 import { ReactNode } from "react";
 import { GlobalSearch } from "@/components/global-search";
@@ -104,6 +105,7 @@ const NAV_SECTIONS = [
     items: [
       { href: "/cyber-intel", label: "Cyber Intelligence", icon: Zap },
       { href: "/nuclear-monitor", label: "Nuclear/WMD Monitor", icon: Radiation },
+      { href: "/military-activities", label: "Military Activities", icon: Swords },
     ]
   },
   {

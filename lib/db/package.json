@@ -13,7 +13,8 @@
     "seed": "tsx src/seed.ts",
     "seed-extended": "tsx src/seed-extended.ts",
     "seed-core": "tsx src/seed-core.ts",
-    "seed-2026": "tsx src/seed-2026.ts"
+    "seed-2026": "tsx src/seed-2026.ts",
+    "seed-military": "tsx src/seed-military.ts"
   },
   "dependencies": {
     "drizzle-orm": "catalog:",

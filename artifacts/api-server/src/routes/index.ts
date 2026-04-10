@@ -26,6 +26,7 @@ import cyberIntelRouter from "./cyber_intel";
 import nuclearProgramsRouter from "./nuclear_programs";
 import operationsTimelineRouter from "./operations_timeline";
 import aiAnalystRouter from "./ai_analyst";
+import militaryActivitiesRouter from "./military_activities";
 
 const router: IRouter = Router();
 
@@ -56,5 +57,6 @@ router.use(cyberIntelRouter);
 router.use(nuclearProgramsRouter);
 router.use(operationsTimelineRouter);
 router.use(aiAnalystRouter);
+router.use(militaryActivitiesRouter);
 
 export default router;

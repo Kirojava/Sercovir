@@ -45,6 +45,7 @@ import CyberIntel from "@/pages/cyber-intel";
 import NuclearMonitor from "@/pages/nuclear-monitor";
 import OperationsTimeline from "@/pages/operations-timeline";
 import CrisisRoom from "@/pages/crisis-room";
+import MilitaryActivities from "@/pages/military-activities";
 import { GlobalSearch } from "@/components/global-search";
 
 const queryClient = new QueryClient();
@@ -93,6 +94,7 @@ function Router() {
         <Route path="/nuclear-monitor" component={NuclearMonitor} />
         <Route path="/operations-timeline" component={OperationsTimeline} />
         <Route path="/crisis-room" component={CrisisRoom} />
+        <Route path="/military-activities" component={MilitaryActivities} />
 
         <Route component={NotFound} />
       </Switch>
