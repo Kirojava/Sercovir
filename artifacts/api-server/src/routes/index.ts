@@ -20,6 +20,8 @@ import mediaEventsRouter from "./media_events";
 import countryIntelRouter from "./country_intel";
 import liveFeedRouter from "./live_feed";
 import economicsRouter from "./economics";
+import searchRouter from "./search";
+import entityGraphRouter from "./entity_graph";
 
 const router: IRouter = Router();
 
@@ -44,5 +46,7 @@ router.use(mediaEventsRouter);
 router.use(countryIntelRouter);
 router.use(liveFeedRouter);
 router.use(economicsRouter);
+router.use(searchRouter);
+router.use(entityGraphRouter);
 
 export default router;

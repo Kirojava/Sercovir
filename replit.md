@@ -49,6 +49,10 @@ Sercovir is a Palantir-inspired geopolitical intelligence platform for MUN (Mode
 - **Interpol Notices** — active red/blue/green notice tracking
 - **ICJ Cases** — International Court of Justice case tracking
 - **Treaties** — international treaty database
+- **Global Search** (`⌘K` / `Ctrl+K`) — command palette searching all entities: countries, leaders, conflicts, alliances, treaties, Interpol, ICJ, resolutions, committees in real-time
+- **Entity Network Graph** (`/entity-graph`) — force-directed relationship graph with 49+ nodes (countries, leaders, alliances, conflicts), clickable nodes with connection detail panel, zoom/filter by type, SVG with physics simulation
+- **Threat Matrix** (`/threat-matrix`) — multi-dimensional threat scoring for all 20 nations with radar charts (Political/Military/Economic/Conflict/Stability/Sanctions axes), region filtering, conflict hotspot panel, threat distribution chart
+- **Geospatial Operations Map** (`/geo-map`) — SVG world map with conflict zone markers (severity-coded, pulsing for escalating), heat map overlays, region filter, conflict detail panel, high-threat nations list
 
 ### DB Schema (lib/db/src/schema/)
 - `countries` — country intelligence profiles
@@ -75,6 +79,8 @@ Sercovir is a Palantir-inspired geopolitical intelligence platform for MUN (Mode
 - `/api/interpol`, `/api/icj`, `/api/treaties`
 - `/api/parliamentary`, `/api/legislation`, `/api/criminal-cases`
 - `/api/media-events`, `/api/country-intel`
+- `/api/search?q=...` — global full-text search across all entity types (countries, leaders, conflicts, alliances, treaties, Interpol, ICJ, resolutions, committees)
+- `/api/entity-graph` — entity relationship graph data (nodes + edges) for countries, leaders, alliances, conflicts, treaties
 - `/api/economics/data` — Economic intelligence: GDP history (2013–2023), growth rates, inflation, unemployment, military spend, trade balance, debt/GDP for 15 major economies; OLS regression forecasts + Monte Carlo risk scores
 
 ### Economic Intelligence Module (added 2026-04)

@@ -37,6 +37,10 @@ import PressReleases from "@/pages/press-releases";
 import Economics from "@/pages/economics";
 import Trade from "@/pages/trade";
 import Forecasting from "@/pages/forecasting";
+import EntityGraph from "@/pages/entity-graph";
+import ThreatMatrix from "@/pages/threat-matrix";
+import GeoMap from "@/pages/geo-map";
+import { GlobalSearch } from "@/components/global-search";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +80,9 @@ function Router() {
         <Route path="/economics" component={Economics} />
         <Route path="/trade" component={Trade} />
         <Route path="/forecasting" component={Forecasting} />
+        <Route path="/entity-graph" component={EntityGraph} />
+        <Route path="/threat-matrix" component={ThreatMatrix} />
+        <Route path="/geo-map" component={GeoMap} />
 
         <Route component={NotFound} />
       </Switch>

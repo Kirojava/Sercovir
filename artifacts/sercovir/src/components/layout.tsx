@@ -18,9 +18,13 @@ import {
   Megaphone,
   TrendingUp,
   BarChart2,
-  Brain
+  Brain,
+  GitBranch,
+  Target,
+  Map
 } from "lucide-react";
 import { ReactNode } from "react";
+import { GlobalSearch } from "@/components/global-search";
 
 const NAV_SECTIONS = [
   {
@@ -72,6 +76,14 @@ const NAV_SECTIONS = [
       { href: "/economics", label: "Economic Analysis", icon: BarChart2 },
       { href: "/trade", label: "Trade & Sanctions", icon: TrendingUp },
       { href: "/forecasting", label: "Forecasting / AI", icon: Brain },
+    ]
+  },
+  {
+    title: "PALANTIR ANALYTICS",
+    items: [
+      { href: "/entity-graph", label: "Entity Network", icon: GitBranch },
+      { href: "/threat-matrix", label: "Threat Matrix", icon: Target },
+      { href: "/geo-map", label: "Geospatial Map", icon: Map },
     ]
   },
   {
@@ -151,9 +163,12 @@ export function Layout({ children }: { children: ReactNode }) {
           <h2 className="font-mono text-sm text-muted-foreground">
             {location.toUpperCase() || "COMMAND CENTER"}
           </h2>
-          <div className="font-mono text-xs text-muted-foreground flex items-center gap-4">
-            <span>SYS.OP: ADMIN</span>
-            <span>{new Date().toISOString().split('T')[0]}</span>
+          <div className="flex items-center gap-4">
+            <GlobalSearch />
+            <div className="font-mono text-xs text-muted-foreground flex items-center gap-4">
+              <span>SYS.OP: ADMIN</span>
+              <span>{new Date().toISOString().split('T')[0]}</span>
+            </div>
           </div>
         </header>
         
