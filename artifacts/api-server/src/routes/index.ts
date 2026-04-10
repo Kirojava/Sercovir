@@ -22,6 +22,10 @@ import liveFeedRouter from "./live_feed";
 import economicsRouter from "./economics";
 import searchRouter from "./search";
 import entityGraphRouter from "./entity_graph";
+import cyberIntelRouter from "./cyber_intel";
+import nuclearProgramsRouter from "./nuclear_programs";
+import operationsTimelineRouter from "./operations_timeline";
+import aiAnalystRouter from "./ai_analyst";
 
 const router: IRouter = Router();
 
@@ -48,5 +52,9 @@ router.use(liveFeedRouter);
 router.use(economicsRouter);
 router.use(searchRouter);
 router.use(entityGraphRouter);
+router.use(cyberIntelRouter);
+router.use(nuclearProgramsRouter);
+router.use(operationsTimelineRouter);
+router.use(aiAnalystRouter);
 
 export default router;

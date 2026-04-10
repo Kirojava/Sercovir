@@ -21,7 +21,12 @@ import {
   Brain,
   GitBranch,
   Target,
-  Map
+  Map,
+  Shield,
+  Radiation,
+  Clock,
+  Monitor,
+  Zap
 } from "lucide-react";
 import { ReactNode } from "react";
 import { GlobalSearch } from "@/components/global-search";
@@ -84,6 +89,21 @@ const NAV_SECTIONS = [
       { href: "/entity-graph", label: "Entity Network", icon: GitBranch },
       { href: "/threat-matrix", label: "Threat Matrix", icon: Target },
       { href: "/geo-map", label: "Geospatial Map", icon: Map },
+    ]
+  },
+  {
+    title: "⚡ AI INTELLIGENCE",
+    items: [
+      { href: "/ai-analyst", label: "ARES AI Analyst", icon: Brain },
+      { href: "/crisis-room", label: "Crisis Command Room", icon: Monitor },
+      { href: "/operations-timeline", label: "Operations Timeline", icon: Clock },
+    ]
+  },
+  {
+    title: "🛡 THREAT DOMAINS",
+    items: [
+      { href: "/cyber-intel", label: "Cyber Intelligence", icon: Zap },
+      { href: "/nuclear-monitor", label: "Nuclear/WMD Monitor", icon: Radiation },
     ]
   },
   {

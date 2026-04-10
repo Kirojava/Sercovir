@@ -12,7 +12,8 @@
     "push-force": "drizzle-kit push --force --config ./drizzle.config.ts",
     "seed": "tsx src/seed.ts",
     "seed-extended": "tsx src/seed-extended.ts",
-    "seed-core": "tsx src/seed-core.ts"
+    "seed-core": "tsx src/seed-core.ts",
+    "seed-2026": "tsx src/seed-2026.ts"
   },
   "dependencies": {
     "drizzle-orm": "catalog:",

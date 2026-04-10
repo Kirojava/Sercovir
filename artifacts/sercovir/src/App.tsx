@@ -40,6 +40,11 @@ import Forecasting from "@/pages/forecasting";
 import EntityGraph from "@/pages/entity-graph";
 import ThreatMatrix from "@/pages/threat-matrix";
 import GeoMap from "@/pages/geo-map";
+import AiAnalyst from "@/pages/ai-analyst";
+import CyberIntel from "@/pages/cyber-intel";
+import NuclearMonitor from "@/pages/nuclear-monitor";
+import OperationsTimeline from "@/pages/operations-timeline";
+import CrisisRoom from "@/pages/crisis-room";
 import { GlobalSearch } from "@/components/global-search";
 
 const queryClient = new QueryClient();
@@ -83,6 +88,11 @@ function Router() {
         <Route path="/entity-graph" component={EntityGraph} />
         <Route path="/threat-matrix" component={ThreatMatrix} />
         <Route path="/geo-map" component={GeoMap} />
+        <Route path="/ai-analyst" component={AiAnalyst} />
+        <Route path="/cyber-intel" component={CyberIntel} />
+        <Route path="/nuclear-monitor" component={NuclearMonitor} />
+        <Route path="/operations-timeline" component={OperationsTimeline} />
+        <Route path="/crisis-room" component={CrisisRoom} />
 
         <Route component={NotFound} />
       </Switch>
