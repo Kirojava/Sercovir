@@ -47,8 +47,17 @@ function MarkdownText({ text }: { text: string }) {
   );
 }
 
-function formatInline(text: string): string {
+function escapeHtml(text: string): string {
   return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function formatInline(text: string): string {
+  return escapeHtml(text)
     .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-foreground font-bold">$1</strong>')
     .replace(/\[HIGH CONFIDENCE\]/g, '<span class="text-emerald-400 text-[10px] border border-emerald-400/30 bg-emerald-400/10 px-1 py-0.5 rounded">[HIGH CONFIDENCE]</span>')
     .replace(/\[MEDIUM CONFIDENCE\]/g, '<span class="text-yellow-400 text-[10px] border border-yellow-400/30 bg-yellow-400/10 px-1 py-0.5 rounded">[MEDIUM CONFIDENCE]</span>')

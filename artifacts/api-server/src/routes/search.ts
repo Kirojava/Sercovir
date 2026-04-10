@@ -3,12 +3,15 @@ import { db, countriesTable, conflictsTable, worldLeadersTable, alliancesTable, 
 
 const router: IRouter = Router();
 
+const MAX_SEARCH_LENGTH = 200;
+
 router.get("/search", async (req, res): Promise<void> => {
-  const q = String(req.query.q || "").toLowerCase().trim();
-  if (q.length < 2) {
+  const raw = String(req.query.q || "").trim();
+  if (raw.length < 2) {
     res.json({ results: [] });
     return;
   }
+  const q = raw.slice(0, MAX_SEARCH_LENGTH).toLowerCase();
 
   const [countries, leaders, conflicts, alliances, treaties, interpolNotices, icjCases, resolutions, committees] = await Promise.all([
     db.select().from(countriesTable),
@@ -33,7 +36,7 @@ router.get("/search", async (req, res): Promise<void> => {
 
   for (const c of countries) {
     if (c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q) || c.region.toLowerCase().includes(q)) {
-      results.push({ type: "country", id: c.id, title: `${c.flagEmoji || ""} ${c.name}`, subtitle: c.region, badge: c.threatLevel, href: `/countries/${c.id}` });
+      results.push({ type: "country", id: c.id, title: `${c.flagEmoji || ""} ${c.name}`, subtitle: c.region, badge: c.threatLevel ?? undefined, href: `/countries/${c.id}` });
     }
   }
   for (const l of leaders) {
@@ -43,12 +46,12 @@ router.get("/search", async (req, res): Promise<void> => {
   }
   for (const c of conflicts) {
     if (c.title.toLowerCase().includes(q) || c.region.toLowerCase().includes(q) || (c.description || "").toLowerCase().includes(q)) {
-      results.push({ type: "conflict", id: c.id, title: c.title, subtitle: `${c.region} · ${c.status}`, badge: c.severity, href: `/conflicts/${c.id}` });
+      results.push({ type: "conflict", id: c.id, title: c.title, subtitle: `${c.region} · ${c.status}`, badge: c.severity ?? undefined, href: `/conflicts/${c.id}` });
     }
   }
   for (const a of alliances) {
     if (a.name.toLowerCase().includes(q) || (a.abbreviation || "").toLowerCase().includes(q)) {
-      results.push({ type: "alliance", id: a.id, title: a.name, subtitle: a.type, badge: a.strength, href: `/alliances/${a.id}` });
+      results.push({ type: "alliance", id: a.id, title: a.name, subtitle: a.type, badge: a.strength ?? undefined, href: `/alliances/${a.id}` });
     }
   }
   for (const t of treaties) {
@@ -58,7 +61,7 @@ router.get("/search", async (req, res): Promise<void> => {
   }
   for (const n of interpolNotices) {
     if (n.subjectName.toLowerCase().includes(q) || (n.charges || "").toLowerCase().includes(q)) {
-      results.push({ type: "interpol", id: n.id, title: n.subjectName, subtitle: n.noticeType + " Notice", badge: n.status, href: `/interpol/${n.id}` });
+      results.push({ type: "interpol", id: n.id, title: n.subjectName, subtitle: n.noticeType + " Notice", badge: n.status ?? undefined, href: `/interpol/${n.id}` });
     }
   }
   for (const c of icjCases) {
