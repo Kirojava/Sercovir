@@ -1,53 +1,53 @@
+import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { 
-  Globe, 
-  ShieldAlert, 
-  Users, 
-  FileText, 
-  Network, 
-  UserCircle, 
-  RadioTower,
-  LayoutDashboard,
-  Building2,
-  MapPin,
-  Scale,
-  FileSignature,
-  Newspaper,
-  Crosshair,
-  Wifi,
-  Megaphone,
-  TrendingUp,
+import {
   BarChart2,
   Brain,
-  GitBranch,
-  Target,
-  Map,
-  Shield,
-  Radiation,
+  Building2,
   Clock,
+  Crosshair,
+  FileSignature,
+  FileText,
+  GitBranch,
+  Globe,
+  LayoutDashboard,
+  Map,
+  MapPin,
+  Megaphone,
   Monitor,
+  Network,
+  Newspaper,
+  Radiation,
+  RadioTower,
+  Scale,
+  ShieldAlert,
+  Swords,
+  Target,
+  TrendingUp,
+  UserCircle,
+  Users,
+  Wifi,
   Zap,
-  Swords
 } from "lucide-react";
-import { ReactNode } from "react";
 import { GlobalSearch } from "@/components/global-search";
+import { OrbitalScene } from "@/components/orbital-scene";
 
 const NAV_SECTIONS = [
   {
-    title: "LIVE FEEDS",
+    title: "LIVE SIGNALS",
     items: [
       { href: "/", label: "Command Center", icon: LayoutDashboard },
       { href: "/live-news", label: "Live World News", icon: Wifi },
       { href: "/press-releases", label: "Press Releases", icon: Megaphone },
       { href: "/intelligence", label: "Intelligence Feed", icon: RadioTower },
-    ]
+    ],
   },
   {
     title: "GLOBAL ACTORS",
     items: [
       { href: "/leaders", label: "World Leaders", icon: UserCircle },
       { href: "/country-intel", label: "Country Intel", icon: MapPin },
-    ]
+    ],
   },
   {
     title: "GEOPOLITICS",
@@ -55,7 +55,7 @@ const NAV_SECTIONS = [
       { href: "/countries", label: "Global Profiles", icon: Globe },
       { href: "/conflicts", label: "Active Conflicts", icon: ShieldAlert },
       { href: "/alliances", label: "Alliances", icon: Network },
-    ]
+    ],
   },
   {
     title: "INSTITUTIONS",
@@ -66,7 +66,7 @@ const NAV_SECTIONS = [
       { href: "/icj", label: "ICJ Cases", icon: Scale },
       { href: "/interpol", label: "Interpol", icon: Crosshair },
       { href: "/parliamentary", label: "Parliamentary", icon: Building2 },
-    ]
+    ],
   },
   {
     title: "DOMESTIC",
@@ -74,7 +74,7 @@ const NAV_SECTIONS = [
       { href: "/legislation", label: "Legislation", icon: FileText },
       { href: "/criminal-cases", label: "Criminal Cases", icon: Scale },
       { href: "/media-events", label: "Media Events", icon: Newspaper },
-    ]
+    ],
   },
   {
     title: "ECONOMIC INTELLIGENCE",
@@ -82,119 +82,157 @@ const NAV_SECTIONS = [
       { href: "/economics", label: "Economic Analysis", icon: BarChart2 },
       { href: "/trade", label: "Trade & Sanctions", icon: TrendingUp },
       { href: "/forecasting", label: "Forecasting / AI", icon: Brain },
-    ]
+    ],
   },
   {
-    title: "PALANTIR ANALYTICS",
+    title: "NETWORK ANALYTICS",
     items: [
       { href: "/entity-graph", label: "Entity Network", icon: GitBranch },
       { href: "/threat-matrix", label: "Threat Matrix", icon: Target },
       { href: "/geo-map", label: "Geospatial Map", icon: Map },
-    ]
+    ],
   },
   {
-    title: "⚡ AI INTELLIGENCE",
+    title: "AI INTELLIGENCE",
     items: [
       { href: "/ai-analyst", label: "ARES AI Analyst", icon: Brain },
       { href: "/crisis-room", label: "Crisis Command Room", icon: Monitor },
       { href: "/operations-timeline", label: "Operations Timeline", icon: Clock },
-    ]
+    ],
   },
   {
-    title: "🛡 THREAT DOMAINS",
+    title: "THREAT DOMAINS",
     items: [
       { href: "/cyber-intel", label: "Cyber Intelligence", icon: Zap },
-      { href: "/nuclear-monitor", label: "Nuclear/WMD Monitor", icon: Radiation },
+      { href: "/nuclear-monitor", label: "Nuclear / WMD Monitor", icon: Radiation },
       { href: "/military-activities", label: "Military Activities", icon: Swords },
-    ]
+    ],
   },
   {
     title: "OPERATIONS",
-    items: [
-      { href: "/delegates", label: "Delegates", icon: UserCircle },
-    ]
-  }
+    items: [{ href: "/delegates", label: "Delegates", icon: UserCircle }],
+  },
 ];
+
+function Navigation({ mobile = false }: { mobile?: boolean }) {
+  const [location] = useLocation();
+  const items = NAV_SECTIONS.flatMap((section) => section.items);
+
+  if (mobile) {
+    return (
+      <nav className="quiet-scrollbar flex gap-2 overflow-x-auto px-4 pb-3 md:hidden" aria-label="Primary navigation">
+        {items.map((item) => {
+          const Icon = item.icon;
+          const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              data-testid={`link-mobile-${item.label.toLowerCase().replaceAll(" ", "-")}`}
+              className={`flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 font-mono text-[10px] uppercase tracking-wide transition-colors ${
+                isActive ? "border-primary/50 bg-primary/10 text-primary" : "border-border/70 bg-card/35 text-muted-foreground"
+              }`}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+    );
+  }
+
+  return (
+    <nav className="space-y-6" aria-label="Primary navigation">
+      {NAV_SECTIONS.map((section) => (
+        <div key={section.title}>
+          <div className="mb-2 px-3 font-mono text-[9px] font-medium uppercase tracking-[.2em] text-muted-foreground/75">
+            {section.title}
+          </div>
+          <div className="space-y-0.5">
+            {section.items.map((item) => {
+              const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  data-testid={`link-nav-${item.label.toLowerCase().replaceAll(" ", "-")}`}
+                  className={`group relative flex items-center gap-3 rounded-md border px-3 py-2 font-mono text-[11px] transition-all ${
+                    isActive
+                      ? "border-primary/25 bg-primary/[.09] text-primary"
+                      : "border-transparent text-muted-foreground hover:border-border/80 hover:bg-card/45 hover:text-foreground"
+                  }`}
+                >
+                  <Icon className={`h-3.5 w-3.5 transition-transform group-hover:scale-110 ${isActive ? "text-primary" : "text-muted-foreground/70"}`} />
+                  <span>{item.label}</span>
+                  {isActive && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_0_3px_hsl(var(--primary)/.12)]" />}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </nav>
+  );
+}
 
 export function Layout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
+  const dateStamp = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
 
   return (
-    <div className="flex h-screen w-full bg-background text-foreground font-sans overflow-hidden selection:bg-primary/30">
-      <aside className="w-64 border-r border-border bg-sidebar flex flex-col relative z-10">
-        <div className="h-16 flex items-center px-6 border-b border-border">
-          <div className="flex items-center gap-3 text-primary">
-            <Globe className="w-6 h-6" />
-            <span className="font-mono font-bold tracking-widest text-lg">SERCOVIR</span>
-          </div>
-        </div>
-        
-        <div className="flex-1 overflow-y-auto py-4">
-          <nav className="flex flex-col gap-4">
-            {NAV_SECTIONS.map((section, idx) => (
-              <div key={idx} className="px-4">
-                <div className="text-[10px] font-mono text-muted-foreground mb-2 px-2 uppercase tracking-wider font-bold">
-                  {section.title}
-                </div>
-                <div className="flex flex-col gap-0.5">
-                  {section.items.map((item) => {
-                    const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
-                    const Icon = item.icon;
-                    
-                    return (
-                      <Link key={item.href} href={item.href}>
-                        <div 
-                          className={`flex items-center gap-3 px-3 py-1.5 rounded-md transition-all cursor-pointer font-mono text-xs ${
-                            isActive 
-                              ? "bg-primary/10 text-primary border border-primary/20" 
-                              : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground border border-transparent"
-                          }`}
-                        >
-                          <Icon className={`w-3.5 h-3.5 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
-                          {item.label}
-                          {isActive && (
-                            <div className="ml-auto w-1 h-1 rounded-full bg-primary animate-pulse" />
-                          )}
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </nav>
-        </div>
-        
-        <div className="p-4 border-t border-border bg-sidebar">
-          <div className="flex items-center justify-between text-xs font-mono">
-            <span className="text-muted-foreground">STATUS</span>
-            <span className="text-emerald-500 flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              ONLINE
+    <div className="sercovir-shell relative min-h-[100dvh] w-full overflow-x-hidden text-foreground selection:bg-primary/25">
+      <OrbitalScene />
+      <div className="observation-grid pointer-events-none fixed inset-0 z-0 opacity-40" />
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[274px] border-r border-border/70 bg-[hsl(var(--sidebar)/.76)] backdrop-blur-xl lg:flex lg:flex-col">
+        <div className="flex h-[88px] items-center border-b border-border/70 px-7">
+          <Link href="/" data-testid="link-brand" className="group flex items-center gap-3">
+            <span className="relative flex h-9 w-9 items-center justify-center border border-primary/45 text-primary">
+              <span className="absolute h-5 w-5 rounded-full border border-primary/60" />
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
             </span>
+            <span>
+              <span className="block font-serif text-[17px] font-semibold tracking-[.25em] text-foreground">SERCOVIR</span>
+              <span className="mt-0.5 block font-mono text-[8px] tracking-[.16em] text-primary/80">GLOBAL SIGNALS / 01</span>
+            </span>
+          </Link>
+        </div>
+        <div className="quiet-scrollbar flex-1 overflow-y-auto px-4 py-6">
+          <Navigation />
+        </div>
+        <div className="border-t border-border/70 px-6 py-5">
+          <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[.16em]">
+            <span className="text-muted-foreground">Network status</span>
+            <span className="flex items-center gap-2 text-primary"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" /> Stable</span>
+          </div>
+          <div className="mt-3 flex items-center justify-between font-mono text-[9px] text-muted-foreground/70">
+            <span>Node 07 / Pacific</span>
+            <span>Encrypted</span>
           </div>
         </div>
       </aside>
-      
-      <main className="flex-1 flex flex-col relative overflow-hidden bg-background">
-        {/* Subtle scanline overlay */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.015] mix-blend-overlay z-50" 
-             style={{ backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))', backgroundSize: '100% 4px, 6px 100%' }} />
-        
-        <header className="h-16 flex items-center justify-between px-8 border-b border-border bg-card/50 backdrop-blur-sm relative z-10">
-          <h2 className="font-mono text-sm text-muted-foreground">
-            {location.toUpperCase() || "COMMAND CENTER"}
-          </h2>
-          <div className="flex items-center gap-4">
-            <GlobalSearch />
-            <div className="font-mono text-xs text-muted-foreground flex items-center gap-4">
-              <span>SYS.OP: ADMIN</span>
-              <span>{new Date().toISOString().split('T')[0]}</span>
+
+      <main className="relative z-10 min-h-[100dvh] lg:pl-[274px]">
+        <header className="sticky top-0 z-20 border-b border-border/70 bg-[hsl(var(--background)/.72)] backdrop-blur-xl">
+          <div className="flex min-h-[68px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-10">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.18em] text-muted-foreground">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                <span className="truncate">Observation room / {location === "/" ? "Command center" : location.slice(1).replaceAll("-", " ")}</span>
+              </div>
+            </div>
+            <div className="flex shrink-0 items-center gap-3 sm:gap-6">
+              <GlobalSearch />
+              <div className="hidden text-right font-mono text-[9px] uppercase leading-relaxed tracking-[.14em] text-muted-foreground sm:block">
+                <div>UTC // {dateStamp}</div>
+                <div className="text-primary/70">Channel open / 24 feeds</div>
+              </div>
             </div>
           </div>
+          <Navigation mobile />
         </header>
-        
-        <div className="flex-1 overflow-y-auto p-8 relative z-0">
+        <div className="mx-auto min-h-[calc(100dvh-68px)] w-full max-w-[1540px] px-4 py-7 sm:px-6 sm:py-9 lg:px-10 lg:py-12">
           {children}
         </div>
       </main>

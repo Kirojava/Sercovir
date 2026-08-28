@@ -283,7 +283,7 @@ export default function AiAnalyst() {
             </div>
             <div className="flex items-center gap-3 mt-2 pt-2 border-t border-border/50">
               <span className="text-[10px] font-mono text-muted-foreground">↵ Send · Shift+↵ Newline</span>
-              <span className="ml-auto text-[10px] font-mono text-muted-foreground">GPT-5.2 · {isStreaming ? "🔴 Analyzing..." : "🟢 Ready"}</span>
+              <span className="ml-auto text-[10px] font-mono text-muted-foreground">GPT-5.2 · {isStreaming ? "Analyzing..." : "Ready"}</span>
             </div>
           </div>
         </div>

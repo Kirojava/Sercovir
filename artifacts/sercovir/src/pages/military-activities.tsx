@@ -179,7 +179,7 @@ function TacticalMap({ activities, onSelect, selected }: {
                   <rect x={x + 12} y={y - 28} width={180} height={40} rx="3" fill="#0f172a" stroke={threat.color} strokeWidth="0.8" />
                   <text x={x + 17} y={y - 13} fontSize="7" fill="#f1f5f9" fontWeight="bold">{a.title.slice(0, 30)}{a.title.length > 30 ? "…" : ""}</text>
                   <text x={x + 17} y={y - 3} fontSize="6" fill={threat.color}>{a.threatLevel.toUpperCase()} · {a.region}</text>
-                  <text x={x + 17} y={y + 7} fontSize="6" fill="#94a3b8">{a.flagEmoji} {a.country}</text>
+                  <text x={x + 17} y={y + 7} fontSize="6" fill="#94a3b8">{a.countryCode || "REG"} {a.country}</text>
                 </g>
               )}
             </g>
@@ -211,7 +211,7 @@ function TacticalMap({ activities, onSelect, selected }: {
 
 function LiveTicker({ activities }: { activities: MilitaryActivity[] }) {
   const allUpdates = activities.flatMap(a =>
-    a.updates.map(u => ({ text: u, activity: a.title, threat: a.threatLevel, flag: a.flagEmoji }))
+    a.updates.map(u => ({ text: u, activity: a.title, threat: a.threatLevel, flag: a.countryCode }))
   );
   const [idx, setIdx] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -343,7 +343,7 @@ function ComparisonView({ a, b, onClear }: { a: MilitaryActivity; b: MilitaryAct
     { label: "Type",        va: TYPE_META[a.type]?.label ?? a.type,        vb: TYPE_META[b.type]?.label ?? b.type },
     { label: "Threat",      va: a.threatLevel.toUpperCase(),               vb: b.threatLevel.toUpperCase() },
     { label: "Region",      va: a.region,                                  vb: b.region },
-    { label: "Country",     va: `${a.flagEmoji ?? ""} ${a.country}`,       vb: `${b.flagEmoji ?? ""} ${b.country}` },
+    { label: "Country",     va: `${a.countryCode ?? "REG"} ${a.country}`,       vb: `${b.countryCode ?? "REG"} ${b.country}` },
     { label: "Personnel",   va: a.estimatedPersonnel ?? "Unknown",         vb: b.estimatedPersonnel ?? "Unknown" },
     { label: "Escalation",  va: `${escalationRisk(a)}/99`,                 vb: `${escalationRisk(b)}/99` },
     { label: "NATO",        va: a.isNatoRelated ? "Yes" : "No",            vb: b.isNatoRelated ? "Yes" : "No" },
@@ -800,7 +800,7 @@ export default function MilitaryActivities() {
                             <div className="flex items-center gap-3 flex-shrink-0">
                               <RiskGauge score={risk} />
                               <div className="text-right">
-                                <div className="font-mono text-xs text-muted-foreground">{a.flagEmoji} {a.country}</div>
+                                <div className="font-mono text-xs text-muted-foreground">{a.countryCode || "REG"} {a.country}</div>
                                 <div className="font-mono text-[10px] text-muted-foreground/60 flex items-center gap-1 justify-end mt-0.5"><MapPin className="w-2.5 h-2.5" />{a.region}</div>
                               </div>
                             </div>
@@ -841,7 +841,7 @@ export default function MilitaryActivities() {
                     <CardContent className="space-y-3 text-[11px] font-mono">
                       <div className="grid grid-cols-2 gap-1.5">
                         {[
-                          ["COUNTRY",    `${selected.flagEmoji ?? ""} ${selected.country}`],
+                          ["COUNTRY",    `${selected.countryCode ?? "REG"} ${selected.country}`],
                           ["REGION",     selected.region],
                           ["LOCATION",   selected.location ?? "—"],
                           ["PERSONNEL",  selected.estimatedPersonnel ?? "—"],
@@ -855,8 +855,8 @@ export default function MilitaryActivities() {
                         ))}
                       </div>
                       <div className="flex gap-1.5 flex-wrap">
-                        {selected.isNatoRelated && <span className="text-[10px] border border-blue-400/30 bg-blue-400/10 text-blue-400 px-2 py-0.5 rounded">🛡 NATO</span>}
-                        {selected.isJoint && <span className="text-[10px] border border-purple-400/30 bg-purple-400/10 text-purple-400 px-2 py-0.5 rounded">⚡ JOINT OP</span>}
+                        {selected.isNatoRelated && <span className="text-[10px] border border-blue-400/30 bg-blue-400/10 text-blue-400 px-2 py-0.5 rounded">NATO</span>}
+                        {selected.isJoint && <span className="text-[10px] border border-purple-400/30 bg-purple-400/10 text-purple-400 px-2 py-0.5 rounded">JOINT OP</span>}
                         {selected.isOngoing && <span className="text-[10px] border border-emerald-400/30 bg-emerald-400/10 text-emerald-400 px-2 py-0.5 rounded flex items-center gap-1"><span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />ONGOING</span>}
                       </div>
                       {selected.involvedCountries.length > 0 && (
@@ -929,7 +929,7 @@ export default function MilitaryActivities() {
                   <div className={`w-2 h-2 rounded-full flex-shrink-0`} style={{ background: THREAT_STYLE[selected.threatLevel]?.color }} />
                   <span className="font-bold">{selected.title}</span>
                   <Badge variant="outline" className={`text-[10px] ${THREAT_STYLE[selected.threatLevel]?.cls}`}>{selected.threatLevel.toUpperCase()}</Badge>
-                  <span className="text-muted-foreground">{selected.flagEmoji} {selected.country} · {selected.region}</span>
+                  <span className="text-muted-foreground">{selected.countryCode ?? "REG"} {selected.country} · {selected.region}</span>
                   {selected.lat && <span className="text-muted-foreground/50">LAT {selected.lat.toFixed(1)}° LNG {selected.lng?.toFixed(1)}°</span>}
                   <span className="ml-auto text-muted-foreground">ESCALATION: <span className="text-foreground">{escalationRisk(selected)}/99</span></span>
                 </div>
@@ -942,7 +942,7 @@ export default function MilitaryActivities() {
                       className={`p-2.5 rounded-lg border cursor-pointer transition-all text-[10px] font-mono ${selected?.id === a.id ? "border-primary/40 bg-primary/5" : "border-border/40 bg-card/30 hover:border-border"}`}>
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: meta.dot }} />
-                        <span className="text-foreground font-medium truncate">{a.flagEmoji} {a.country}</span>
+                        <span className="text-foreground font-medium truncate">{a.countryCode || "REG"} {a.country}</span>
                         <span className={`ml-auto ${THREAT_STYLE[a.threatLevel]?.cls ?? ""} text-[9px]`}>{a.threatLevel.toUpperCase()}</span>
                       </div>
                       <p className="text-muted-foreground/70 mt-0.5 truncate">{a.title.slice(0, 45)}</p>
@@ -974,7 +974,7 @@ export default function MilitaryActivities() {
                     <div className="flex-1 min-w-0 pb-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-mono text-[10px] font-semibold text-foreground">
-                          {evt.flagEmoji} {evt.country}
+                          REG {evt.country}
                         </span>
                         <span className={`font-mono text-[9px] border px-1.5 py-0.5 rounded ${threat?.cls ?? ""}`}>
                           {evt.threatLevel.toUpperCase()}

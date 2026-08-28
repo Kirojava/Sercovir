@@ -82,7 +82,7 @@ export default function CountryIntel() {
           <div className="flex flex-col md:flex-row gap-6 justify-between p-6 rounded-lg bg-gradient-to-br from-card/80 to-background border border-border backdrop-blur-sm">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <span className="text-4xl">{intel.country.flagEmoji}</span>
+                <span className="font-mono text-sm text-primary">{intel.country.code}</span>
                 <h2 className="text-3xl font-mono font-bold">{intel.country.name}</h2>
                 <Badge variant="outline" className="font-mono text-sm">{intel.country.code}</Badge>
               </div>

@@ -341,7 +341,7 @@ export default function GeoMap() {
               <div className="space-y-1.5 max-h-48 overflow-y-auto">
                 {criticalCountries.map(c => (
                   <div key={c.id} className="flex items-center gap-2.5 text-xs font-mono">
-                    <span className="text-base">{c.flagEmoji || "🏳"}</span>
+                    <span className="font-mono text-[10px] text-muted-foreground">REG</span>
                     <span className="flex-1 truncate">{c.name}</span>
                     <span className={`text-[10px] uppercase ${c.threatLevel === "critical" ? "text-red-400" : "text-orange-400"}`}>
                       {c.threatLevel}

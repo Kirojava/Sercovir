@@ -83,7 +83,7 @@ export default function Countries() {
                 <CardHeader className="pb-2">
                   <div className="flex items-start justify-between">
                     <CardTitle className="font-mono flex items-center gap-2 text-lg">
-                      <span className="text-2xl">{country.flagEmoji}</span>
+                      <span className="font-mono text-[10px] text-primary/70">{country.code}</span>
                       <span className="group-hover:text-primary transition-colors">{country.name}</span>
                     </CardTitle>
                     <span className="text-xs font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">

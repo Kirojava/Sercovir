@@ -24,14 +24,14 @@ const CATEGORIES = ["all", "military", "cyber", "nuclear", "conflict", "diplomat
 const CAT_ICON: Record<string, React.ReactNode> = {
   military: <Shield className="w-3 h-3" />,
   cyber: <Zap className="w-3 h-3" />,
-  nuclear: <span className="text-[10px]">☢</span>,
+  nuclear: <span className="text-[9px] font-mono">NUC</span>,
   conflict: <AlertTriangle className="w-3 h-3" />,
   diplomatic: <Globe className="w-3 h-3" />,
   economic: <TrendingUp className="w-3 h-3" />,
-  maritime: <span className="text-[10px]">⚓</span>,
-  legal: <span className="text-[10px]">⚖</span>,
-  "law-enforcement": <span className="text-[10px]">🔵</span>,
-  political: <span className="text-[10px]">🏛</span>,
+  maritime: <span className="text-[9px] font-mono">SEA</span>,
+  legal: <span className="text-[9px] font-mono">LAW</span>,
+  "law-enforcement": <span className="text-[9px] font-mono">LE</span>,
+  political: <span className="text-[9px] font-mono">POL</span>,
 };
 
 const PRIORITY_COLOR: Record<string, string> = {
@@ -110,7 +110,7 @@ export default function OperationsTimeline() {
             <div key={evt.id} className="p-3 rounded-xl border border-red-500/30 bg-red-500/10 animate-pulse-slow">
               <div className="flex items-center justify-between mb-1.5">
                 <Badge className="font-mono text-[10px] bg-red-500/20 text-red-400 border-red-500/40">
-                  🔴 CRITICAL · {evt.category?.toUpperCase()}
+                    CRITICAL · {evt.category?.toUpperCase()}
                 </Badge>
                 <span className="font-mono text-[10px] text-muted-foreground">{timeAgo(evt.occurredAt)}</span>
               </div>
@@ -185,7 +185,7 @@ export default function OperationsTimeline() {
                   <p className="font-mono text-xs text-muted-foreground leading-relaxed mb-2">{evt.summary}</p>
 
                   <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono text-muted-foreground/70">
-                    {evt.region && <span>📍 {evt.region}</span>}
+                    {evt.region && <span>REGION / {evt.region}</span>}
                     {evt.countries?.slice(0, 3).map(c => <span key={c}>{c}</span>)}
                     {evt.source && <span className="text-muted-foreground/50">Source: {evt.source}</span>}
                     <span className="ml-auto flex items-center gap-1">

@@ -205,7 +205,7 @@ export default function ThreatMatrix() {
                         }`}
                       >
                         <span className="font-mono text-xs text-muted-foreground w-6 text-center">{idx + 1}</span>
-                        <span className="text-lg">{c.flagEmoji || "🏳"}</span>
+                        <span className="font-mono text-[10px] text-muted-foreground">REG</span>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <span className="font-mono text-xs font-bold truncate">{c.name}</span>
@@ -233,7 +233,7 @@ export default function ThreatMatrix() {
             <Card className="bg-card/50 border-border backdrop-blur-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="font-mono text-sm flex items-center gap-2">
-                  <span>{selectedCountry.flagEmoji}</span>
+                  <span className="font-mono text-[10px] text-primary">REG</span>
                   {selectedCountry.name}
                 </CardTitle>
               </CardHeader>

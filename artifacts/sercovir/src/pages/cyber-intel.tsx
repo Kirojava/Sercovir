@@ -53,14 +53,6 @@ const SEV_COLOR: Record<string, string> = {
   low: "#22c55e",
 };
 
-const NATION_FLAG: Record<string, string> = {
-  "China": "🇨🇳",
-  "Russia": "🇷🇺",
-  "North Korea": "🇰🇵",
-  "Iran": "🇮🇷",
-  "Criminal": "☠️",
-};
-
 const SOPH_COLOR: Record<string, string> = {
   "nation-state": "#ef4444",
   "advanced": "#f97316",
@@ -141,12 +133,12 @@ export default function CyberIntel() {
                   </div>
                   <p className="font-mono text-xs text-muted-foreground line-clamp-2 mb-2">{inc.description}</p>
                   <div className="flex flex-wrap gap-3 text-[10px] font-mono text-muted-foreground">
-                    <span>⚡ {inc.attackType}</span>
-                    <span>🎯 {inc.targetSector}</span>
-                    <span>📍 {inc.targetCountry}</span>
-                    {inc.attribution && <span>{NATION_FLAG[inc.attribution] || "🌐"} {inc.attribution}</span>}
-                    {inc.financialDamage && inc.financialDamage !== "N/A (intelligence operation)" && <span className="text-red-400">💸 {inc.financialDamage}</span>}
-                    {inc.detectedDate && <span className="text-muted-foreground/60">🕐 {inc.detectedDate}</span>}
+                    <span>TYPE / {inc.attackType}</span>
+                    <span>SECTOR / {inc.targetSector}</span>
+                    <span>COUNTRY / {inc.targetCountry}</span>
+                    {inc.attribution && <span>ATTRIBUTION / {inc.attribution}</span>}
+                    {inc.financialDamage && inc.financialDamage !== "N/A (intelligence operation)" && <span className="text-red-400">LOSS / {inc.financialDamage}</span>}
+                    {inc.detectedDate && <span className="text-muted-foreground/60">DETECTED / {inc.detectedDate}</span>}
                   </div>
                 </div>
               ))}
@@ -187,7 +179,7 @@ export default function CyberIntel() {
                   onClick={() => setSelectedApt(selectedApt?.id === apt.id ? null : apt)}
                   className={`w-full flex items-center gap-2.5 p-2.5 rounded-lg border transition-all text-left ${selectedApt?.id === apt.id ? "border-cyan-500/40 bg-cyan-500/10" : "border-border/50 bg-muted/20 hover:bg-muted/40"}`}
                 >
-                  <span className="text-sm">{NATION_FLAG[apt.country] || "🌐"}</span>
+                  <span className="font-mono text-[10px] text-muted-foreground">REG</span>
                   <div className="flex-1 min-w-0">
                     <p className="font-mono text-xs font-semibold truncate">{apt.name}</p>
                     <p className="font-mono text-[10px] text-muted-foreground">{apt.attribution}</p>
@@ -209,7 +201,7 @@ export default function CyberIntel() {
         <Card className="bg-card/50 border-cyan-500/30">
           <CardHeader>
             <CardTitle className="font-mono flex items-center gap-3">
-              <span className="text-2xl">{NATION_FLAG[selectedApt.country] || "🌐"}</span>
+              <span className="font-mono text-[10px] text-muted-foreground">REG</span>
               {selectedApt.name}
               <Badge className="font-mono text-[10px]" style={{ color: SOPH_COLOR[selectedApt.sophistication], borderColor: SOPH_COLOR[selectedApt.sophistication] + "40", background: SOPH_COLOR[selectedApt.sophistication] + "15" }}>
                 {selectedApt.sophistication?.toUpperCase()}

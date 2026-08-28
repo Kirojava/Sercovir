@@ -120,7 +120,7 @@ export default function NuclearMonitor() {
               onClick={() => setSelected(selected?.id === prog.id ? null : prog)}
               className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${selected?.id === prog.id ? "border-yellow-500/40 bg-yellow-500/10" : "border-border/50 bg-card/30 hover:bg-muted/30"}`}
             >
-              <span className="text-2xl">{prog.flagEmoji || "🌐"}</span>
+              <span className="font-mono text-[10px] text-muted-foreground">NUC</span>
               <div className="flex-1 min-w-0">
                 <p className="font-mono text-sm font-semibold">{prog.country}</p>
                 <div className="flex items-center gap-1.5 mt-0.5">
@@ -131,7 +131,7 @@ export default function NuclearMonitor() {
                     {prog.programStatus?.toUpperCase()}
                   </div>
                   {prog.nuclearWarheads !== null && prog.nuclearWarheads > 0 && (
-                    <span className="font-mono text-[10px] text-muted-foreground">{prog.nuclearWarheads.toLocaleString()} ☢</span>
+                    <span className="font-mono text-[10px] text-muted-foreground">{prog.nuclearWarheads.toLocaleString()} warheads</span>
                   )}
                 </div>
               </div>
@@ -149,7 +149,7 @@ export default function NuclearMonitor() {
               <Card className="bg-card/50 border-yellow-500/20">
                 <CardHeader>
                   <CardTitle className="font-mono flex items-center gap-3">
-                    <span className="text-3xl">{selected.flagEmoji}</span>
+                    <span className="font-mono text-sm text-primary">{selected.countryCode}</span>
                     <div>
                       <div className="text-xl">{selected.country}</div>
                       <div className="flex items-center gap-2 mt-1">

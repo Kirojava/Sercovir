@@ -24,7 +24,7 @@ export default function CountryProfile() {
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-4 mb-2">
-            <span className="text-5xl">{country.flagEmoji}</span>
+            <span className="font-mono text-sm text-primary">{country.code}</span>
             <h1 className="text-4xl font-mono font-bold tracking-tight">{country.name}</h1>
             <Badge variant="outline" className="font-mono text-lg">{country.code}</Badge>
           </div>
