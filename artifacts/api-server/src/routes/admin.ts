@@ -73,7 +73,7 @@ router.patch("/admin/reports/:id", ...staffOrAdmin, async (req, res, next) => {
     await db.insert(moderationActions).values({ moderatorId: req.currentUser!.id, action: `REPORT_${status}`, targetType: "report", targetId: id, reason: updated.resolution ?? undefined });
     res.json(updated);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 });
 
@@ -87,7 +87,7 @@ router.patch("/admin/threads/:id", ...staffOrAdmin, async (req, res, next) => {
     await db.insert(moderationActions).values({ moderatorId: req.currentUser!.id, action: "UPDATE_THREAD", targetType: "thread", targetId: id, metadata: changes });
     res.json(updated);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 });
 
@@ -99,7 +99,7 @@ router.delete("/admin/posts/:id", ...staffOrAdmin, async (req, res, next) => {
     await db.insert(moderationActions).values({ moderatorId: req.currentUser!.id, action: "DELETE_POST", targetType: "post", targetId: id });
     res.json({ ok: true });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 });
 
