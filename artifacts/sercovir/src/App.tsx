@@ -52,6 +52,7 @@ import MilitaryActivities from "@/pages/military-activities";
 import Community from "@/pages/community";
 import Admin from "@/pages/admin";
 import { GlobalSearch } from "@/components/global-search";
+import { AppAuthProvider, ClerkAuthBridge, useAppAuth } from "@/lib/auth";
 
 const queryClient = new QueryClient();
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -63,11 +64,30 @@ function stripBase(path: string) {
 }
 
 function SignInPage() {
+  const { hasClerk } = useAppAuth();
+  if (!hasClerk) return <AuthUnavailable />;
   return <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4"><SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} /></div>;
 }
 
 function SignUpPage() {
+  const { hasClerk } = useAppAuth();
+  if (!hasClerk) return <AuthUnavailable />;
   return <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4"><SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} /></div>;
+}
+
+function AuthUnavailable() {
+  return (
+    <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4">
+      <div className="glass-panel max-w-lg p-8 text-center">
+        <div className="kicker text-accent">Identity service / pending setup</div>
+        <h1 className="mt-3 font-serif text-3xl">Authentication is not configured</h1>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          Public intelligence surfaces are available in preview. Sign-in, community, and administration features will activate after Clerk is connected.
+        </p>
+        <a href={basePath || "/"} className="mt-6 inline-flex border border-primary/40 px-4 py-2 font-mono text-[10px] uppercase tracking-[.15em] text-primary hover:bg-primary/10">Return to command center</a>
+      </div>
+    </div>
+  );
 }
 
 function ClerkQueryClientCacheInvalidator() {
@@ -141,7 +161,30 @@ function App() {
     document.documentElement.classList.add("dark");
   }, []);
 
-  if (!clerkPubKey) throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY");
+  const shell = (withClerk: boolean) => (
+    <QueryClientProvider client={queryClient}>
+      {withClerk && <ClerkQueryClientCacheInvalidator />}
+      <TooltipProvider>
+        <WouterRouter base={basePath}>
+          <Switch>
+            <Route path="/sign-in/*?" component={SignInPage} />
+            <Route path="/sign-up/*?" component={SignUpPage} />
+            <Route component={Router} />
+          </Switch>
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+
+  if (!clerkPubKey) {
+    return (
+      <AppAuthProvider value={{ isLoaded: true, isSignedIn: false, hasClerk: false, userId: null }}>
+        {shell(false)}
+      </AppAuthProvider>
+    );
+  }
+
   return (
     <ClerkProvider
       publishableKey={clerkPubKey}
@@ -163,19 +206,7 @@ function App() {
       routerPush={(to) => window.history.pushState({}, "", stripBase(to))}
       routerReplace={(to) => window.history.replaceState({}, "", stripBase(to))}
     >
-      <QueryClientProvider client={queryClient}>
-        <ClerkQueryClientCacheInvalidator />
-        <TooltipProvider>
-          <WouterRouter base={basePath}>
-            <Switch>
-              <Route path="/sign-in/*?" component={SignInPage} />
-              <Route path="/sign-up/*?" component={SignUpPage} />
-              <Route component={Router} />
-            </Switch>
-          </WouterRouter>
-          <Toaster />
-        </TooltipProvider>
-      </QueryClientProvider>
+      <ClerkAuthBridge>{shell(true)}</ClerkAuthBridge>
     </ClerkProvider>
   );
 }

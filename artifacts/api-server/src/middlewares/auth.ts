@@ -27,6 +27,14 @@ export function canAccessContent(user: typeof appUsers.$inferSelect, required: s
   return PRIVILEGED_ROLES.includes(user.role as Role) || clearanceRank(user.clearanceLevel) <= clearanceRank(required);
 }
 
+function currentUserId(req: Request): string | null {
+  try {
+    return getAuth(req).userId ?? null;
+  } catch {
+    return null;
+  }
+}
+
 async function syncCurrentUser(userId: string) {
   const existing = await db.select().from(appUsers).where(eq(appUsers.clerkUserId, userId)).limit(1);
   if (existing[0]) {
@@ -54,13 +62,13 @@ async function syncCurrentUser(userId: string) {
 }
 
 export async function optionalUser(req: Request, _res: Response, next: NextFunction) {
-  const { userId } = getAuth(req);
+  const userId = currentUserId(req);
   if (userId) req.currentUser = await syncCurrentUser(userId);
   next();
 }
 
 export async function requireUser(req: Request, res: Response, next: NextFunction) {
-  const { userId } = getAuth(req);
+  const userId = currentUserId(req);
   if (!userId) return res.status(401).json({ error: "Authentication required" });
   try {
     req.currentUser = await syncCurrentUser(userId);

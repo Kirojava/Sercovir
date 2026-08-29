@@ -37,6 +37,16 @@ Your responses should be:
 - Include confidence levels where appropriate: [HIGH CONFIDENCE], [MEDIUM CONFIDENCE], [ASSESSED]
 - End critical assessments with a BOTTOM LINE UP FRONT (BLUF)`;
 
+function aiUnavailable(res: import("express").Response) {
+  res.status(503);
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.write(`data: ${JSON.stringify({ error: "ARES requires an OpenAI AI integration. Connect one to enable live analysis." })}\n\n`);
+  res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+  res.end();
+}
+
 router.post("/ai/analyze", async (req, res): Promise<void> => {
   const { query, entityType, entityName, context } = req.body as {
     query: unknown;
@@ -51,6 +61,10 @@ router.post("/ai/analyze", async (req, res): Promise<void> => {
   }
   if (query.length > MAX_QUERY_LENGTH) {
     res.status(400).json({ error: `Query must not exceed ${MAX_QUERY_LENGTH} characters` });
+    return;
+  }
+  if (!openai) {
+    aiUnavailable(res);
     return;
   }
 
@@ -122,6 +136,10 @@ router.post("/ai/quick-assess", async (req, res): Promise<void> => {
     res.status(400).json({ error: "entityName is required" });
     return;
   }
+  if (!openai) {
+    aiUnavailable(res);
+    return;
+  }
 
   const safeEntityType = entityType.slice(0, 100).trim();
   const safeEntityName = entityName.slice(0, MAX_ENTITY_NAME_LENGTH).trim();
@@ -162,6 +180,10 @@ router.post("/ai/quick-assess", async (req, res): Promise<void> => {
 });
 
 router.post("/ai/threat-brief", async (req, res): Promise<void> => {
+  if (!openai) {
+    aiUnavailable(res);
+    return;
+  }
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");

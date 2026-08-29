@@ -1,4 +1,5 @@
 import { useAuth } from "@clerk/react";
+import { createContext, useContext, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 export interface AccessUser {
@@ -14,8 +15,36 @@ export interface AccessUser {
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
+type AppAuthState = {
+  isLoaded: boolean;
+  isSignedIn: boolean;
+  hasClerk: boolean;
+  userId: string | null;
+};
+
+const AppAuthContext = createContext<AppAuthState | null>(null);
+
+export function AppAuthProvider({ value, children }: { value: AppAuthState; children: ReactNode }) {
+  return <AppAuthContext.Provider value={value}>{children}</AppAuthContext.Provider>;
+}
+
+export function useAppAuth() {
+  const value = useContext(AppAuthContext);
+  if (!value) throw new Error("useAppAuth must be used within AppAuthProvider");
+  return value;
+}
+
+export function ClerkAuthBridge({ children }: { children: ReactNode }) {
+  const { isLoaded, isSignedIn, userId } = useAuth();
+  return (
+    <AppAuthProvider value={{ isLoaded, isSignedIn: Boolean(isSignedIn), hasClerk: true, userId: userId ?? null }}>
+      {children}
+    </AppAuthProvider>
+  );
+}
+
 export function useCurrentAccess() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn } = useAppAuth();
   return useQuery<AccessUser>({
     queryKey: ["auth", "me"],
     enabled: Boolean(isSignedIn),

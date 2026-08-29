@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
-import { useAuth } from "@clerk/react";
 import { MessageSquare, Plus, Radio, RefreshCw, Send, Shield, Users, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { CLEARANCE_LABELS, ROLE_LABELS, useCurrentAccess } from "@/lib/auth";
+import { CLEARANCE_LABELS, ROLE_LABELS, useAppAuth, useCurrentAccess } from "@/lib/auth";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 type Category = { id: number; name: string; description: string | null; threadCount: number };
@@ -27,7 +26,7 @@ function SignInPrompt() {
 }
 
 export default function Community() {
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isSignedIn, isLoaded } = useAppAuth();
   const { data: user } = useCurrentAccess();
   const [categories, setCategories] = useState<Category[]>([]);
   const [threads, setThreads] = useState<Thread[]>([]);

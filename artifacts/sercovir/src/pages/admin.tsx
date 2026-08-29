@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { useAuth } from "@clerk/react";
 import { ClipboardList, LockKeyhole, ShieldCheck, SlidersHorizontal, Users, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CLEARANCE_LABELS, ROLE_LABELS, useCurrentAccess, canModerate, type AccessUser } from "@/lib/auth";
+import { CLEARANCE_LABELS, ROLE_LABELS, useAppAuth, useCurrentAccess, canModerate, type AccessUser } from "@/lib/auth";
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 const ROLES = ["OWNER", "ADMIN", "MODERATOR", "STAFF", "PREMIUM", "NORMAL"] as const;
@@ -21,7 +20,7 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export default function Admin() {
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isSignedIn, isLoaded } = useAppAuth();
   const { data: user } = useCurrentAccess();
   const [stats, setStats] = useState<Stats | null>(null);
   const [users, setUsers] = useState<AccessUser[]>([]);

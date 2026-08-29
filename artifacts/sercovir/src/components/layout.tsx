@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { useAuth, UserButton } from "@clerk/react";
+import { UserButton } from "@clerk/react";
 import {
   BarChart2,
   Brain,
@@ -33,6 +33,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { GlobalSearch } from "@/components/global-search";
+import { useAppAuth } from "@/lib/auth";
 import { OrbitalScene } from "@/components/orbital-scene";
 
 const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
@@ -188,7 +189,7 @@ function Navigation({ mobile = false }: { mobile?: boolean }) {
 
 export function Layout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, hasClerk } = useAppAuth();
   const dateStamp = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
 
   return (
@@ -240,7 +241,7 @@ export function Layout({ children }: { children: ReactNode }) {
                   <Link href="/sign-up" className="border border-primary/50 px-3 py-2 font-mono text-[9px] uppercase tracking-[.14em] text-primary hover:bg-primary/10">Join network</Link>
                 </div>
               )}
-              {isSignedIn && <UserButton appearance={{ elements: { avatarBox: "h-8 w-8", userButtonPopoverCard: "bg-card border-border" } }} />}
+              {isSignedIn && hasClerk && <UserButton appearance={{ elements: { avatarBox: "h-8 w-8", userButtonPopoverCard: "bg-card border-border" } }} />}
               <div className="hidden text-right font-mono text-[9px] uppercase leading-relaxed tracking-[.14em] text-muted-foreground sm:block">
                 <div>UTC // {dateStamp}</div>
                 <div className="text-primary/70">Channel open / 24 feeds</div>
