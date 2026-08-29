@@ -65,7 +65,7 @@ router.post("/countries", async (req, res): Promise<void> => {
     return;
   }
 
-  const [country] = await db.insert(countriesTable).values(parsed.data).returning();
+  const [country] = await db.insert(countriesTable).values(parsed.data as any).returning();
   res.status(201).json({
     ...country,
     gdp: country.gdp ? parseFloat(String(country.gdp)) : null,
@@ -110,7 +110,7 @@ router.put("/countries/:id", async (req, res): Promise<void> => {
     return;
   }
 
-  const [country] = await db.update(countriesTable).set(parsed.data).where(eq(countriesTable.id, id)).returning();
+  const [country] = await db.update(countriesTable).set(parsed.data as any).where(eq(countriesTable.id, id)).returning();
   if (!country) {
     res.status(404).json({ error: "Country not found" });
     return;

@@ -119,7 +119,7 @@ export default function TreatyDetail() {
               </CardHeader>
               <CardContent className="p-6">
                 <div className="flex flex-wrap gap-2">
-                  {treaty.relatedConflicts.map((conflict: string) => (
+                  {treaty.relatedConflicts.map((conflict: number) => (
                     <span key={conflict} className="font-mono text-xs text-red-500 bg-red-500/10 border border-red-500/30 px-2 py-1 rounded">
                       {conflict}
                     </span>

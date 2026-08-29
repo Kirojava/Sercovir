@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
+import { useAuth, UserButton } from "@clerk/react";
 import {
   BarChart2,
   Brain,
@@ -28,9 +29,13 @@ import {
   Users,
   Wifi,
   Zap,
+  MessageCircle,
+  ShieldCheck,
 } from "lucide-react";
 import { GlobalSearch } from "@/components/global-search";
 import { OrbitalScene } from "@/components/orbital-scene";
+
+const basePath = import.meta.env.BASE_URL?.replace(/\/$/, "") || "";
 
 const NAV_SECTIONS = [
   {
@@ -110,7 +115,11 @@ const NAV_SECTIONS = [
   },
   {
     title: "OPERATIONS",
-    items: [{ href: "/delegates", label: "Delegates", icon: UserCircle }],
+    items: [
+      { href: "/delegates", label: "Delegates", icon: UserCircle },
+      { href: "/community", label: "Operator Commons", icon: MessageCircle },
+      { href: "/admin", label: "Admin Console", icon: ShieldCheck },
+    ],
   },
 ];
 
@@ -179,6 +188,7 @@ function Navigation({ mobile = false }: { mobile?: boolean }) {
 
 export function Layout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
+  const { isSignedIn } = useAuth();
   const dateStamp = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(new Date());
 
   return (
@@ -224,6 +234,13 @@ export function Layout({ children }: { children: ReactNode }) {
             </div>
             <div className="flex shrink-0 items-center gap-3 sm:gap-6">
               <GlobalSearch />
+              {!isSignedIn && (
+                <div className="flex items-center gap-2">
+                  <Link href="/sign-in" className="hidden font-mono text-[9px] uppercase tracking-[.14em] text-muted-foreground hover:text-primary sm:inline">Sign in</Link>
+                  <Link href="/sign-up" className="border border-primary/50 px-3 py-2 font-mono text-[9px] uppercase tracking-[.14em] text-primary hover:bg-primary/10">Join network</Link>
+                </div>
+              )}
+              {isSignedIn && <UserButton appearance={{ elements: { avatarBox: "h-8 w-8", userButtonPopoverCard: "bg-card border-border" } }} />}
               <div className="hidden text-right font-mono text-[9px] uppercase leading-relaxed tracking-[.14em] text-muted-foreground sm:block">
                 <div>UTC // {dateStamp}</div>
                 <div className="text-primary/70">Channel open / 24 feeds</div>

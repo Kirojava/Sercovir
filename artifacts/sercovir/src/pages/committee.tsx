@@ -16,11 +16,11 @@ export default function CommitteeDetail() {
   });
 
   const { data: delegates, isLoading: delegatesLoading } = useListDelegates({ committeeId: id }, {
-    query: { enabled: !!id }
+    query: { enabled: !!id, queryKey: [`/api/committees/${id}/delegates`] }
   });
 
   const { data: resolutions, isLoading: resolutionsLoading } = useListResolutions({ committeeId: id }, {
-    query: { enabled: !!id }
+    query: { enabled: !!id, queryKey: [`/api/resolutions?committeeId=${id}`] }
   });
 
   if (isLoading) {

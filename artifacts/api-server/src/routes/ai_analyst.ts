@@ -71,7 +71,7 @@ router.post("/ai/analyze", async (req, res): Promise<void> => {
       .limit(5);
 
     const briefingContext = recentBriefings
-      .map((b) => `[${b.priority?.toUpperCase()}] ${b.title}: ${b.summary || ""}`)
+      .map((b) => `[${b.priority?.toUpperCase()}] ${b.title}: ${b.content || ""}`)
       .join("\n");
 
     let userMessage = query.trim();

@@ -27,6 +27,9 @@ import nuclearProgramsRouter from "./nuclear_programs";
 import operationsTimelineRouter from "./operations_timeline";
 import aiAnalystRouter from "./ai_analyst";
 import militaryActivitiesRouter from "./military_activities";
+import authRouter from "./auth";
+import communityRouter from "./community";
+import adminRouter from "./admin";
 
 const router: IRouter = Router();
 
@@ -58,5 +61,8 @@ router.use(nuclearProgramsRouter);
 router.use(operationsTimelineRouter);
 router.use(aiAnalystRouter);
 router.use(militaryActivitiesRouter);
+router.use(authRouter);
+router.use(communityRouter);
+router.use(adminRouter);
 
 export default router;

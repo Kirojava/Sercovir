@@ -218,7 +218,7 @@ export default function GeoMap() {
                             <circle cx={pos.x} cy={pos.y} r={size * 1.8}>
                               <animate attributeName="r" values={`${size * 1.2};${size * 2.5};${size * 1.2}`} dur="2s" repeatCount="indefinite" />
                               <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite" />
-                              <animateColor attributeName="fill" values={color} />
+                              <animate attributeName="fill" values={`${color};${color}`} dur="1s" repeatCount="indefinite" />
                             </circle>
                           )}
                           <circle

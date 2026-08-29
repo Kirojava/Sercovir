@@ -1,4 +1,4 @@
-import { db, cyberIncidentsTable, aptGroupsTable, nuclearProgramsTable, operationsTimelineTable } from "./index.ts";
+import { db, cyberIncidentsTable, aptGroupsTable, nuclearProgramsTable, operationsTimelineTable } from "./index";
 
 async function seed2026() {
   console.log("Seeding 2026 extended intelligence data...");

@@ -16,7 +16,7 @@ export default function CountryIntel() {
   const [queryCode, setQueryCode] = useState("");
   
   const { data: intel, isLoading, isError } = useGetCountryIntelligence(queryCode, { 
-    query: { enabled: !!queryCode, retry: false } 
+    query: { enabled: !!queryCode, retry: false, queryKey: [`/api/country-intel/${queryCode}`] }
   });
 
   const handleSearch = (e: React.FormEvent) => {

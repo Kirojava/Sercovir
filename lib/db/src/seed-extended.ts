@@ -16,7 +16,7 @@ async function seedExtended() {
 
   // ── WORLD LEADERS ────────────────────────────────────────────────────────
   await db.delete(worldLeadersTable);
-  const leaders = await db.insert(worldLeadersTable).values([
+  const leaders = await db.insert(worldLeadersTable).values(([
     {
       name: "Donald J. Trump",
       country: "United States",
@@ -269,7 +269,7 @@ async function seedExtended() {
       currentLocation: "Ankara, Turkey",
       recentTravel: ["Moscow, Russia", "Baku, Azerbaijan", "Doha, Qatar", "Tehran, Iran"],
     },
-  ]).returning();
+  ] as any)).returning();
 
   console.log(`Seeded ${leaders.length} world leaders`);
 

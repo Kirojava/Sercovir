@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { ClerkProvider, SignIn, SignUp, useClerk } from "@clerk/react";
+import { publishableKeyFromHost } from "@clerk/react/internal";
+import { shadcn } from "@clerk/themes";
 import { Switch, Route, Router as WouterRouter } from "wouter";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
@@ -46,9 +49,38 @@ import NuclearMonitor from "@/pages/nuclear-monitor";
 import OperationsTimeline from "@/pages/operations-timeline";
 import CrisisRoom from "@/pages/crisis-room";
 import MilitaryActivities from "@/pages/military-activities";
+import Community from "@/pages/community";
+import Admin from "@/pages/admin";
 import { GlobalSearch } from "@/components/global-search";
 
 const queryClient = new QueryClient();
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+const clerkPubKey = publishableKeyFromHost(window.location.hostname, import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
+const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
+
+function stripBase(path: string) {
+  return basePath && path.startsWith(basePath) ? path.slice(basePath.length) || "/" : path;
+}
+
+function SignInPage() {
+  return <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4"><SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} /></div>;
+}
+
+function SignUpPage() {
+  return <div className="flex min-h-[100dvh] items-center justify-center bg-background px-4"><SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} /></div>;
+}
+
+function ClerkQueryClientCacheInvalidator() {
+  const { addListener } = useClerk();
+  const client = useQueryClient();
+  const previous = useRef<string | null | undefined>(undefined);
+  useEffect(() => addListener(({ user }) => {
+    const next = user?.id ?? null;
+    if (previous.current !== undefined && previous.current !== next) client.clear();
+    previous.current = next;
+  }), [addListener, client]);
+  return null;
+}
 
 function Router() {
   return (
@@ -95,6 +127,8 @@ function Router() {
         <Route path="/operations-timeline" component={OperationsTimeline} />
         <Route path="/crisis-room" component={CrisisRoom} />
         <Route path="/military-activities" component={MilitaryActivities} />
+        <Route path="/community" component={Community} />
+        <Route path="/admin" component={Admin} />
 
         <Route component={NotFound} />
       </Switch>
@@ -107,15 +141,42 @@ function App() {
     document.documentElement.classList.add("dark");
   }, []);
 
+  if (!clerkPubKey) throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY");
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL?.replace(/\/$/, "") || ""}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ClerkProvider
+      publishableKey={clerkPubKey}
+      proxyUrl={clerkProxyUrl}
+      appearance={{
+        theme: shadcn,
+        cssLayerName: "clerk",
+        options: { logoPlacement: "inside", logoLinkUrl: basePath || "/", logoImageUrl: `${window.location.origin}${basePath}/logo.svg` },
+        variables: { colorPrimary: "#78c7b0", colorForeground: "#eef7f3", colorMutedForeground: "#99b4ad", colorDanger: "#e27b73", colorBackground: "#0b1918", colorInput: "#122725", colorInputForeground: "#eef7f3", colorNeutral: "#38534e", fontFamily: "Manrope", borderRadius: "2px" },
+        elements: {
+          rootBox: "w-full flex justify-center", cardBox: "bg-[#0b1918] rounded-2xl w-[440px] max-w-full overflow-hidden", card: "!shadow-none !border-0 !bg-transparent !rounded-none", footer: "!shadow-none !border-0 !bg-transparent !rounded-none",
+          headerTitle: "text-[#eef7f3]", headerSubtitle: "text-[#99b4ad]", socialButtonsBlockButtonText: "text-[#eef7f3]", formFieldLabel: "text-[#c9ded8]", footerActionLink: "text-[#78c7b0]", footerActionText: "text-[#99b4ad]", dividerText: "text-[#99b4ad]", identityPreviewEditButton: "text-[#78c7b0]", formFieldSuccessText: "text-[#78c7b0]", alertText: "text-[#e27b73]",
+          logoBox: "text-[#78c7b0]", logoImage: "max-h-10", socialButtonsBlockButton: "!border-[#38534e] !bg-[#122725] hover:!bg-[#193631]", formButtonPrimary: "!bg-[#78c7b0] !text-[#07110f] hover:!bg-[#94dcc3]", formFieldInput: "!border-[#38534e] !bg-[#122725] !text-[#eef7f3]", footerAction: "border-[#38534e]", dividerLine: "bg-[#38534e]", alert: "!border-[#7d3e3a] !bg-[#2a1716]", otpCodeFieldInput: "!border-[#38534e] !bg-[#122725] !text-[#eef7f3]", formFieldRow: "gap-2", main: "bg-transparent",
+        },
+      }}
+      signInUrl={`${basePath}/sign-in`}
+      signUpUrl={`${basePath}/sign-up`}
+      localization={{ signIn: { start: { title: "Welcome back", subtitle: "Access the Sercovir observation room" } }, signUp: { start: { title: "Create operator account", subtitle: "Join the Sercovir intelligence network" } } }}
+      routerPush={(to) => window.history.pushState({}, "", stripBase(to))}
+      routerReplace={(to) => window.history.replaceState({}, "", stripBase(to))}
+    >
+      <QueryClientProvider client={queryClient}>
+        <ClerkQueryClientCacheInvalidator />
+        <TooltipProvider>
+          <WouterRouter base={basePath}>
+            <Switch>
+              <Route path="/sign-in/*?" component={SignInPage} />
+              <Route path="/sign-up/*?" component={SignUpPage} />
+              <Route component={Router} />
+            </Switch>
+          </WouterRouter>
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ClerkProvider>
   );
 }
 

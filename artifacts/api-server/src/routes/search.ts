@@ -65,12 +65,12 @@ router.get("/search", async (req, res): Promise<void> => {
     }
   }
   for (const c of icjCases) {
-    if (c.title.toLowerCase().includes(q) || (c.applicant || "").toLowerCase().includes(q) || (c.respondent || "").toLowerCase().includes(q)) {
+    if (c.title.toLowerCase().includes(q) || c.applicantCountry.toLowerCase().includes(q) || c.respondentCountry.toLowerCase().includes(q)) {
       results.push({ type: "icj", id: c.id, title: c.title, subtitle: `ICJ · ${c.status}`, href: `/icj/${c.id}` });
     }
   }
   for (const r of resolutions) {
-    if (r.title.toLowerCase().includes(q) || (r.summary || "").toLowerCase().includes(q)) {
+    if (r.title.toLowerCase().includes(q) || (r.operativeClauses || []).some((clause) => clause.toLowerCase().includes(q))) {
       results.push({ type: "resolution", id: r.id, title: r.title, subtitle: r.status, href: `/resolutions/${r.id}` });
     }
   }

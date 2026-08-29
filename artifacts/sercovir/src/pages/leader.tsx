@@ -12,8 +12,8 @@ import { format } from "date-fns";
 
 export default function Leader() {
   const { id } = useParams();
-  const { data: leader, isLoading: isLoadingLeader } = useGetLeader(Number(id), { query: { enabled: !!id } });
-  const { data: statements, isLoading: isLoadingStatements } = useGetLeaderStatements(Number(id), { query: { enabled: !!id } });
+  const { data: leader, isLoading: isLoadingLeader } = useGetLeader(Number(id), { query: { enabled: !!id, queryKey: [`/api/leaders/${id}`] } });
+  const { data: statements, isLoading: isLoadingStatements } = useGetLeaderStatements(Number(id), { query: { enabled: !!id, queryKey: [`/api/leaders/${id}/statements`] } });
 
   if (isLoadingLeader) {
     return (

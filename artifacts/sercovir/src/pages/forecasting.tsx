@@ -392,12 +392,7 @@ export default function Forecasting() {
                   dataKey={name}
                   stroke={COUNTRY_COLORS[name]}
                   strokeWidth={2}
-                  strokeDasharray={(d: { type?: string }) => d?.type === 'forecast' ? '6 3' : '0'}
-                  dot={(props: { index?: number; cx?: number; cy?: number }) => {
-                    const d = gdpForecastData[props.index || 0];
-                    if (d?.type === 'forecast') return null;
-                    return <circle key={`dot-${props.index}`} cx={props.cx} cy={props.cy} r={3} fill={COUNTRY_COLORS[name]} />;
-                  }}
+                  dot={{ r: 3, fill: COUNTRY_COLORS[name], strokeWidth: 0 }}
                   activeDot={{ r: 5, strokeWidth: 0 }}
                   connectNulls
                 />
